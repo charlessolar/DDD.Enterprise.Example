@@ -33,17 +33,13 @@ namespace Presentation.Inventory.SerialNumbers
             }
         }
 
-        public SerialNumber Post(CreateSerialNumber request)
+        public Guid Post(CreateSerialNumber request)
         {
             var command = request.ConvertTo<Domain.Inventory.SerialNumbers.Commands.Create>();
             command.ItemId = Guid.NewGuid();
             _bus.Send("domain", command);
 
-            // I don't know!
-            // Servicestack wants an object back - Im not sure if that's required yet, but in case Ill just sleep until raven has it
-            Thread.Sleep(1000);
-
-            return Any(new GetSerialNumber { Id = command.ItemId });
+            return command.SerialNumberId;
         }
     }
 }
