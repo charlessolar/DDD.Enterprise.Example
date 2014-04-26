@@ -1,5 +1,4 @@
-NES.RavenDB.Example
-===================
+# NES.RavenDB.Example
 
 An example of getting NES configured and running with NServicebus, RavenDB, and NEventStore
 
@@ -10,7 +9,7 @@ I spent several hours of my life having to dig deep into these projects to figur
 
 **Architecture Overview**
 
-There are currently 3 nservicebus endpoints.  One to send demo commands in SendMessages, one to receive commands in Domain and an event handler in Application.
+There are currently 3 nservicebus endpoints.  One to send demo commands in DemoMessages, one to receive commands in Domain and an event handler in Application.
 
 The Domain endpoint is configured to be a distributor to event listeners and Application is configured to subscribe.
 
@@ -50,7 +49,9 @@ We are modeling the top 3 layers in this solution.  NEventStore and RavenDB hand
 In each folder you will find 1 'master' project and a child.  IE
 
 > Domain/
+
 >> Domain.csproj
+
 >> Domain.Inventory.csproj
 
 The purpose of the Domain project is simply to be an NServicebus endpoint.  You can configure your own endpoints however you like.
@@ -69,4 +70,16 @@ For the application projects, I simply have a Handlers folder and a Models folde
 
 For larger deployments I am sure that structure will change to group read models somehow.
 
+## Troubleshooting
 
+If you have issues getting started, there are a few things to check.  Firstly, make sure you install NServiceBus from their [web site](http://particular.net/).  The installer will install RavenDB and MSMQ for you.
+
+Next, make sure you run Visual Studio as Administrator, and that you run each endpoint as admin seperately.  This can be done by going to the build bin folder, or by using the debugger to run them yourself.  This must be done because programs started from VS without the debugger will not be admin, so they won't be able to create their queues.
+
+After successfully starting each project your queues should look like this 
+
+![Queue Config](/doc/private_queues.png?raw=true)
+
+You will also need to edit the solution's properties to launch all 3 endpoints at once.  
+
+![Solution properties](/doc/solution_properties.png?raw=true)
