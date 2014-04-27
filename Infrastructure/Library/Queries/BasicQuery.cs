@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Library.Queries
 {
-    public interface IBasicQuery : ICommand
+    public class BasicQuery : ICommand
     {
+        public String QueryId { get; set; }
     }
 }

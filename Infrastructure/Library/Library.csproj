@@ -43,8 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\BusinessLogicException.cs" />
+    <Compile Include="Extenstions\ForEachWithLast.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\IBasicQuery.cs" />
+    <Compile Include="Queries\BasicQuery.cs" />
     <Compile Include="Queries\PagedQuery.cs" />
   </ItemGroup>
   <ItemGroup>

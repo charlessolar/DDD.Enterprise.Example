@@ -1,4 +1,5 @@
-﻿using NServiceBus;
+﻿using Library.Queries;
+using NServiceBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Application.Inventory.Items.Messages
 {
-    public class ItemRetreived : IMessage
+    public class ItemsRetreived : IMessage
     {
-        public Item Item { get; set; }
+        public IEnumerable<Item> Items { get; set; }
     }
 }

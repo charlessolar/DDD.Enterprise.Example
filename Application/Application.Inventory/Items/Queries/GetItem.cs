@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Inventory.Items.Queries
 {
-    public class GetItem : IBasicQuery
+    public class GetItem : BasicQuery
     {
         public Guid Id { get; set; }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Inventory.Items.Queries
 {
-    public class FindItems : IBasicQuery
+    public class FindItems : PagedQuery
     {
         public String Number { get; set; }
         public String Description { get; set; }

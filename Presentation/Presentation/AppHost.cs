@@ -1,6 +1,9 @@
 ﻿using NServiceBus;
 using Presentation.Inventory.Items;
 using ServiceStack;
+using ServiceStack.Caching;
+using ServiceStack.Messaging;
+using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +22,12 @@ namespace Presentation
 
         public override void Configure(Funq.Container container)
         {
+            container.Register<IRedisClientsManager>(c =>
+                new PooledRedisClientManager("localhost:6379"));
+            container.Register(c => c.Resolve<IRedisClientsManager>().GetCacheClient());
+            container.Register(c => c.Resolve<IRedisClientsManager>().GetClient());
+
+
             NServiceBus.Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             NServiceBus.Configure.Serialization.Json();
             var bus = NServiceBus.Configure.With(AllAssemblies.Except("ServiceStack"))
@@ -36,6 +45,8 @@ namespace Presentation
                 .Start();
 
             container.Register<IBus>(bus);
+
+            NServiceBus.Configure.Component<IRedisClient>(c => container.Resolve<IRedisClientsManager>().GetClient(), DependencyLifecycle.SingleInstance);
         }
     }
 }

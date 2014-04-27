@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Inventory.SerialNumbers.Queries
 {
-    public class FindSerialNumbers : IBasicQuery
+    public class FindSerialNumbers : PagedQuery
     {
         public String Serial { get; set; }
         public DateTime? Effective { get; set; }

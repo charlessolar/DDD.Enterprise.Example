@@ -3,7 +3,11 @@ Application
 
 These projects represent objects that listen to events generated from the domain objects
 
-Models are read models for this bounded context, query is a folder for query request handlers.  Eg. Get 8 items
-Queries should be requested via nservicebus request/response
+The application projects build read models from the event stream and save them to theit db of choice.  In this example we use RavenDB.
 
-THis project is configured to save read models to RavenDb, however you could literally do anything inside a worker.  Store in memory, or use any other storage (including sql), you could even publish events to a SignalR hub so connected clients get updates in real time
+Similar to the domain projects, each read model is getting its own folder.  These folders contain the Query commands the presentation layer can use to ask for data, 
+as well as the messages we send in reply, and the query validators.  It also includes an EventHandler who handles events from the domain, and a QueryHandler who handles commands
+from presentation.
+
+To query application services, the presentation layer sends a command in the form of a query.  The application server responds to the command with a set of messages which are
+the result of the query.

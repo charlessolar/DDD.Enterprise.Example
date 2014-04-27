@@ -1,4 +1,5 @@
-﻿using NServiceBus;
+﻿using Library.Queries;
+using NServiceBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Application.Inventory.SerialNumbers.Messages
 {
-    public class SerialNumberRetreived : IMessage
+    public class SerialNumbersRetreived : IMessage
     {
-        public SerialNumber SerialNumber { get; set; }
+        public IEnumerable<SerialNumber> SerialNumbers { get; set; }
     }
 }

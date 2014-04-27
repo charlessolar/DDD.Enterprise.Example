@@ -1,4 +1,6 @@
-﻿using NServiceBus;
+﻿using Library.Extenstions;
+using Library.Queries;
+using NServiceBus;
 using Raven.Client;
 using System;
 using System.Collections.Generic;
@@ -17,11 +19,16 @@ namespace Application.Inventory.Items
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                session.Query<Item>().Skip((command.Page - 1) * command.PageSize).Take(command.PageSize)
-                    .ToList()
-                    .ForEach(x =>
+                var results = session.Query<Item>()
+                    .Skip((command.Page - 1) * command.PageSize).Take(command.PageSize)
+                    .ToList();
+
+                _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
+                _bus.CurrentMessageContext.Headers["Query"] = command.QueryId;
+
+                _bus.Reply<Messages.ItemsRetreived>(e =>
                     {
-                        _bus.Reply<Messages.ItemRetreived>(e => e.Item = x);
+                        e.Items = results;
                     });
             }
         }
@@ -29,20 +36,40 @@ namespace Application.Inventory.Items
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                session.Query<Item>().Where(x => x.Number.StartsWith(command.Number) || x.Description.StartsWith(command.Description))
-                    .ToList()
-                    .ForEach(x =>
-                    {
-                        _bus.Reply<Messages.ItemRetreived>(e => e.Item = x);
-                    });
+                var query = session.Query<Item>().AsQueryable();
+
+                if (!String.IsNullOrEmpty(command.Number))
+                    query = query.Where(x => x.Number.StartsWith(command.Number));
+                if (!String.IsNullOrEmpty(command.Description))
+                    query = query.Where(x => x.Number.StartsWith(command.Description));
+
+                var results = query
+                    .Skip((command.Page - 1) * command.PageSize).Take(command.PageSize)
+                    .ToList();
+
+                _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
+                _bus.CurrentMessageContext.Headers["Query"] = command.QueryId;
+
+                _bus.Reply<Messages.ItemsRetreived>(e =>
+                {
+                    e.Items = results;
+                });
             }
         }
         public void Handle(Queries.GetItem command)
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var serial = session.Load<Item>(command.Id);
-                _bus.Reply<Messages.ItemRetreived>(e => e.Item = serial);
+                var item = session.Load<Item>(command.Id);
+                if (item == null) return; // Return "Unknown item" or something?
+
+
+                _bus.CurrentMessageContext.Headers["Query"] = command.QueryId;
+
+                _bus.Reply<Messages.ItemsRetreived>(e =>
+                {
+                    e.Items = new[] { item };
+                });
             }
         }
     }

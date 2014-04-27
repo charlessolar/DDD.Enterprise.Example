@@ -11,6 +11,9 @@ namespace Presentation.Inventory.Items.Models
     [Route("/items", "GET")]
     public class FindItems : IReturn<List<Item>>
     {
+        public Int32 Page { get; set; }
+        public Int32 PageSize { get; set; }
+
         public String Number { get; set; }
         public String Description { get; set; }
     }

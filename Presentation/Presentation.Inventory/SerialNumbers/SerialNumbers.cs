@@ -1,4 +1,5 @@
 ﻿using Application.Inventory.SerialNumbers;
+using Application.Inventory.SerialNumbers.Messages;
 using NServiceBus;
 using Presentation.Inventory.SerialNumbers.Models;
 using ServiceStack;
@@ -15,25 +16,40 @@ namespace Presentation.Inventory.SerialNumbers
     {
         public IBus _bus { get; set; }
 
-        public SerialNumber Any(GetSerialNumber request)
+        public Object Any(GetSerialNumber request)
         {
-            _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.GetSerialNumber
+            var cacheKey = UrnId.Create<GetSerialNumber>(request.Id);
+            return base.Request.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
             {
-                Id = request.Id
+                return _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.GetSerialNumber
+                {
+                    QueryId = cacheKey,
+                    Id = request.Id
+                }).Register(x =>
+                {
+                    return (x.Messages.First() as SerialNumbersRetreived).SerialNumbers;
+                }).Result;
             });
-            return null;
         }
 
-        public List<SerialNumber> Any(FindSerialNumbers request)
+        public Object Any(FindSerialNumbers request)
         {
-            _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.FindSerialNumbers
+            var cacheKey = UrnId.Create<FindSerialNumbers>(String.Format("{0}.{1}.{2:N}.{3}.{4}", request.Serial, request.Effective, request.ItemId, request.Page, request.PageSize));
+            return base.Request.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
             {
-                Serial = request.Serial,
-                Effective = request.Effective,
-                ItemId = request.ItemId,
+                return _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.FindSerialNumbers
+                {
+                    QueryId = cacheKey,
+                    Page = request.Page,
+                    PageSize = request.PageSize,
+                    Serial = request.Serial,
+                    Effective = request.Effective,
+                    ItemId = request.ItemId
+                }).Register(x =>
+                {
+                    return (x.Messages.First() as SerialNumbersRetreived).SerialNumbers;
+                }).Result;
             });
-
-            return new List<SerialNumber>();
         }
 
         public Guid Post(CreateSerialNumber request)

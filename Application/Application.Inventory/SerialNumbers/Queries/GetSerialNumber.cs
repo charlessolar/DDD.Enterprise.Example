@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Inventory.SerialNumbers.Queries
 {
-    public class GetSerialNumber : IBasicQuery
+    public class GetSerialNumber : BasicQuery
     {
         public Guid Id { get; set; }
     }
