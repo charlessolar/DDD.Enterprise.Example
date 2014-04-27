@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentValidation.5.1.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -43,6 +47,9 @@
     <Reference Include="NServiceBus.Host">
       <HintPath>..\..\packages\NServiceBus.Host.4.5.0\lib\net40\NServiceBus.Host.exe</HintPath>
     </Reference>
+    <Reference Include="NServiceBus.ObjectBuilder.StructureMap">
+      <HintPath>..\..\packages\NServiceBus.StructureMap.4.4.2\lib\net40\NServiceBus.ObjectBuilder.StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Abstractions, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\RavenDB.Client.2.5.2874\lib\net45\Raven.Abstractions.dll</HintPath>
@@ -50,6 +57,10 @@
     <Reference Include="Raven.Client.Lightweight, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\RavenDB.Client.2.5.2874\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -71,6 +82,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
+      <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Application.Inventory\Application.Inventory.csproj">
       <Project>{2f966dea-afcb-49e2-be7c-85fc0706ead6}</Project>
       <Name>Application.Inventory</Name>

@@ -1,7 +1,10 @@
-﻿using NServiceBus;
+﻿using Library.IoC;
+using Library.Validation;
+using NServiceBus;
 using Presentation.Inventory.Items;
 using ServiceStack;
 using ServiceStack.Caching;
+using ServiceStack.FluentValidation;
 using ServiceStack.Messaging;
 using ServiceStack.Redis;
 using System;
@@ -22,6 +25,8 @@ namespace Presentation
 
         public override void Configure(Funq.Container container)
         {
+            container.Adapter = new StructureMapContainerAdapter();
+
             container.Register<IRedisClientsManager>(c =>
                 new PooledRedisClientManager("localhost:6379"));
             container.Register(c => c.Resolve<IRedisClientsManager>().GetCacheClient());
@@ -30,8 +35,9 @@ namespace Presentation
 
             NServiceBus.Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             NServiceBus.Configure.Serialization.Json();
-            var bus = NServiceBus.Configure.With(AllAssemblies.Except("ServiceStack"))
-                .DefaultBuilder()
+            var bus = NServiceBus.Configure
+                .With(AllAssemblies.Except("ServiceStack"))
+                .StructureMapBuilder()
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.EndsWith("Events"))
                 .DefiningCommandsAs(t => t.Namespace != null && (t.Namespace.EndsWith("Commands") || t.Namespace.EndsWith("Queries")))
                 .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.EndsWith("Messages"))
@@ -45,8 +51,7 @@ namespace Presentation
                 .Start();
 
             container.Register<IBus>(bus);
-
-            NServiceBus.Configure.Component<IRedisClient>(c => container.Resolve<IRedisClientsManager>().GetClient(), DependencyLifecycle.SingleInstance);
+            container.Register<IRedisClient>(container.Resolve<IRedisClientsManager>().GetClient());
         }
     }
 }

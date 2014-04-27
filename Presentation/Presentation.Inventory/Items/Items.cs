@@ -27,7 +27,6 @@ namespace Presentation.Inventory.Items
             {
                 return _bus.Send("application", new Application.Inventory.Items.Queries.GetItem
                 {
-                    QueryId = cacheKey,
                     Id = request.Id
                 }).Register(x =>
                 {
@@ -44,7 +43,6 @@ namespace Presentation.Inventory.Items
             {
                 return _bus.Send("application", new Application.Inventory.Items.Queries.FindItems
                 {
-                    QueryId = cacheKey,
                     Page = request.Page,
                     PageSize = request.PageSize,
                     Number = request.Number,

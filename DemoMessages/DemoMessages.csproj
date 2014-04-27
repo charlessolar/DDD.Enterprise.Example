@@ -43,6 +43,13 @@
     <Reference Include="NServiceBus.Host">
       <HintPath>..\packages\NServiceBus.Host.4.5.0\lib\net40\NServiceBus.Host.exe</HintPath>
     </Reference>
+    <Reference Include="NServiceBus.ObjectBuilder.StructureMap">
+      <HintPath>..\packages\NServiceBus.StructureMap.4.4.2\lib\net40\NServiceBus.ObjectBuilder.StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

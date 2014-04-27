@@ -10,12 +10,8 @@ namespace Domain.Inventory.Items
 {
     public class Handler : IHandleMessages<Commands.Create>, IHandleMessages<Commands.ChangeDescription>
     {
-        private IRepository _repository;
+        private readonly IRepository _repository;
 
-        public Handler()
-            : this(new Repository())
-        {
-        }
 
         public Handler(IRepository repository)
         {

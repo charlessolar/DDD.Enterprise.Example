@@ -18,8 +18,9 @@ namespace DemoMessages
         {
             Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             Configure.Serialization.Json();
-            Configure.With()
-                .DefaultBuilder()
+            Configure
+                .With(AllAssemblies.Except("ServiceStack"))
+                .StructureMapBuilder()
                 .Log4Net()
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.EndsWith("Events"))
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.EndsWith("Commands"))

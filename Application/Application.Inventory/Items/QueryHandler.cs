@@ -12,8 +12,14 @@ namespace Application.Inventory.Items
 {
     public class QueryHandler : IHandleMessages<Queries.AllItems>, IHandleMessages<Queries.FindItems>, IHandleMessages<Queries.GetItem>
     {
-        public IDocumentStore _store { get; set; }
-        public IBus _bus { get; set; }
+        private readonly IDocumentStore _store;
+        private readonly IBus _bus;
+
+        public QueryHandler(IDocumentStore store, IBus bus)
+        {
+            _store = store;
+            _bus = bus;
+        }
 
         public void Handle(Queries.AllItems command)
         {
@@ -24,7 +30,6 @@ namespace Application.Inventory.Items
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
-                _bus.CurrentMessageContext.Headers["Query"] = command.QueryId;
 
                 _bus.Reply<Messages.ItemsRetreived>(e =>
                     {
@@ -48,7 +53,6 @@ namespace Application.Inventory.Items
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
-                _bus.CurrentMessageContext.Headers["Query"] = command.QueryId;
 
                 _bus.Reply<Messages.ItemsRetreived>(e =>
                 {
@@ -62,9 +66,6 @@ namespace Application.Inventory.Items
             {
                 var item = session.Load<Item>(command.Id);
                 if (item == null) return; // Return "Unknown item" or something?
-
-
-                _bus.CurrentMessageContext.Headers["Query"] = command.QueryId;
 
                 _bus.Reply<Messages.ItemsRetreived>(e =>
                 {

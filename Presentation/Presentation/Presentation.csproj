@@ -38,6 +38,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentValidation.5.1.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NServiceBus">
       <HintPath>..\..\packages\NServiceBus.Interfaces.4.5.0\lib\net40\NServiceBus.dll</HintPath>
@@ -47,6 +51,9 @@
     </Reference>
     <Reference Include="NServiceBus.Host">
       <HintPath>..\..\packages\NServiceBus.Host.4.5.0\lib\net40\NServiceBus.Host.exe</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.ObjectBuilder.StructureMap">
+      <HintPath>..\..\packages\NServiceBus.StructureMap.4.4.2\lib\net40\NServiceBus.ObjectBuilder.StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack">
       <HintPath>..\..\packages\ServiceStack.4.0.18\lib\net40\ServiceStack.dll</HintPath>
@@ -65,6 +72,10 @@
     </Reference>
     <Reference Include="ServiceStack.Text">
       <HintPath>..\..\packages\ServiceStack.Text.4.0.18\lib\net40\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Web.DynamicData" />
@@ -105,6 +116,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
+      <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Presentation.Inventory\Presentation.Inventory.csproj">
       <Project>{69940968-98c5-43bf-ae4e-05d80438f2f4}</Project>
       <Name>Presentation.Inventory</Name>

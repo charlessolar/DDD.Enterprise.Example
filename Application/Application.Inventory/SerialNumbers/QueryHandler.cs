@@ -11,8 +11,14 @@ namespace Application.Inventory.SerialNumbers
 {
     public class QueryHandler : IHandleMessages<Queries.AllSerialNumbers>, IHandleMessages<Queries.FindSerialNumbers>, IHandleMessages<Queries.GetSerialNumber>
     {
-        public IDocumentStore _store { get; set; }
-        public IBus _bus { get; set; }
+        private readonly IDocumentStore _store;
+        private readonly IBus _bus;
+
+        public QueryHandler(IDocumentStore store, IBus bus)
+        {
+            _store = store;
+            _bus = bus;
+        }
 
         public void Handle(Queries.AllSerialNumbers command)
         {
@@ -23,7 +29,6 @@ namespace Application.Inventory.SerialNumbers
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
-                _bus.CurrentMessageContext.Headers["Query"] = command.QueryId;
 
                 _bus.Reply<Messages.SerialNumbersRetreived>(e =>
                 {
@@ -48,7 +53,6 @@ namespace Application.Inventory.SerialNumbers
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
-                _bus.CurrentMessageContext.Headers["Query"] = command.QueryId;
 
                 _bus.Reply<Messages.SerialNumbersRetreived>(e =>
                 {
@@ -62,8 +66,6 @@ namespace Application.Inventory.SerialNumbers
             {
                 var serial = session.Load<SerialNumber>(command.Id);
                 if (serial == null) return; // Return "Unknown serial" or something?
-
-                _bus.CurrentMessageContext.Headers["Query"] = command.QueryId;
 
                 _bus.Reply<Messages.SerialNumbersRetreived>(e =>
                 {

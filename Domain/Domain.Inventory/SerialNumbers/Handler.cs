@@ -10,12 +10,7 @@ namespace Domain.Inventory.SerialNumbers
 {
     public class Handler : IHandleMessages<Commands.Create>, IHandleMessages<Commands.TakeQuantity>
     {
-        private IRepository _repository;
-
-        public Handler()
-            : this(new Repository())
-        {
-        }
+        private readonly IRepository _repository;
 
         public Handler(IRepository repository)
         {

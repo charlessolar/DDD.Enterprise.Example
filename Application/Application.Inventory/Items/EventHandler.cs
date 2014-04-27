@@ -12,7 +12,12 @@ namespace Application.Inventory.Items
 {
     public class EventHandler : IHandleMessages<Created>, IHandleMessages<DescriptionChanged>
     {
-        public IDocumentStore _store { get; set; }
+        private readonly IDocumentStore _store;
+
+        public EventHandler(IDocumentStore store)
+        {
+            _store = store;
+        }
 
         public void Handle(Created e)
         {

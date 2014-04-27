@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NServiceBus;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Inventory.Items.Commands
 {
-    public class ChangeDescription
+    public class ChangeDescription : ICommand
     {
         public Guid ItemId { get; set; }
 

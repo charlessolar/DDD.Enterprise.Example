@@ -9,6 +9,5 @@ namespace Library.Queries
 {
     public class BasicQuery : ICommand
     {
-        public String QueryId { get; set; }
     }
 }

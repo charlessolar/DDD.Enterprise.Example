@@ -23,7 +23,6 @@ namespace Presentation.Inventory.SerialNumbers
             {
                 return _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.GetSerialNumber
                 {
-                    QueryId = cacheKey,
                     Id = request.Id
                 }).Register(x =>
                 {
@@ -39,7 +38,6 @@ namespace Presentation.Inventory.SerialNumbers
             {
                 return _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.FindSerialNumbers
                 {
-                    QueryId = cacheKey,
                     Page = request.Page,
                     PageSize = request.PageSize,
                     Serial = request.Serial,
