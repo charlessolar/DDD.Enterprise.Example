@@ -9,7 +9,7 @@ I spent several hours of my life having to dig deep into these projects to figur
 
 **Architecture Overview**
 
-There are currently 3 nservicebus endpoints.  One to send demo commands in DemoMessages, one to receive commands in Domain and an event handler in Application.
+There are currently 4 nservicebus endpoints.  One to send demo commands in DemoMessages, one to receive commands in Domain, an event handler in Application, and one for the presentation layer.
 
 The Domain endpoint is configured to be a distributor to event listeners and Application is configured to subscribe.
 
@@ -18,6 +18,16 @@ In a production system you would configure a seperate distributor to distribute 
 You could even make seperate queues for different bounded contexts.
 
 In theory you can have multiple different Domains and multiple Application handlers (and I would suggest you do)
+
+**Presentation**
+
+The presentation layer is currently a WIP.  In order to run it you will need redis running and use a REST client like POSTMAN to run commands against ServiceStack.
+
+**Roadmap**
+
+- Validation of commands
+- Simple HTML site
+- SignalR for receiving events to the client
 
 **Project References**
 
@@ -83,3 +93,4 @@ After successfully starting each project your queues should look like this
 You will also need to edit the solution's properties to launch all 3 endpoints at once.  
 
 ![Solution properties](/doc/solution_properties.png?raw=true)
+

@@ -8,7 +8,7 @@
 
 <p><strong>Architecture Overview</strong></p>
 
-<p>There are currently 3 nservicebus endpoints.  One to send demo commands in SendMessages, one to receive commands in Domain and an event handler in Application.</p>
+<p>There are currently 4 nservicebus endpoints.  One to send demo commands in DemoMessages, one to receive commands in Domain, an event handler in Application, and one for the presentation layer.</p>
 
 <p>The Domain endpoint is configured to be a distributor to event listeners and Application is configured to subscribe.</p>
 
@@ -17,6 +17,18 @@
 <p>You could even make seperate queues for different bounded contexts.</p>
 
 <p>In theory you can have multiple different Domains and multiple Application handlers (and I would suggest you do)</p>
+
+<p><strong>Presentation</strong></p>
+
+<p>The presentation layer is currently a WIP.  In order to run it you will need redis running and use a REST client like POSTMAN to run commands against ServiceStack.</p>
+
+<p><strong>Roadmap</strong></p>
+
+<ul>
+<li>Validation of commands</li>
+<li>Simple HTML site</li>
+<li>SignalR for receiving events to the client</li>
+</ul>
 
 <p><strong>Project References</strong></p>
 
@@ -52,8 +64,9 @@ In each folder you will find 1 'master' project and a child.  IE</p>
   <p>Domain/</p>
   
   <blockquote>
-    <p>Domain.csproj
-    Domain.Inventory.csproj</p>
+    <p>Domain.csproj</p>
+    
+    <p>Domain.Inventory.csproj</p>
   </blockquote>
 </blockquote>
 
@@ -72,3 +85,17 @@ and the aggregate root itself.</p>
 <p>For the application projects, I simply have a Handlers folder and a Models folder to model all the read models for that bounded context.</p>
 
 <p>For larger deployments I am sure that structure will change to group read models somehow.</p>
+
+<h2>Troubleshooting</h2>
+
+<p>If you have issues getting started, there are a few things to check.  Firstly, make sure you install NServiceBus from their <a href="http://particular.net/">web site</a>.  The installer will install RavenDB and MSMQ for you.</p>
+
+<p>Next, make sure you run Visual Studio as Administrator, and that you run each endpoint as admin seperately.  This can be done by going to the build bin folder, or by using the debugger to run them yourself.  This must be done because programs started from VS without the debugger will not be admin, so they won't be able to create their queues.</p>
+
+<p>After successfully starting each project your queues should look like this </p>
+
+<p><img src="/doc/private_queues.png?raw=true" alt="Queue Config" /></p>
+
+<p>You will also need to edit the solution's properties to launch all 3 endpoints at once.  </p>
+
+<p><img src="/doc/solution_properties.png?raw=true" alt="Solution properties" /></p>

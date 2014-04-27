@@ -9,5 +9,4 @@ Similar to the domain projects, each read model is getting its own folder.  Thes
 as well as the messages we send in reply, and the query validators.  It also includes an EventHandler who handles events from the domain, and a QueryHandler who handles commands
 from presentation.
 
-To query application services, the presentation layer sends a command in the form of a query.  The application server responds to the command with a set of messages which are
-the result of the query.
+To query application services, the presentation layer sends a command in the form of a query.  The application server responds to the command with the results of the query.
