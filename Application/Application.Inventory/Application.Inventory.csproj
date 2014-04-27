@@ -49,14 +49,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\ItemHandler.cs" />
-    <Compile Include="Handlers\SerialNumberHandler.cs" />
-    <Compile Include="Models\Item.cs" />
-    <Compile Include="Models\SerialNumber.cs" />
+    <Compile Include="Items\EventHandler.cs" />
+    <Compile Include="Items\Messages\IItemRetreived.cs" />
+    <Compile Include="Items\Queries\AllItems.cs" />
+    <Compile Include="Items\Queries\FindItems.cs" />
+    <Compile Include="Items\Queries\GetItem.cs" />
+    <Compile Include="SerialNumbers\EventHandler.cs" />
+    <Compile Include="Items\Item.cs" />
+    <Compile Include="Items\QueryHandler.cs" />
+    <Compile Include="SerialNumbers\Messages\ISerialNumberRetreived.cs" />
+    <Compile Include="SerialNumbers\Queries\AllSerialNumbers.cs" />
+    <Compile Include="SerialNumbers\Queries\FindSerialNumbers.cs" />
+    <Compile Include="SerialNumbers\Queries\GetSerialNumber.cs" />
+    <Compile Include="SerialNumbers\QueryHandler.cs" />
+    <Compile Include="SerialNumbers\SerialNumber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Query\" />
+    <Folder Include="Items\Validators\" />
+    <Folder Include="SerialNumbers\Validators\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -65,6 +76,10 @@
     <ProjectReference Include="..\..\Domain\Domain.Inventory\Domain.Inventory.csproj">
       <Project>{65df737f-99e5-452c-a533-8ee25109cafd}</Project>
       <Name>Domain.Inventory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
+      <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
+      <Name>Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

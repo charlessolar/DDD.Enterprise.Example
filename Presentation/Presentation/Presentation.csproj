@@ -48,12 +48,6 @@
     <Reference Include="NServiceBus.Host">
       <HintPath>..\..\packages\NServiceBus.Host.4.5.0\lib\net40\NServiceBus.Host.exe</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions">
-      <HintPath>..\..\packages\RavenDB.Client.2.5.2874\lib\net45\Raven.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\packages\RavenDB.Client.2.5.2874\lib\net45\Raven.Client.Lightweight.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack">
       <HintPath>..\..\packages\ServiceStack.4.0.18\lib\net40\ServiceStack.dll</HintPath>
     </Reference>
@@ -108,10 +102,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Domain\Domain.Inventory\Domain.Inventory.csproj">
-      <Project>{65df737f-99e5-452c-a533-8ee25109cafd}</Project>
-      <Name>Domain.Inventory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Presentation.Inventory\Presentation.Inventory.csproj">
       <Project>{69940968-98c5-43bf-ae4e-05d80438f2f4}</Project>
       <Name>Presentation.Inventory</Name>

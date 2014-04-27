@@ -1,7 +1,6 @@
-﻿using Application.Inventory.Models;
+﻿using Application.Inventory.SerialNumbers;
 using NServiceBus;
 using Presentation.Inventory.SerialNumbers.Models;
-using Raven.Client;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -14,23 +13,27 @@ namespace Presentation.Inventory.SerialNumbers
 {
     public class SerialNumbers : Service
     {
-        public IDocumentStore _store { get; set; }
         public IBus _bus { get; set; }
 
         public SerialNumber Any(GetSerialNumber request)
         {
-            using (IDocumentSession session = _store.OpenSession())
+            _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.GetSerialNumber
             {
-                return session.Load<SerialNumber>(request.Id);
-            }
+                Id = request.Id
+            });
+            return null;
         }
 
-        public List<SerialNumber> Any(FindSerialNumber request)
+        public List<SerialNumber> Any(FindSerialNumbers request)
         {
-            using (IDocumentSession session = _store.OpenSession())
+            _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.FindSerialNumbers
             {
-                return session.Query<SerialNumber>().Where(i => i.Serial.StartsWith(request.Serial) || i.Effective == request.Effective || i.ItemId == request.ItemId).ToList();
-            }
+                Serial = request.Serial,
+                Effective = request.Effective,
+                ItemId = request.ItemId,
+            });
+
+            return new List<SerialNumber>();
         }
 
         public Guid Post(CreateSerialNumber request)
@@ -39,7 +42,7 @@ namespace Presentation.Inventory.SerialNumbers
             command.ItemId = Guid.NewGuid();
             _bus.Send("domain", command);
 
-            return command.SerialNumberId;
+            return command.ItemId;
         }
     }
 }

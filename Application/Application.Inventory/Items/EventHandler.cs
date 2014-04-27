@@ -1,5 +1,4 @@
-﻿using Application.Inventory.Models;
-using Domain.Inventory.Items.Events;
+﻿using Domain.Inventory.Items.Events;
 using NServiceBus;
 using Raven.Client;
 using Raven.Client.Document;
@@ -9,17 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Inventory.Handlers
+namespace Application.Inventory.Items
 {
-    public class ItemHandler : IHandleMessages<Created>, IHandleMessages<DescriptionChanged>
+    public class EventHandler : IHandleMessages<Created>, IHandleMessages<DescriptionChanged>
     {
-        private IDocumentStore _store { get; set; }
-
-        public ItemHandler()
-        {
-            _store = new DocumentStore { Url = "http://localhost:8080", DefaultDatabase = "Demo-ReadModels" };
-            _store.Initialize();
-        }
+        public IDocumentStore _store { get; set; }
 
         public void Handle(Created e)
         {

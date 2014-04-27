@@ -1,5 +1,4 @@
-﻿using Application.Inventory.Models;
-using Domain.Inventory.SerialNumbers.Events;
+﻿using Domain.Inventory.SerialNumbers.Events;
 using NServiceBus;
 using Raven.Client;
 using Raven.Client.Document;
@@ -9,17 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Inventory.Handlers
+namespace Application.Inventory.SerialNumbers
 {
-    public class SerialNumberHandler : IHandleMessages<Created>, IHandleMessages<QuantityTaken>
+    public class EventHandler : IHandleMessages<Created>, IHandleMessages<QuantityTaken>
     {
-        private IDocumentStore _store { get; set; }
-
-        public SerialNumberHandler()
-        {
-            _store = new DocumentStore { Url = "http://localhost:8080", DefaultDatabase = "Demo-ReadModels" };
-            _store.Initialize();
-        }
+        public IDocumentStore _store { get; set; }
 
         public void Handle(Created e)
         {

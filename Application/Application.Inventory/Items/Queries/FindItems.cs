@@ -1,15 +1,13 @@
-﻿using Application.Inventory.Items;
-using ServiceStack;
+﻿using Library.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.Inventory.Items.Models
+namespace Application.Inventory.Items.Queries
 {
-    [Route("/items", "GET")]
-    public class FindItems : IReturn<List<Item>>
+    public class FindItems : IBasicQuery
     {
         public String Number { get; set; }
         public String Description { get; set; }

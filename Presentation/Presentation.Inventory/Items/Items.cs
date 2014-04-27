@@ -1,8 +1,6 @@
-﻿using Application.Inventory.Models;
+﻿using Application.Inventory.Items;
 using NServiceBus;
 using Presentation.Inventory.Items.Models;
-using Raven.Client;
-using Raven.Client.Document;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -15,24 +13,27 @@ namespace Presentation.Inventory.Items
 {
     public class Items : Service
     {
-        public IDocumentStore _store { get; set; }
         public IBus _bus { get; set; }
 
 
         public Item Any(GetItem request)
         {
-            using (IDocumentSession session = _store.OpenSession())
+            _bus.Send("application", new Application.Inventory.Items.Queries.GetItem
             {
-                return session.Load<Item>(request.Id);
-            }
+                Id = request.Id
+            });
+            return null;
         }
 
         public List<Item> Any(FindItems request)
         {
-            using (IDocumentSession session = _store.OpenSession())
+            _bus.Send("application", new Application.Inventory.Items.Queries.FindItems
             {
-                return session.Query<Item>().Where(i => i.Number.StartsWith(request.Number) || i.Description.StartsWith(request.Description)).ToList();
-            }
+                Number = request.Number,
+                Description = request.Description,
+            });
+
+            return new List<Item>();
         }
 
         public Guid Post(CreateItem request)

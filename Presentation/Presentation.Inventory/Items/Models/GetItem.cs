@@ -1,4 +1,4 @@
-﻿using Application.Inventory.Models;
+﻿using Application.Inventory.Items;
 using ServiceStack;
 using System;
 using System.Collections.Generic;

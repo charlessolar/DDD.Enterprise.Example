@@ -1,6 +1,8 @@
 namespace Application
 {
     using NServiceBus;
+    using Raven.Client;
+    using Raven.Client.Document;
     using System;
 
     /*
@@ -18,7 +20,8 @@ namespace Application
                 .DefaultBuilder()
                 .Log4Net()
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.EndsWith("Events"))
-                .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.EndsWith("Commands"))
+                .DefiningCommandsAs(t => t.Namespace != null && (t.Namespace.EndsWith("Commands") || t.Namespace.EndsWith("Queries")))
+                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.EndsWith("Messages"))
                 .UnicastBus()
                 .RavenPersistence()
                 .RavenSubscriptionStorage()
@@ -26,6 +29,11 @@ namespace Application
                 .InMemoryFaultManagement()
                 .InMemorySagaPersister();
             //LogManager.GetRepository().Threshold = log4net.Core.Level.Warn;
+
+            var store = new DocumentStore { Url = "http://localhost:8080", DefaultDatabase = "Demo-ReadModels" };
+            store.Initialize();
+
+            Configure.Instance.Configurer.RegisterSingleton<IDocumentStore>(store);
         }
     }
 }
