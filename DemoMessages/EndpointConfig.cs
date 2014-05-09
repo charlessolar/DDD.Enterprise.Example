@@ -1,4 +1,4 @@
-namespace DemoMessages
+namespace Demo.DemoMessages
 {
     using log4net;
     using NServiceBus;
@@ -20,6 +20,7 @@ namespace DemoMessages
             Configure.Serialization.Json();
             Configure
                 .With(AllAssemblies.Except("ServiceStack"))
+                .DefineEndpointName("DemoMessages")
                 .StructureMapBuilder()
                 .Log4Net()
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.EndsWith("Events"))

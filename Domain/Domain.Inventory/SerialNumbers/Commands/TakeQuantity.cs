@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Inventory.SerialNumbers.Commands
+namespace Demo.Domain.Inventory.SerialNumbers.Commands
 {
     public class TakeQuantity : ICommand
     {

@@ -1,4 +1,4 @@
-﻿using Domain.Inventory.Items.Events;
+﻿using Demo.Domain.Inventory.Items.Events;
 using NServiceBus;
 using Raven.Client;
 using Raven.Client.Document;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Inventory.Items
+namespace Demo.Application.Inventory.Items
 {
     public class EventHandler : IHandleMessages<Created>, IHandleMessages<DescriptionChanged>
     {

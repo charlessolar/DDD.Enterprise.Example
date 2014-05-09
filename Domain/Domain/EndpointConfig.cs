@@ -1,8 +1,8 @@
-namespace Domain
+namespace Demo.Domain
 {
+    using Demo.Library.Authorization;
+    using Demo.Library.Validation;
     using FluentValidation;
-    using Library.Authorization;
-    using Library.Validation;
     using log4net;
     using NES;
     using NES.NEventStore;
@@ -32,11 +32,12 @@ namespace Domain
             Configure.Serialization.Json();
             Configure
                 .With(AllAssemblies.Except("ServiceStack"))
+                .DefineEndpointName("Domain")
                 .StructureMapBuilder()
                 .Log4Net()
-                .DefiningEventsAs(t => t.Namespace != null && t.Namespace.EndsWith("Events"))
-                .DefiningCommandsAs(t => t.Namespace != null && (t.Namespace.EndsWith("Commands") || t.Namespace.EndsWith("Queries")))
-                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.EndsWith("Messages"))
+                .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Events"))
+                .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Commands") || t.Namespace.EndsWith("Queries")))
+                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Messages"))
                 .UnicastBus()
                 .RavenPersistence()
                 .RavenSubscriptionStorage()
@@ -45,7 +46,7 @@ namespace Domain
                 .InMemorySagaPersister()
                 .NES();
 
-            LogManager.GetRepository().Threshold = log4net.Core.Level.Warn;
+            //LogManager.GetRepository().Threshold = log4net.Core.Level.Warn;
             Configure.Instance.Configurer.RegisterSingleton<IValidatorFactory>(new StructureMapValidatorFactory());
         }
         public void Start()

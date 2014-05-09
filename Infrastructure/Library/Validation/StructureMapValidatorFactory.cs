@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Validation
+namespace Demo.Library.Validation
 {
     public class StructureMapValidatorFactory : IValidatorFactory
     {

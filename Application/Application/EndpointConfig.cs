@@ -1,8 +1,8 @@
-namespace Application
+namespace Demo.Application
 {
+    using Demo.Library.Authorization;
+    using Demo.Library.Validation;
     using FluentValidation;
-    using Library.Authorization;
-    using Library.Validation;
     using log4net;
     using NServiceBus;
     using Raven.Client;
@@ -22,11 +22,12 @@ namespace Application
             Configure.Serialization.Json();
             Configure
                 .With(AllAssemblies.Except("ServiceStack"))
+                .DefineEndpointName("Application")
                 .StructureMapBuilder()
                 .Log4Net()
-                .DefiningEventsAs(t => t.Namespace != null && t.Namespace.EndsWith("Events"))
-                .DefiningCommandsAs(t => t.Namespace != null && (t.Namespace.EndsWith("Commands") || t.Namespace.EndsWith("Queries")))
-                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.EndsWith("Messages"))
+                .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Events"))
+                .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Commands") || t.Namespace.EndsWith("Queries")))
+                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Messages"))
                 .UnicastBus()
                 .RavenPersistence()
                 .RavenSubscriptionStorage()

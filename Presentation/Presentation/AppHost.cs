@@ -1,7 +1,7 @@
-﻿using Library.IoC;
-using Library.Validation;
+﻿using Demo.Library.IoC;
+using Demo.Library.Validation;
+using Demo.Presentation.Inventory.Items;
 using NServiceBus;
-using Presentation.Inventory.Items;
 using ServiceStack;
 using ServiceStack.Caching;
 using ServiceStack.FluentValidation;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 
-namespace Presentation
+namespace Demo.Presentation
 {
     public class AppHost : AppHostBase
     {
@@ -27,20 +27,23 @@ namespace Presentation
         {
             container.Adapter = new StructureMapContainerAdapter();
 
-            container.Register<IRedisClientsManager>(c =>
-                new PooledRedisClientManager("localhost:6379"));
-            container.Register(c => c.Resolve<IRedisClientsManager>().GetCacheClient());
-            container.Register(c => c.Resolve<IRedisClientsManager>().GetClient());
+            //container.Register<IRedisClientsManager>(c =>
+            //    new PooledRedisClientManager("localhost:6379"));
+            //container.Register(c => c.Resolve<IRedisClientsManager>().GetCacheClient());
+            //container.Register(c => c.Resolve<IRedisClientsManager>().GetClient());
+
+            container.Register<ICacheClient>(new MemoryCacheClient());
 
 
             NServiceBus.Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             NServiceBus.Configure.Serialization.Json();
             var bus = NServiceBus.Configure
                 .With(AllAssemblies.Except("ServiceStack"))
+                .DefineEndpointName("Presentation")
                 .StructureMapBuilder()
-                .DefiningEventsAs(t => t.Namespace != null && t.Namespace.EndsWith("Events"))
-                .DefiningCommandsAs(t => t.Namespace != null && (t.Namespace.EndsWith("Commands") || t.Namespace.EndsWith("Queries")))
-                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.EndsWith("Messages"))
+                .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Events"))
+                .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Commands") || t.Namespace.EndsWith("Queries")))
+                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Messages"))
                 .UnicastBus()
                 .RavenPersistence()
                 .RavenSubscriptionStorage()
@@ -51,7 +54,6 @@ namespace Presentation
                 .Start();
 
             container.Register<IBus>(bus);
-            container.Register<IRedisClient>(container.Resolve<IRedisClientsManager>().GetClient());
         }
     }
 }

@@ -7,7 +7,7 @@
     <ProjectGuid>{0F29CE85-6692-4F48-A48C-31EB1FA05977}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Application</RootNamespace>
+    <RootNamespace>Demo.Application</RootNamespace>
     <AssemblyName>Application</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

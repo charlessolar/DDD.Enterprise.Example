@@ -1,4 +1,4 @@
-﻿using Domain.Inventory.SerialNumbers.Events;
+﻿using Demo.Domain.Inventory.SerialNumbers.Events;
 using NServiceBus;
 using Raven.Client;
 using Raven.Client.Document;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Inventory.SerialNumbers
+namespace Demo.Application.Inventory.SerialNumbers
 {
     public class EventHandler : IHandleMessages<Created>, IHandleMessages<QuantityTaken>
     {

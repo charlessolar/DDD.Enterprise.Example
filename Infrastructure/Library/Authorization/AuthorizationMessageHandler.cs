@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Authorization
+namespace Demo.Library.Authorization
 {
     public class AuthorizationMessageHandler : IHandleMessages<IMessage>
     {

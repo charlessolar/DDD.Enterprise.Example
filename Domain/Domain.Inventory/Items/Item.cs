@@ -1,4 +1,4 @@
-﻿using Domain.Inventory.Items.Events;
+﻿using Demo.Domain.Inventory.Items.Events;
 using NES;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Inventory.Items
+namespace Demo.Domain.Inventory.Items
 {
     public class Item : AggregateBase
     {

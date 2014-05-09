@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
 
-namespace Presentation
+namespace Demo.Presentation
 {
     public class Global : System.Web.HttpApplication
     {

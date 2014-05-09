@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Inventory.Items
+namespace Demo.Domain.Inventory.Items
 {
     public class Handler : IHandleMessages<Commands.Create>, IHandleMessages<Commands.ChangeDescription>
     {

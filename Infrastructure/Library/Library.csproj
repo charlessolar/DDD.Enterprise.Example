@@ -7,7 +7,7 @@
     <ProjectGuid>{B209FCC1-8A94-42CB-9D26-BCB4EE991FFB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Library</RootNamespace>
+    <RootNamespace>Demo.Library</RootNamespace>
     <AssemblyName>Library</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -33,6 +33,9 @@
     <Reference Include="FluentValidation">
       <HintPath>..\..\packages\FluentValidation.5.1.0.0\lib\Net40\FluentValidation.dll</HintPath>
     </Reference>
+    <Reference Include="NES">
+      <HintPath>..\..\packages\NES.4.0.4\lib\net40\NES.dll</HintPath>
+    </Reference>
     <Reference Include="NServiceBus">
       <HintPath>..\..\packages\NServiceBus.Interfaces.4.5.1\lib\net40\NServiceBus.dll</HintPath>
     </Reference>
@@ -56,6 +59,7 @@
     <Compile Include="Authorization\AuthorizationMessageHandler.cs" />
     <Compile Include="Exceptions\BusinessLogicException.cs" />
     <Compile Include="Extenstions\ForEachWithLast.cs" />
+    <Compile Include="Identity\IIdentity.cs" />
     <Compile Include="IoC\StructureMapContainerAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\BasicQuery.cs" />

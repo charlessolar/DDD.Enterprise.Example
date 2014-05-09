@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Queries
+namespace Demo.Library.Queries
 {
     public class BasicQuery : ICommand
     {

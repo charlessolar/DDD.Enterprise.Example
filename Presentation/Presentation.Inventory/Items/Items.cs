@@ -1,7 +1,7 @@
-﻿using Application.Inventory.Items;
-using Application.Inventory.Items.Messages;
+﻿using Demo.Application.Inventory.Items;
+using Demo.Application.Inventory.Items.Messages;
 using NServiceBus;
-using Presentation.Inventory.Items.Models;
+using Demo.Presentation.Inventory.Items.Models;
 using ServiceStack;
 using ServiceStack.Caching;
 using ServiceStack.Messaging;
@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Presentation.Inventory.Items
+namespace Demo.Presentation.Inventory.Items
 {
     public class Items : Service
     {

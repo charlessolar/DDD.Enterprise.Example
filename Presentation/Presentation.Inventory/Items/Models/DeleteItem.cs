@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.Inventory.Items.Models
+namespace Demo.Presentation.Inventory.Items.Models
 {
     [Route("/items/{Id}/delete", "DELETE")]
     public class DeleteItem

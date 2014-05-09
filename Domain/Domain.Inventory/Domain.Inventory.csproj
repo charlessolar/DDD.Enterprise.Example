@@ -7,7 +7,7 @@
     <ProjectGuid>{65DF737F-99E5-452C-A533-8EE25109CAFD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Domain.Inventory</RootNamespace>
+    <RootNamespace>Demo.Domain.Inventory</RootNamespace>
     <AssemblyName>Domain.Inventory</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CodeEffects.Rule">
+      <HintPath>..\..\packages\CodeEffects.WebRule.4.2.2\lib\net45\CodeEffects.Rule.dll</HintPath>
+    </Reference>
     <Reference Include="FluentValidation">
       <HintPath>..\..\packages\FluentValidation.5.1.0.0\lib\Net40\FluentValidation.dll</HintPath>
     </Reference>
@@ -62,11 +65,15 @@
     <Compile Include="SerialNumbers\Events\Created.cs" />
     <Compile Include="SerialNumbers\Events\QuantityTaken.cs" />
     <Compile Include="SerialNumbers\Handler.cs" />
+    <Compile Include="SerialNumbers\Identities\SerialNumber.cs" />
     <Compile Include="SerialNumbers\SerialNumber.cs" />
     <Compile Include="SerialNumbers\Validators\Create.cs" />
     <Compile Include="SerialNumbers\Validators\TakeQuantity.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Items\Rules\" />
+    <Folder Include="SerialNumbers\Rules\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

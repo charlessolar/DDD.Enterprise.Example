@@ -7,7 +7,7 @@
     <ProjectGuid>{69940968-98C5-43BF-AE4E-05D80438F2F4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Presentation.Inventory</RootNamespace>
+    <RootNamespace>Demo.Presentation.Inventory</RootNamespace>
     <AssemblyName>Presentation.Inventory</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

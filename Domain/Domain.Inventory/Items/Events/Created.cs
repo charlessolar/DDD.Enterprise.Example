@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Inventory.Items.Events
+namespace Demo.Domain.Inventory.Items.Events
 {
     public interface Created : IEvent
     {

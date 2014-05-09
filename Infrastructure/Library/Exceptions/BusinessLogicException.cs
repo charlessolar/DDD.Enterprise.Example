@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Exceptions
+namespace Demo.Library.Exceptions
 {
     public class BusinessLogicException : Exception
     {

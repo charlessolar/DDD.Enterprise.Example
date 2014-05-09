@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Inventory.Items.Commands
+namespace Demo.Domain.Inventory.Items.Commands
 {
     public class Create : ICommand
     {

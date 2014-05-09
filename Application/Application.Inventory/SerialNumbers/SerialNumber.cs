@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Inventory.SerialNumbers
+namespace Demo.Application.Inventory.SerialNumbers
 {
     public class SerialNumber
     {

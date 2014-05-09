@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Inventory.SerialNumbers.Validators
+namespace Demo.Domain.Inventory.SerialNumbers.Validators
 {
     public class TakeQuantity : AbstractValidator<Commands.TakeQuantity>
     {

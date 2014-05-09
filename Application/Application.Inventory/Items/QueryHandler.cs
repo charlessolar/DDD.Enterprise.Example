@@ -1,5 +1,5 @@
-﻿using Library.Extenstions;
-using Library.Queries;
+﻿using Demo.Library.Extenstions;
+using Demo.Library.Queries;
 using NServiceBus;
 using Raven.Client;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Inventory.Items
+namespace Demo.Application.Inventory.Items
 {
     public class QueryHandler : IHandleMessages<Queries.AllItems>, IHandleMessages<Queries.FindItems>, IHandleMessages<Queries.GetItem>
     {

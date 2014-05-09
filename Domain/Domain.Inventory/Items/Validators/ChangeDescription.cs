@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Inventory.Items.Validators
+namespace Demo.Domain.Inventory.Items.Validators
 {
     public class ChangeDescription : AbstractValidator<Commands.ChangeDescription>
     {

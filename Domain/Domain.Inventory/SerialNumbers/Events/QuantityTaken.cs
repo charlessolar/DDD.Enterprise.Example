@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Inventory.SerialNumbers.Events
+namespace Demo.Domain.Inventory.SerialNumbers.Events
 {
     public interface QuantityTaken
     {

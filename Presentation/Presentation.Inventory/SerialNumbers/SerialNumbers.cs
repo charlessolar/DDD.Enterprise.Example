@@ -1,7 +1,7 @@
-﻿using Application.Inventory.SerialNumbers;
-using Application.Inventory.SerialNumbers.Messages;
+﻿using Demo.Application.Inventory.SerialNumbers;
+using Demo.Application.Inventory.SerialNumbers.Messages;
 using NServiceBus;
-using Presentation.Inventory.SerialNumbers.Models;
+using Demo.Presentation.Inventory.SerialNumbers.Models;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Presentation.Inventory.SerialNumbers
+namespace Demo.Presentation.Inventory.SerialNumbers
 {
     public class SerialNumbers : Service
     {

@@ -1,4 +1,4 @@
-﻿using Application.Inventory.Items;
+﻿using Demo.Application.Inventory.Items;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.Inventory.Items.Models
+namespace Demo.Presentation.Inventory.Items.Models
 {
     [Route("/items/{Id}")]
     public class GetItem : IReturn<Item>

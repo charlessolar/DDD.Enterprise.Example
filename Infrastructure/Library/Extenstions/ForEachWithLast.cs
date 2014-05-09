@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Extenstions
+namespace Demo.Library.Extenstions
 {
     public static class ForEachExtensions
     {

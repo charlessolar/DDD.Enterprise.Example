@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Inventory.SerialNumbers.Validators
+namespace Demo.Application.Inventory.SerialNumbers.Validators
 {
     public class FindSerialNumbers : AbstractValidator<Queries.FindSerialNumbers>
     {

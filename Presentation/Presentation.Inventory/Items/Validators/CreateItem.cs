@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.Inventory.Items.Validators
+namespace Demo.Presentation.Inventory.Items.Validators
 {
     public class CreateItem : AbstractValidator<Models.CreateItem>
     {

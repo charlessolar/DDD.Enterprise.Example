@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Inventory.SerialNumbers
+namespace Demo.Domain.Inventory.SerialNumbers
 {
     public class Handler : IHandleMessages<Commands.Create>, IHandleMessages<Commands.TakeQuantity>
     {

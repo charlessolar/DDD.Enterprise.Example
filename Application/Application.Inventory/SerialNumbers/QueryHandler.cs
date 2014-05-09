@@ -1,4 +1,4 @@
-﻿using Library.Extenstions;
+﻿using Demo.Library.Extenstions;
 using NServiceBus;
 using Raven.Client;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Inventory.SerialNumbers
+namespace Demo.Application.Inventory.SerialNumbers
 {
     public class QueryHandler : IHandleMessages<Queries.AllSerialNumbers>, IHandleMessages<Queries.FindSerialNumbers>, IHandleMessages<Queries.GetSerialNumber>
     {
