@@ -39,14 +39,13 @@ namespace Demo.Domain
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Commands") || t.Namespace.EndsWith("Queries")))
                 .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Messages"))
                 .UnicastBus()
-                .RavenPersistence()
-                .RavenSubscriptionStorage()
+                .InMemorySubscriptionStorage()
                 .UseInMemoryTimeoutPersister()
                 .InMemoryFaultManagement()
                 .InMemorySagaPersister()
                 .NES();
 
-            //LogManager.GetRepository().Threshold = log4net.Core.Level.Warn;
+            LogManager.GetRepository().Threshold = log4net.Core.Level.Warn;
             Configure.Instance.Configurer.RegisterSingleton<IValidatorFactory>(new StructureMapValidatorFactory());
         }
         public void Start()

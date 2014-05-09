@@ -26,8 +26,7 @@ namespace Demo.DemoMessages
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.EndsWith("Events"))
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.EndsWith("Commands"))
                 .UnicastBus()
-                .RavenPersistence()
-                .RavenSubscriptionStorage()
+                .InMemorySubscriptionStorage()
                 .UseInMemoryTimeoutPersister()
                 .InMemoryFaultManagement()
                 .InMemorySagaPersister();

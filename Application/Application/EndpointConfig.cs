@@ -29,8 +29,7 @@ namespace Demo.Application
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Commands") || t.Namespace.EndsWith("Queries")))
                 .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Messages"))
                 .UnicastBus()
-                .RavenPersistence()
-                .RavenSubscriptionStorage()
+                .InMemorySubscriptionStorage()
                 .UseInMemoryTimeoutPersister()
                 .InMemoryFaultManagement()
                 .InMemorySagaPersister();
