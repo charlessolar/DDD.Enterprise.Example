@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CodeEffects.Rule">
-      <HintPath>..\..\packages\CodeEffects.WebRule.4.2.2\lib\net45\CodeEffects.Rule.dll</HintPath>
-    </Reference>
     <Reference Include="FluentValidation">
       <HintPath>..\..\packages\FluentValidation.5.1.0.0\lib\Net40\FluentValidation.dll</HintPath>
     </Reference>
