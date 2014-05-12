@@ -1,6 +1,6 @@
 namespace Demo.Domain
 {
-    using Demo.Library.Authorization;
+    using Demo.Library.Security;
     using Demo.Library.Validation;
     using FluentValidation;
     using log4net;
@@ -65,7 +65,7 @@ namespace Demo.Domain
         }
         public void SpecifyOrder(Order order)
         {
-            order.Specify(First<ValidationMessageHandler>.Then<AuthorizationMessageHandler>());
+            order.Specify(First<ValidationMessageHandler>.Then<SecurityMessageHandler>());
         }
     }
 }

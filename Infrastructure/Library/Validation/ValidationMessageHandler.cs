@@ -33,12 +33,8 @@ namespace Demo.Library.Validation
                 .Select(validator => validator.Validate(message))
                 .ToList();
 
-            if (validationErrors.Count == 0)
-            {
-                return;
-            }
-
-            _bus.DoNotContinueDispatchingCurrentMessageToHandlers();
+            if (validationErrors.Count > 0)
+                _bus.DoNotContinueDispatchingCurrentMessageToHandlers();
         }
     }
 }

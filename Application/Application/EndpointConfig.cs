@@ -1,12 +1,13 @@
 namespace Demo.Application
 {
-    using Demo.Library.Authorization;
+    using Demo.Library.Security;
     using Demo.Library.Validation;
     using FluentValidation;
     using log4net;
     using NServiceBus;
     using Raven.Client;
     using Raven.Client.Document;
+    using StructureMap;
     using System;
 
     /*
@@ -18,6 +19,11 @@ namespace Demo.Application
     {
         public void Init()
         {
+            ObjectFactory.Initialize(x =>
+            {
+            });
+
+
             Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             Configure.Serialization.Json();
             Configure
@@ -43,7 +49,7 @@ namespace Demo.Application
         }
         public void SpecifyOrder(Order order)
         {
-            order.Specify(First<ValidationMessageHandler>.Then<AuthorizationMessageHandler>());
+            order.Specify(First<ValidationMessageHandler>.Then<SecurityMessageHandler>());
         }
     }
 }

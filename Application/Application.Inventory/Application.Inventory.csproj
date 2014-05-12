@@ -60,6 +60,7 @@
     <Compile Include="Items\Queries\AllItems.cs" />
     <Compile Include="Items\Queries\FindItems.cs" />
     <Compile Include="Items\Queries\GetItem.cs" />
+    <Compile Include="Items\Security.cs" />
     <Compile Include="Items\Validators\AllItems.cs" />
     <Compile Include="Items\Validators\FindItems.cs" />
     <Compile Include="Items\Validators\GetItem.cs" />
