@@ -1,10 +1,20 @@
-# NES.RavenDB.Example
+# DDD.Enterprise.Example
 
-An example of getting NES configured and running with NServicebus, RavenDB, and NEventStore
+An example architecture meant to be used for large deployments usable by enterprises.  Trivial examples from major projects leave some guesswork
+on how to deploy for large organizations.  This solution demonstrates these concepts as applied for the enterprise.  
 
-Follows DDD, CQRS, EventSourcing patterns
+The architecture is designed for high-read low-write operations and follows DDD and CQRS standards for massive scale-out potential.
 
-I spent several hours of my life having to dig deep into these projects to figure this out - passing on the info to those with less time of their hands.
+Projects used in this example:
+
+- [NServiceBus](https://github.com/Particular/NServiceBus)
+- [NEventStore](https://github.com/NEventStore/NEventStore)
+- [NES](https://github.com/elliotritchie/NES)
+- [ServiceStack](https://github.com/ServiceStack/ServiceStack)
+- [RavenDB](https://github.com/ravendb/ravendb)
+- [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
+- [PostSharp](http://www.postsharp.net/)
+
 
 
 **Architecture Overview**
@@ -25,14 +35,14 @@ The presentation layer is currently a WIP.  In order to run it you will need red
 
 **Roadmap**
 
-- Validation of commands
+- Unit tests
 - Simple HTML site
 - SignalR for receiving events to the client
 
 **Project References**
 
 Its important to note that the Domain project is referencing all Domain.* projects, similarly the Application project is referencing all Application.* projects.
-Each Domain.* and Application.* project represents a bounded context.
+Each Domain.* and each Application.* project represents a bounded context.
 
 **Notes**
 
@@ -40,7 +50,7 @@ Start visual studio as admin because NServicebus likes it that way
 
 Configure the debugger to launch 3 projects, Domain, Application, and DemoMessages
 
-Run each first by itself so NServicebus can create the MSMQ queues
+Make sure NServiceBus creates all the MSMQ queues it needs
 
 
 **Structure**

@@ -1,10 +1,21 @@
-<h1>NES.RavenDB.Example</h1>
+<h1>DDD.Enterprise.Example</h1>
 
-<p>An example of getting NES configured and running with NServicebus, RavenDB, and NEventStore</p>
+<p>An example architecture meant to be used for large deployments usable by enterprises.  Trivial examples from major projects leave some guesswork
+on how to deploy for large organizations.  This solution demonstrates these concepts as applied for the enterprise.  </p>
 
-<p>Follows DDD, CQRS, EventSourcing patterns</p>
+<p>The architecture is designed for high-read low-write operations and follows DDD and CQRS standards for massive scale-out potential.</p>
 
-<p>I spent several hours of my life having to dig deep into these projects to figure this out - passing on the info to those with less time of their hands.</p>
+<p>Projects used in this example:</p>
+
+<ul>
+<li><a href="https://github.com/Particular/NServiceBus">NServiceBus</a></li>
+<li><a href="https://github.com/NEventStore/NEventStore">NEventStore</a></li>
+<li><a href="https://github.com/elliotritchie/NES">NES</a></li>
+<li><a href="https://github.com/ServiceStack/ServiceStack">ServiceStack</a></li>
+<li><a href="https://github.com/ravendb/ravendb">RavenDB</a></li>
+<li><a href="https://github.com/JeremySkinner/FluentValidation">FluentValidation</a></li>
+<li><a href="http://www.postsharp.net/">PostSharp</a></li>
+</ul>
 
 <p><strong>Architecture Overview</strong></p>
 
@@ -25,7 +36,7 @@
 <p><strong>Roadmap</strong></p>
 
 <ul>
-<li>Validation of commands</li>
+<li>Unit tests</li>
 <li>Simple HTML site</li>
 <li>SignalR for receiving events to the client</li>
 </ul>
@@ -33,7 +44,7 @@
 <p><strong>Project References</strong></p>
 
 <p>Its important to note that the Domain project is referencing all Domain.* projects, similarly the Application project is referencing all Application.* projects.
-Each Domain.* and Application.* project represents a bounded context.</p>
+Each Domain.* and each Application.* project represents a bounded context.</p>
 
 <p><strong>Notes</strong></p>
 
@@ -41,7 +52,7 @@ Each Domain.* and Application.* project represents a bounded context.</p>
 
 <p>Configure the debugger to launch 3 projects, Domain, Application, and DemoMessages</p>
 
-<p>Run each first by itself so NServicebus can create the MSMQ queues</p>
+<p>Make sure NServiceBus creates all the MSMQ queues it needs</p>
 
 <p><strong>Structure</strong></p>
 
