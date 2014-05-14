@@ -10,10 +10,12 @@ namespace Demo.Library.Validation
 {
     public class StructureMapValidatorFactory : IValidatorFactory
     {
+        private IContainer _container;
         private Dictionary<Type, Type> _validatorsByType;
 
-        public StructureMapValidatorFactory()
+        public StructureMapValidatorFactory(IContainer container)
         {
+            _container = container;
             _validatorsByType = new Dictionary<Type, Type>();
             Populate();
         }
@@ -24,7 +26,7 @@ namespace Demo.Library.Validation
                 return null;
 
 
-            var instance = ObjectFactory.GetInstance(_validatorsByType[type]) as IValidator;
+            var instance = _container.GetInstance(_validatorsByType[type]) as IValidator;
             return instance;
         }
 

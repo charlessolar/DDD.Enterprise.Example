@@ -1,5 +1,4 @@
-﻿using Demo.Library.Security.Builders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,17 +10,10 @@ namespace Demo.Library.Security.Descriptors
     {
         private List<IAction> _actions = new List<IAction>();
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="BaseSecurityDescriptor"/>
-        /// </summary>
-        public Descriptor()
-        {
-            When = new Builder(this);
-        }
 
 #pragma warning disable 1591 // Xml Comments
 
-        public IBuilder When { get; private set; }
+        public IDescriptor When { get { return this; } }
 
         public void AddAction(IAction action)
         {
@@ -30,9 +22,9 @@ namespace Demo.Library.Security.Descriptors
 
         public IEnumerable<IAction> Actions { get { return _actions; } }
 
-        public bool CanAuthorize<TAction>(object instance) where TAction : IAction
+        public bool CanAuthorize(object instance)
         {
-            return _actions.Where(a => a.GetType() == typeof(TAction)).Any(a => a.CanAuthorize(instance));
+            return _actions.Any(a => a.CanAuthorize(instance));
         }
 
         public AuthorizeDescriptorResult Authorize(object instance)

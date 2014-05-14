@@ -36,7 +36,7 @@ namespace Demo.Library.Security.Managers
             if (!descriptors.Any())
                 return result;
 
-            var applicableSecurityDescriptors = descriptors.Where(sd => sd.CanAuthorize<TAction>(instance));
+            var applicableSecurityDescriptors = descriptors.Where(sd => sd.CanAuthorize(instance));
 
             if (!applicableSecurityDescriptors.Any())
                 return result;

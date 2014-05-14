@@ -45,7 +45,7 @@ namespace Demo.Application
             store.Initialize();
 
             Configure.Instance.Configurer.RegisterSingleton<IDocumentStore>(store);
-            Configure.Instance.Configurer.RegisterSingleton<IValidatorFactory>(new StructureMapValidatorFactory());
+            Configure.Instance.Configurer.RegisterSingleton<IValidatorFactory>(ObjectFactory.GetInstance<StructureMapValidatorFactory>());
         }
         public void SpecifyOrder(Order order)
         {

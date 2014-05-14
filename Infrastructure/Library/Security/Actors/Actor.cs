@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Demo.Library.Security.Actors
@@ -8,14 +9,22 @@ namespace Demo.Library.Security.Actors
     {
         private List<IRule> _rules = new List<IRule>();
 
+        public Actor()
+        {
+            Description = String.Empty;
+        }
         public Actor(string description)
         {
-            Description = description ?? string.Empty;
+            Contract.Assert(!String.IsNullOrEmpty(description));
+
+            Description = description;
         }
 
 #pragma warning disable 1591 // Xml Comments
         public void AddRule(IRule rule)
         {
+            Contract.Requires(rule != null);
+
             _rules.Add(rule);
         }
 
@@ -23,6 +32,8 @@ namespace Demo.Library.Security.Actors
 
         public AuthorizeActorResult IsAuthorized(object instance)
         {
+            Contract.Requires(instance != null);
+
             var result = new AuthorizeActorResult(this);
             foreach (var rule in _rules)
             {

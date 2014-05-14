@@ -8,12 +8,12 @@ namespace Demo.Library.Security
 {
     public interface IDescriptor
     {
-        IBuilder When { get; }
+        IDescriptor When { get; }
 
         void AddAction(IAction action);
         IEnumerable<IAction> Actions { get; }
 
-        bool CanAuthorize<TAction>(object instance) where TAction : IAction;
+        bool CanAuthorize(object instance);
 
         AuthorizeDescriptorResult Authorize(object instance);
     }

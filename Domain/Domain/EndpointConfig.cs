@@ -46,7 +46,7 @@ namespace Demo.Domain
                 .NES();
 
             LogManager.GetRepository().Threshold = log4net.Core.Level.Warn;
-            Configure.Instance.Configurer.RegisterSingleton<IValidatorFactory>(new StructureMapValidatorFactory());
+            Configure.Instance.Configurer.RegisterSingleton<IValidatorFactory>(ObjectFactory.GetInstance<StructureMapValidatorFactory>());
         }
         public void Start()
         {

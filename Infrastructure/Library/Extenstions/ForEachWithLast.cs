@@ -8,10 +8,10 @@ namespace Demo.Library.Extenstions
 {
     public static class ForEachExtensions
     {
-        public static void ForEachWithLast<T>(this IList<T> list, Action<T, bool> action)
+        public static void ForEachWithLast<T>(this IEnumerable<T> list, Action<T, bool> action)
         {
             var i = 0;
-            var count = list.Count;
+            var count = list.Count();
             foreach (var x in list)
             {
                 if (++i == count)

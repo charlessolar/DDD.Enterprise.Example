@@ -9,25 +9,35 @@ namespace Demo.Library.Security
 {
     public static class ActionExtensions
     {
-        public static ExecutingAction Executing(this IBuilder builder)
+        public static ExecutingAction Executing(this IDescriptor descriptor)
         {
-            return new ExecutingAction();
+            var action = new ExecutingAction();
+            descriptor.AddAction(action);
+            return action;
         }
-        public static ReadingAction Reading(this IBuilder builder)
+        public static ReadingAction Reading(this IDescriptor descriptor)
         {
-            return new ReadingAction();
+            var action = new ReadingAction();
+            descriptor.AddAction(action);
+            return action;
         }
-        public static ReceivingAction Receiving(this IBuilder builder)
+        public static ReceivingAction Receiving(this IDescriptor descriptor)
         {
-            return new ReceivingAction();
+            var action = new ReceivingAction();
+            descriptor.AddAction(action);
+            return action;
         }
-        public static RequestingAction Requesting(this IBuilder builder)
+        public static RequestingAction Requesting(this IDescriptor descriptor)
         {
-            return new RequestingAction();
+            var action = new RequestingAction();
+            descriptor.AddAction(action);
+            return action;
         }
-        public static WritingAction Writing(this IBuilder builder)
+        public static WritingAction Writing(this IDescriptor descriptor)
         {
-            return new WritingAction();
+            var action = new WritingAction();
+            descriptor.AddAction(action);
+            return action;
         }
     }
 }
