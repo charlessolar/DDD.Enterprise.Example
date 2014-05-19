@@ -21,7 +21,7 @@ namespace Demo.Library.PostSharp
         [OnMethodEntryAdvice, MulticastPointcut(Targets = MulticastTargets.Method, Attributes = MulticastAttributes.Public)]
         public void OnInvoke(MethodInterceptionArgs args)
         {
-            var result = _manager().Authorize<Security.Actions.ExecutingAction>(args.Instance);
+            var result = _manager().Authorize(args.Instance);
             if (!result.IsAuthorized)
                 throw new SecurityException();
         }
@@ -29,7 +29,7 @@ namespace Demo.Library.PostSharp
         [OnLocationGetValueAdvice, MulticastPointcut(Targets = MulticastTargets.Property, Attributes = MulticastAttributes.Public)]
         public void OnGetValue(LocationInterceptionArgs args)
         {
-            var result = _manager().Authorize<Security.Actions.ReadingAction>(args.Instance);
+            var result = _manager().Authorize(args.Instance);
             if (!result.IsAuthorized)
                 throw new SecurityException();
         }
@@ -37,7 +37,7 @@ namespace Demo.Library.PostSharp
         [OnLocationGetValueAdvice, MulticastPointcut(Targets = MulticastTargets.Property, Attributes = MulticastAttributes.Public)]
         public void OnSetValue(LocationInterceptionArgs args)
         {
-            var result = _manager().Authorize<Security.Actions.WritingAction>(args.Instance);
+            var result = _manager().Authorize(args.Instance);
             if (!result.IsAuthorized)
                 throw new SecurityException();
         }

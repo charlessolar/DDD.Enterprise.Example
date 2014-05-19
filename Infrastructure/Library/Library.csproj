@@ -124,6 +124,7 @@
     <Compile Include="Security\Targets\QueryTarget.cs" />
     <Compile Include="Security\Targets\Target.cs" />
     <Compile Include="Security\Securables\TypeSecurable.cs" />
+    <Compile Include="Security\Visitors\IVisitor.cs" />
     <Compile Include="Validation\StructureMapValidatorFactory.cs" />
     <Compile Include="Validation\ValidationMessageHandler.cs" />
   </ItemGroup>

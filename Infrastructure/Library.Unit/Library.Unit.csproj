@@ -44,6 +44,10 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -60,6 +64,20 @@
     <Compile Include="Security\Actions\ActionTests.cs" />
     <Compile Include="Security\Actors\ActorTests.cs" />
     <Compile Include="Security\Descriptors\DescriptorTests.cs" />
+    <Compile Include="Security\Extensions\ActionExtensionsTests.cs" />
+    <Compile Include="Security\Extensions\ActorExtensionsTests.cs" />
+    <Compile Include="Security\Extensions\RuleExtensionsTests.cs" />
+    <Compile Include="Security\Extensions\SecurableExtensionsTests.cs" />
+    <Compile Include="Security\Extensions\TargetExtensionsTests.cs" />
+    <Compile Include="Security\Managers\ManagerTests.cs" />
+    <Compile Include="Security\Results\AuthorizationResultTests.cs" />
+    <Compile Include="Security\Results\AuthorizeSecurableResultTests.cs" />
+    <Compile Include="Security\Results\AuthorizeActionResultTests.cs" />
+    <Compile Include="Security\Results\AuthorizeActorResultTests.cs" />
+    <Compile Include="Security\Results\AuthorizeDescriptorResultTests.cs" />
+    <Compile Include="Security\Results\AuthorizeTargetResultTests.cs" />
+    <Compile Include="Security\Rules\PermissionRuleTests.cs" />
+    <Compile Include="Security\Securables\NamespaceSecurableTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validation\" />

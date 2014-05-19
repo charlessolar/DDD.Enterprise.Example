@@ -15,19 +15,19 @@ namespace Demo.Library.Security.Descriptors
 
         public IDescriptor When { get { return this; } }
 
-        public void AddAction(IAction action)
+        public virtual void AddAction(IAction action)
         {
             _actions.Add(action);
         }
 
-        public IEnumerable<IAction> Actions { get { return _actions; } }
+        public virtual IEnumerable<IAction> Actions { get { return _actions; } }
 
-        public bool CanAuthorize(object instance)
+        public virtual bool CanAuthorize(object instance)
         {
             return _actions.Any(a => a.CanAuthorize(instance));
         }
 
-        public AuthorizeDescriptorResult Authorize(object instance)
+        public virtual AuthorizeDescriptorResult Authorize(object instance)
         {
             var result = new AuthorizeDescriptorResult();
             foreach (var a in Actions.Where(a => a.CanAuthorize(instance)))

@@ -24,21 +24,21 @@ namespace Demo.Library.Security.Actions
         }
 
 #pragma warning disable 1591 // Xml Comments
-        public void AddTarget(ITarget securityTarget)
+        public virtual void AddTarget(ITarget securityTarget)
         {
             Contract.Requires(securityTarget != null);
 
             _targets.Add(securityTarget);
         }
 
-        public bool CanAuthorize(object instance)
+        public virtual bool CanAuthorize(object instance)
         {
             Contract.Requires(instance != null);
 
             return _targets.Any(s => s.CanAuthorize(instance));
         }
 
-        public AuthorizeActionResult Authorize(object instance)
+        public virtual AuthorizeActionResult Authorize(object instance)
         {
             Contract.Requires(instance != null);
 
@@ -52,7 +52,7 @@ namespace Demo.Library.Security.Actions
 
         public string Description { get; private set; }
 
-        public IEnumerable<ITarget> Targets { get { return _targets.AsEnumerable(); } }
+        public virtual IEnumerable<ITarget> Targets { get { return _targets.AsEnumerable(); } }
 #pragma warning restore 1591 // Xml Comments
     }
 }

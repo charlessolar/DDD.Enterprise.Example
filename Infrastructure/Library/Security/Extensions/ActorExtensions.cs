@@ -10,7 +10,7 @@ namespace Demo.Library.Security
 {
     public static class ActorExtensions
     {
-        public static UserActor Users(this Securable securable)
+        public static UserActor Users(this ISecurable securable)
         {
             var actor = new UserActor();
             securable.AddActor(actor);

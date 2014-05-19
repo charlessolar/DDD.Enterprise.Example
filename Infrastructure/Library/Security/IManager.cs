@@ -13,6 +13,6 @@ namespace Demo.Library.Security
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        AuthorizationResult Authorize<TAction>(object instance) where TAction : IAction;
+        AuthorizationResult Authorize(object instance);
     }
 }

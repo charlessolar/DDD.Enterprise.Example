@@ -21,12 +21,12 @@ namespace Demo.Library.Security.Securables
 
 #pragma warning disable 1591 // Xml Comments
 
-        public void AddActor(IActor actor)
+        public virtual void AddActor(IActor actor)
         {
             _actors.Add(actor);
         }
 
-        public IEnumerable<IActor> Actors { get { return _actors; } }
+        public virtual IEnumerable<IActor> Actors { get { return _actors; } }
 
         public virtual bool CanAuthorize(object instance)
         {

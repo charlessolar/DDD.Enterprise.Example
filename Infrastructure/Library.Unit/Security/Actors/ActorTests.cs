@@ -48,7 +48,7 @@ namespace Demo.Library.Unit.Security.Actors
         public void Authorize_authorized()
         {
             var rule = new Moq.Mock<IRule>();
-            rule.Setup<Boolean>(x => x.IsAuthorized(null)).Returns(true);
+            rule.Setup(x => x.IsAuthorized(null)).Returns(true);
 
             _actor.AddRule(rule.Object);
 
@@ -60,7 +60,7 @@ namespace Demo.Library.Unit.Security.Actors
         public void Authorize_not_authorized()
         {
             var rule = new Moq.Mock<IRule>();
-            rule.Setup<Boolean>(x => x.IsAuthorized(null)).Returns(false);
+            rule.Setup(x => x.IsAuthorized(null)).Returns(false);
 
             _actor.AddRule(rule.Object);
 
@@ -72,9 +72,9 @@ namespace Demo.Library.Unit.Security.Actors
         public void Authorize_both_authorized()
         {
             var rule1 = new Moq.Mock<IRule>();
-            rule1.Setup<Boolean>(x => x.IsAuthorized(null)).Returns(true);
+            rule1.Setup(x => x.IsAuthorized(null)).Returns(true);
             var rule2 = new Moq.Mock<IRule>();
-            rule2.Setup<Boolean>(x => x.IsAuthorized(null)).Returns(true);
+            rule2.Setup(x => x.IsAuthorized(null)).Returns(true);
 
             _actor.AddRule(rule1.Object);
             _actor.AddRule(rule2.Object);
@@ -87,9 +87,9 @@ namespace Demo.Library.Unit.Security.Actors
         public void Authorize_one_authorized()
         {
             var rule1 = new Moq.Mock<IRule>();
-            rule1.Setup<Boolean>(x => x.IsAuthorized(null)).Returns(false);
+            rule1.Setup(x => x.IsAuthorized(null)).Returns(false);
             var rule2 = new Moq.Mock<IRule>();
-            rule2.Setup<Boolean>(x => x.IsAuthorized(null)).Returns(true);
+            rule2.Setup(x => x.IsAuthorized(null)).Returns(true);
 
             _actor.AddRule(rule1.Object);
             _actor.AddRule(rule2.Object);
@@ -102,7 +102,7 @@ namespace Demo.Library.Unit.Security.Actors
         public void Authorize_rule_throws()
         {
             var rule = new Moq.Mock<IRule>();
-            rule.Setup<Boolean>(x => x.IsAuthorized(null)).Throws(new Exception());
+            rule.Setup(x => x.IsAuthorized(null)).Throws(new Exception());
 
             _actor.AddRule(rule.Object);
 

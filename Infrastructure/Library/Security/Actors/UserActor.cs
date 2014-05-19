@@ -13,6 +13,6 @@ namespace Demo.Library.Security.Actors
         {
         }
 
-        public IEnumerable<String> Permissions { get; set; }
+        public virtual IEnumerable<String> Permissions { get; set; }
     }
 }

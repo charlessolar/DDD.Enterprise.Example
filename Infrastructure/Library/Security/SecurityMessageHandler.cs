@@ -23,7 +23,7 @@ namespace Demo.Library.Security
 
         public void Handle(IMessage message)
         {
-            var result = _manager.Authorize<Actions.ReceivingAction>(message);
+            var result = _manager.Authorize(message);
             if (!result.IsAuthorized)
                 _bus.DoNotContinueDispatchingCurrentMessageToHandlers();
         }

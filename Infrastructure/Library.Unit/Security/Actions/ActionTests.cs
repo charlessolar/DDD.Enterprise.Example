@@ -49,7 +49,7 @@ namespace Demo.Library.Unit.Security.Actions
         public void Can_authorize()
         {
             var target = new Moq.Mock<ITarget>();
-            target.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            target.Setup(t => t.CanAuthorize(null)).Returns(true);
 
             _action.AddTarget(target.Object);
             Assert.True(_action.CanAuthorize(null));
@@ -59,7 +59,7 @@ namespace Demo.Library.Unit.Security.Actions
         public void Cant_authorize()
         {
             var target = new Moq.Mock<ITarget>();
-            target.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(false);
+            target.Setup(t => t.CanAuthorize(null)).Returns(false);
 
             _action.AddTarget(target.Object);
             Assert.False(_action.CanAuthorize(null));
@@ -69,9 +69,9 @@ namespace Demo.Library.Unit.Security.Actions
         public void One_can_one_cant_authorize()
         {
             var target1 = new Moq.Mock<ITarget>();
-            target1.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(false);
+            target1.Setup(t => t.CanAuthorize(null)).Returns(false);
             var target2 = new Moq.Mock<ITarget>();
-            target2.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            target2.Setup(t => t.CanAuthorize(null)).Returns(true);
 
             _action.AddTarget(target1.Object);
             _action.AddTarget(target2.Object);
@@ -83,7 +83,7 @@ namespace Demo.Library.Unit.Security.Actions
         public void Authorize_authorized()
         {
             var target = new Moq.Mock<ITarget>();
-            target.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            target.Setup(t => t.CanAuthorize(null)).Returns(true);
 
             var result = new Moq.Mock<AuthorizeTargetResult>(target.Object);
             result.SetupGet<Boolean>(t => t.IsAuthorized).Returns(true);
@@ -98,7 +98,7 @@ namespace Demo.Library.Unit.Security.Actions
         public void Authorize_not_authorized()
         {
             var target = new Moq.Mock<ITarget>();
-            target.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            target.Setup(t => t.CanAuthorize(null)).Returns(true);
 
             var result = new Moq.Mock<AuthorizeTargetResult>(target.Object);
             result.SetupGet<Boolean>(t => t.IsAuthorized).Returns(false);
@@ -113,9 +113,9 @@ namespace Demo.Library.Unit.Security.Actions
         public void Authorize_both_authorized()
         {
             var target1 = new Moq.Mock<ITarget>();
-            target1.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            target1.Setup(t => t.CanAuthorize(null)).Returns(true);
             var target2 = new Moq.Mock<ITarget>();
-            target2.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            target2.Setup(t => t.CanAuthorize(null)).Returns(true);
 
             var result1 = new Moq.Mock<AuthorizeTargetResult>(target1.Object);
             result1.SetupGet<Boolean>(t => t.IsAuthorized).Returns(true);
@@ -135,9 +135,9 @@ namespace Demo.Library.Unit.Security.Actions
         public void Authorize_one_authorized()
         {
             var target1 = new Moq.Mock<ITarget>();
-            target1.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            target1.Setup(t => t.CanAuthorize(null)).Returns(true);
             var target2 = new Moq.Mock<ITarget>();
-            target2.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            target2.Setup(t => t.CanAuthorize(null)).Returns(true);
 
             var result1 = new Moq.Mock<AuthorizeTargetResult>(target1.Object);
             result1.SetupGet<Boolean>(t => t.IsAuthorized).Returns(false);
@@ -158,9 +158,9 @@ namespace Demo.Library.Unit.Security.Actions
         public void Authorize_one_able_authorized()
         {
             var target1 = new Moq.Mock<ITarget>();
-            target1.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(false);
+            target1.Setup(t => t.CanAuthorize(null)).Returns(false);
             var target2 = new Moq.Mock<ITarget>();
-            target2.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            target2.Setup(t => t.CanAuthorize(null)).Returns(true);
 
             var result1 = new Moq.Mock<AuthorizeTargetResult>(target1.Object);
             result1.SetupGet<Boolean>(t => t.IsAuthorized).Returns(true);
@@ -181,9 +181,9 @@ namespace Demo.Library.Unit.Security.Actions
         public void Authorize_one_able_not_authorized()
         {
             var target1 = new Moq.Mock<ITarget>();
-            target1.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(false);
+            target1.Setup(t => t.CanAuthorize(null)).Returns(false);
             var target2 = new Moq.Mock<ITarget>();
-            target2.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            target2.Setup(t => t.CanAuthorize(null)).Returns(true);
 
             var result1 = new Moq.Mock<AuthorizeTargetResult>(target1.Object);
             result1.SetupGet<Boolean>(t => t.IsAuthorized).Returns(true);

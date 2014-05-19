@@ -20,19 +20,19 @@ namespace Demo.Library.Security.Targets
         }
 
 #pragma warning disable 1591
-        public void AddSecurable(ISecurable securityObject)
+        public virtual void AddSecurable(ISecurable securityObject)
         {
             _securables.Add(securityObject);
         }
 
-        public IEnumerable<ISecurable> Securables { get { return _securables; } }
+        public virtual IEnumerable<ISecurable> Securables { get { return _securables; } }
 
-        public bool CanAuthorize(object instance)
+        public virtual bool CanAuthorize(object instance)
         {
             return _securables.Any(s => s.CanAuthorize(instance));
         }
 
-        public AuthorizeTargetResult Authorize(object instance)
+        public virtual AuthorizeTargetResult Authorize(object instance)
         {
             var result = new AuthorizeTargetResult(this);
             foreach (var securable in Securables)

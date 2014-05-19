@@ -34,7 +34,7 @@ namespace Demo.Library.Unit.Security.Descriptors
         public void Can_authorize()
         {
             var action = new Moq.Mock<IAction>();
-            action.Setup<Boolean>(x => x.CanAuthorize(null)).Returns(true);
+            action.Setup(x => x.CanAuthorize(null)).Returns(true);
 
             _descriptor.AddAction(action.Object);
 
@@ -44,7 +44,7 @@ namespace Demo.Library.Unit.Security.Descriptors
         public void Can_not_authorize()
         {
             var action = new Moq.Mock<IAction>();
-            action.Setup<Boolean>(x => x.CanAuthorize(null)).Returns(false);
+            action.Setup(x => x.CanAuthorize(null)).Returns(false);
 
             _descriptor.AddAction(action.Object);
 
@@ -55,9 +55,9 @@ namespace Demo.Library.Unit.Security.Descriptors
         public void One_can_one_cant_authorize()
         {
             var action1 = new Moq.Mock<IAction>();
-            action1.Setup<Boolean>(x => x.CanAuthorize(null)).Returns(false);
+            action1.Setup(x => x.CanAuthorize(null)).Returns(false);
             var action2 = new Moq.Mock<IAction>();
-            action2.Setup<Boolean>(x => x.CanAuthorize(null)).Returns(true);
+            action2.Setup(x => x.CanAuthorize(null)).Returns(true);
 
             _descriptor.AddAction(action1.Object);
             _descriptor.AddAction(action2.Object);
@@ -69,7 +69,7 @@ namespace Demo.Library.Unit.Security.Descriptors
         public void Authorize_authorized()
         {
             var action = new Moq.Mock<IAction>();
-            action.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            action.Setup(t => t.CanAuthorize(null)).Returns(true);
 
             var result = new Moq.Mock<AuthorizeActionResult>(action.Object);
             result.SetupGet<Boolean>(t => t.IsAuthorized).Returns(true);
@@ -84,7 +84,7 @@ namespace Demo.Library.Unit.Security.Descriptors
         public void Authorize_not_authorized()
         {
             var action = new Moq.Mock<IAction>();
-            action.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            action.Setup(t => t.CanAuthorize(null)).Returns(true);
 
             var result = new Moq.Mock<AuthorizeActionResult>(action.Object);
             result.SetupGet<Boolean>(t => t.IsAuthorized).Returns(false);
@@ -99,9 +99,9 @@ namespace Demo.Library.Unit.Security.Descriptors
         public void Authorize_both_authorized()
         {
             var action1 = new Moq.Mock<IAction>();
-            action1.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            action1.Setup(t => t.CanAuthorize(null)).Returns(true);
             var action2 = new Moq.Mock<IAction>();
-            action2.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            action2.Setup(t => t.CanAuthorize(null)).Returns(true);
 
 
             var result1 = new Moq.Mock<AuthorizeActionResult>(action1.Object);
@@ -121,9 +121,9 @@ namespace Demo.Library.Unit.Security.Descriptors
         public void Authorize_one_authorized()
         {
             var action1 = new Moq.Mock<IAction>();
-            action1.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            action1.Setup(t => t.CanAuthorize(null)).Returns(true);
             var action2 = new Moq.Mock<IAction>();
-            action2.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            action2.Setup(t => t.CanAuthorize(null)).Returns(true);
 
 
             var result1 = new Moq.Mock<AuthorizeActionResult>(action1.Object);
@@ -144,9 +144,9 @@ namespace Demo.Library.Unit.Security.Descriptors
         public void Authorize_one_able_authorized()
         {
             var action1 = new Moq.Mock<IAction>();
-            action1.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(false);
+            action1.Setup(t => t.CanAuthorize(null)).Returns(false);
             var action2 = new Moq.Mock<IAction>();
-            action2.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            action2.Setup(t => t.CanAuthorize(null)).Returns(true);
 
 
             var result1 = new Moq.Mock<AuthorizeActionResult>(action1.Object);
@@ -167,9 +167,9 @@ namespace Demo.Library.Unit.Security.Descriptors
         public void Authorize_one_able_not_authorized()
         {
             var action1 = new Moq.Mock<IAction>();
-            action1.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(false);
+            action1.Setup(t => t.CanAuthorize(null)).Returns(false);
             var action2 = new Moq.Mock<IAction>();
-            action2.Setup<Boolean>(t => t.CanAuthorize(null)).Returns(true);
+            action2.Setup(t => t.CanAuthorize(null)).Returns(true);
 
 
             var result1 = new Moq.Mock<AuthorizeActionResult>(action1.Object);

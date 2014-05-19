@@ -21,16 +21,16 @@ namespace Demo.Library.Security.Actors
         }
 
 #pragma warning disable 1591 // Xml Comments
-        public void AddRule(IRule rule)
+        public virtual void AddRule(IRule rule)
         {
             Contract.Requires(rule != null);
 
             _rules.Add(rule);
         }
 
-        public IEnumerable<IRule> Rules { get { return _rules; } }
+        public virtual IEnumerable<IRule> Rules { get { return _rules; } }
 
-        public AuthorizeActorResult IsAuthorized(object instance)
+        public virtual AuthorizeActorResult IsAuthorized(object instance)
         {
             Contract.Requires(instance != null);
 

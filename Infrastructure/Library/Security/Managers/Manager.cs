@@ -1,6 +1,7 @@
 ﻿using StructureMap;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,8 +28,10 @@ namespace Demo.Library.Security.Managers
                 }));
         }
 
-        public AuthorizationResult Authorize<TAction>(object instance) where TAction : IAction
+        public AuthorizationResult Authorize(object instance)
         {
+            Contract.Requires(instance != null);
+
             var result = new AuthorizationResult();
 
             var descriptors = _container.GetAllInstances<IDescriptor>();
