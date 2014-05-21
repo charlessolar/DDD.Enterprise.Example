@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dynamics\DynamicTypeBuilderTests.cs" />
     <Compile Include="Exceptions\BusinessLogicExceptionTests.cs" />
     <Compile Include="Extensions\ForEachWithLastTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

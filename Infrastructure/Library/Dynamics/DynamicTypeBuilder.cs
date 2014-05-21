@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -27,12 +28,10 @@ namespace Demo.Library.Dynamics
             return key;
         }
 
-        public static Type GetDynamicType(Dictionary<string, Type> fields, Type basetype, Type[] interfaces)
+        public static Type GetDynamicType(Dictionary<string, Type> fields)
         {
-            if (null == fields)
-                throw new ArgumentNullException("fields");
-            if (0 == fields.Count)
-                throw new ArgumentOutOfRangeException("fields", "fields must have at least 1 field definition");
+            Contract.Requires(fields != null);
+            Contract.Requires(fields.Count != 0);
 
             try
             {

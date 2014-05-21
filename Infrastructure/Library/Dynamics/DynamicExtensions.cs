@@ -54,7 +54,7 @@ namespace Demo.Library.Extensions
             var sourceProperties = propertyNames.Where(name => source.ElementType.GetProperty(name) != null).ToDictionary(name => name, name => source.ElementType.GetProperty(name));
 
             //Build dynamic a Class that includes the Fields (no inheritance, no interfaces)
-            var dynamicType = DynamicTypeBuilder.GetDynamicType(sourceProperties.Values.ToDictionary(f => f.Name, f => f.PropertyType), typeof(object), Type.EmptyTypes);
+            var dynamicType = DynamicTypeBuilder.GetDynamicType(sourceProperties.Values.ToDictionary(f => f.Name, f => f.PropertyType));
 
             //Create the Binding Expressions
             var bindings = dynamicType.GetProperties().Where(p => p.CanWrite)
@@ -65,6 +65,11 @@ namespace Demo.Library.Extensions
 
             //Now Select and return the IQueryable object
             return source.Select(selector);
+        }
+
+        public static IQueryable<dynamic> SelectPartial<T>(this IQueryable<T> source, params String[] propertyNames)
+        {
+            return source.SelectPartial(propertyNames.AsEnumerable());
         }
 
         public static dynamic ToPartial<T>(this T obj, IEnumerable<String> propertyNames)
@@ -80,7 +85,7 @@ namespace Demo.Library.Extensions
             var sourceProperties = propertyNames.Where(name => objType.GetProperty(name) != null).ToDictionary(name => name, name => objType.GetProperty(name));
 
             //Build dynamic a Class that includes the Fields (no inheritance, no interfaces)
-            var dynamicType = DynamicTypeBuilder.GetDynamicType(sourceProperties.Values.ToDictionary(f => f.Name, f => f.PropertyType), typeof(object), Type.EmptyTypes);
+            var dynamicType = DynamicTypeBuilder.GetDynamicType(sourceProperties.Values.ToDictionary(f => f.Name, f => f.PropertyType));
 
             //Create the Binding Expressions
             var bindings = dynamicType.GetProperties().Where(p => p.CanWrite)
@@ -90,6 +95,10 @@ namespace Demo.Library.Extensions
             var selector = Expression.Lambda<Func<T, dynamic>>(Expression.MemberInit(Expression.New(dynamicType.GetConstructor(Type.EmptyTypes)), bindings), sourceItem);
 
             return selector.Compile().Invoke(obj);
+        }
+        public static dynamic ToPartial<T>(this T obj, params String[] propertyNames)
+        {
+            return obj.ToPartial(propertyNames.AsEnumerable());
         }
     }
 }
