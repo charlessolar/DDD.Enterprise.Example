@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Demo.Library.Queries
 {
-    public class BasicQuery : ICommand
+    public class Result : IMessage
     {
-        public ISet<String> Fields { get; set; }
-        public IDictionary<String, Int32> Claims { get; set; }
+        public IEnumerable<dynamic> Records { get; set; }
     }
 }

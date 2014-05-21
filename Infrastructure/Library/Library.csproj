@@ -61,9 +61,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dynamics\DynamicTypeBuilder.cs" />
+    <Compile Include="Dynamics\DynamicExtensions.cs" />
     <Compile Include="Exceptions\BusinessLogicException.cs" />
     <Compile Include="Exceptions\SecurityException.cs" />
-    <Compile Include="Extenstions\ForEachWithLast.cs" />
+    <Compile Include="Extensions\ForEachWithLast.cs" />
     <Compile Include="Identity\IIdentity.cs" />
     <Compile Include="Internal\IFluentInterface.cs" />
     <Compile Include="IoC\LibraryRegistry.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\BasicQuery.cs" />
     <Compile Include="Queries\PagedQuery.cs" />
+    <Compile Include="Queries\Result.cs" />
     <Compile Include="Queries\Validation\PagedQuery.cs" />
     <Compile Include="Security\Actions\ExecutingAction.cs" />
     <Compile Include="Security\Actions\ReadingAction.cs" />
@@ -122,6 +125,7 @@
     <Compile Include="Validation\ValidationMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

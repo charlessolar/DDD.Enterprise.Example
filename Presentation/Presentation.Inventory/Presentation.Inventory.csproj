@@ -64,7 +64,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Items\EventHandler.cs" />
     <Compile Include="Items\Models\CreateItem.cs" />
     <Compile Include="Items\Models\DeleteItem.cs" />
     <Compile Include="Items\Models\FindItems.cs" />
@@ -80,6 +79,7 @@
     <Compile Include="SerialNumbers\Validators\CreateSerialNumber.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

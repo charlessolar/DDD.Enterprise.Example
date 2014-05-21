@@ -1,4 +1,4 @@
-﻿using Demo.Library.Extenstions;
+﻿using Demo.Library.Extensions;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

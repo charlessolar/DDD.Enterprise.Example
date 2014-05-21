@@ -1,4 +1,4 @@
-﻿using Demo.Library.Extenstions;
+﻿using Demo.Library.Extensions;
 using Demo.Library.Queries;
 using NServiceBus;
 using Raven.Client;
@@ -27,13 +27,14 @@ namespace Demo.Application.Inventory.Items
             {
                 var results = session.Query<Item>()
                     .Skip((command.Page - 1) * command.PageSize).Take(command.PageSize)
+                    .SelectPartial(command.Fields)
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
 
-                _bus.Reply<Messages.ItemsRetreived>(e =>
+                _bus.Reply<Result>(e =>
                     {
-                        e.Items = results;
+                        e.Records = results;
                     });
             }
         }
@@ -50,13 +51,14 @@ namespace Demo.Application.Inventory.Items
 
                 var results = query
                     .Skip((command.Page - 1) * command.PageSize).Take(command.PageSize)
+                    .SelectPartial(command.Fields)
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
 
-                _bus.Reply<Messages.ItemsRetreived>(e =>
+                _bus.Reply<Result>(e =>
                 {
-                    e.Items = results;
+                    e.Records = results;
                 });
             }
         }
@@ -67,9 +69,9 @@ namespace Demo.Application.Inventory.Items
                 var item = session.Load<Item>(command.Id);
                 if (item == null) return; // Return "Unknown item" or something?
 
-                _bus.Reply<Messages.ItemsRetreived>(e =>
+                _bus.Reply<Result>(e =>
                 {
-                    e.Items = new[] { item };
+                    e.Records = new[] { item.ToPartial(command.Fields) };
                 });
             }
         }

@@ -56,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Items\EventHandler.cs" />
-    <Compile Include="Items\Messages\ItemsRetreived.cs" />
     <Compile Include="Items\Queries\AllItems.cs" />
     <Compile Include="Items\Queries\FindItems.cs" />
     <Compile Include="Items\Queries\GetItem.cs" />
@@ -80,6 +79,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

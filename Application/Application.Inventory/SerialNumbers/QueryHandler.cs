@@ -1,4 +1,4 @@
-﻿using Demo.Library.Extenstions;
+﻿using Demo.Library.Extensions;
 using NServiceBus;
 using Raven.Client;
 using System;

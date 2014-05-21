@@ -1,7 +1,8 @@
 ﻿using Demo.Application.Inventory.Items;
-using Demo.Application.Inventory.Items.Messages;
-using NServiceBus;
+using Demo.Library.Extensions;
+using Demo.Library.Queries;
 using Demo.Presentation.Inventory.Items.Models;
+using NServiceBus;
 using ServiceStack;
 using ServiceStack.Caching;
 using ServiceStack.Messaging;
@@ -30,7 +31,7 @@ namespace Demo.Presentation.Inventory.Items
                     Id = request.Id
                 }).Register(x =>
                 {
-                    return (x.Messages.First() as ItemsRetreived).Items;
+                    return (x.Messages.First() as Result).Records;
                 }).Result;
             });
         }
@@ -49,7 +50,7 @@ namespace Demo.Presentation.Inventory.Items
                     Description = request.Description,
                 }).Register(x =>
                 {
-                    return (x.Messages.First() as ItemsRetreived).Items;
+                    return (x.Messages.First() as Result).Records;
                 }).Result;
             });
         }
