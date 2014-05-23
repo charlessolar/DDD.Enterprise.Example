@@ -1,5 +1,6 @@
 ﻿using Demo.Domain.Inventory.SerialNumbers.Events;
 using Demo.Library.Exceptions;
+using Demo.Library.Identity;
 using NES;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,8 @@ using System.Threading.Tasks;
 
 namespace Demo.Domain.Inventory.SerialNumbers
 {
-    public class SerialNumber : AggregateBase
+    public class SerialNumber : IdentityAggregateRoot<Identities.SerialNumber>
     {
-        private Identities.SerialNumber Identity { get; set; }
-
         public SerialNumber(Guid SerialNumberId, String SerialNumber, Decimal Quantity, DateTime Effective, Guid ItemId)
         {
             Apply<Created>(e =>
@@ -33,7 +32,7 @@ namespace Demo.Domain.Inventory.SerialNumbers
         {
             Id = e.SerialNumberId;
 
-            Identity = new Identities.SerialNumber
+            _identity = new Identities.SerialNumber
             {
                 Id = e.SerialNumberId,
                 Serial = e.SerialNumber,
@@ -45,7 +44,7 @@ namespace Demo.Domain.Inventory.SerialNumbers
 
         public void TakeQuantity(Decimal Quantity)
         {
-            if (this.Identity.Quantity < Quantity)
+            if (_identity.Quantity < Quantity)
                 throw new BusinessLogicException("Can't take more quantity than is on hand");
 
 
@@ -58,7 +57,7 @@ namespace Demo.Domain.Inventory.SerialNumbers
 
         public void Handle(QuantityTaken e)
         {
-            this.Identity.Quantity -= e.Quantity;
+            _identity.Quantity -= e.Quantity;
         }
     }
 }

@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Demo.Application.Inventory.Items
 {
-    public class Item
+    public interface IItem
     {
-        public Guid Id { get; set; }
+        Guid Id { get; set; }
 
-        public String Number { get; set; }
-        public String Description { get; set; }
+        String Number { get; set; }
+        String Description { get; set; }
 
-        public String UnitOfMeasure { get; set; }
+        String UnitOfMeasure { get; set; }
 
-        public Decimal? CatalogPrice { get; set; }
-        public Decimal? CostPrice { get; set; }
+        Decimal? CatalogPrice { get; set; }
+        Decimal? CostPrice { get; set; }
     }
 }

@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\packages\Castle.Core.3.3.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="FluentValidation, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\FluentValidation.5.1.0.0\lib\Net40\FluentValidation.dll</HintPath>
@@ -62,23 +65,7 @@
     <Compile Include="Extensions\ForEachWithLastTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\Validation\PagedQueryValidationTests.cs" />
-    <Compile Include="Security\Actions\ActionTests.cs" />
-    <Compile Include="Security\Actors\ActorTests.cs" />
-    <Compile Include="Security\Descriptors\DescriptorTests.cs" />
-    <Compile Include="Security\Extensions\ActionExtensionsTests.cs" />
-    <Compile Include="Security\Extensions\ActorExtensionsTests.cs" />
-    <Compile Include="Security\Extensions\RuleExtensionsTests.cs" />
-    <Compile Include="Security\Extensions\SecurableExtensionsTests.cs" />
-    <Compile Include="Security\Extensions\TargetExtensionsTests.cs" />
-    <Compile Include="Security\Managers\ManagerTests.cs" />
-    <Compile Include="Security\Results\AuthorizationResultTests.cs" />
-    <Compile Include="Security\Results\AuthorizeSecurableResultTests.cs" />
-    <Compile Include="Security\Results\AuthorizeActionResultTests.cs" />
-    <Compile Include="Security\Results\AuthorizeActorResultTests.cs" />
-    <Compile Include="Security\Results\AuthorizeDescriptorResultTests.cs" />
-    <Compile Include="Security\Results\AuthorizeTargetResultTests.cs" />
-    <Compile Include="Security\Rules\PermissionRuleTests.cs" />
-    <Compile Include="Security\Securables\NamespaceSecurableTests.cs" />
+    <Compile Include="Security\ReadingTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Validation\" />

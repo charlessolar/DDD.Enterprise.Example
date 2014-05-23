@@ -54,6 +54,7 @@
     <Compile Include="Items\Events\Created.cs" />
     <Compile Include="Items\Events\DescriptionChanged.cs" />
     <Compile Include="Items\Handler.cs" />
+    <Compile Include="Items\Identities\Item.cs" />
     <Compile Include="Items\Item.cs" />
     <Compile Include="Items\Validators\ChangeDescription.cs" />
     <Compile Include="Items\Validators\Create.cs" />

@@ -37,6 +37,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NServiceBus.Interfaces.4.6.1\lib\net40\NServiceBus.dll</HintPath>
     </Reference>
+    <Reference Include="ProxyFoo">
+      <HintPath>..\..\packages\ProxyFoo.0.2.2\lib\net40-client\ProxyFoo.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Abstractions, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\RavenDB.Client.2.5.2878\lib\net45\Raven.Abstractions.dll</HintPath>
@@ -59,14 +62,12 @@
     <Compile Include="Items\Queries\AllItems.cs" />
     <Compile Include="Items\Queries\FindItems.cs" />
     <Compile Include="Items\Queries\GetItem.cs" />
-    <Compile Include="Items\Security.cs" />
     <Compile Include="Items\Validators\AllItems.cs" />
     <Compile Include="Items\Validators\FindItems.cs" />
     <Compile Include="Items\Validators\GetItem.cs" />
     <Compile Include="SerialNumbers\EventHandler.cs" />
     <Compile Include="Items\Item.cs" />
     <Compile Include="Items\QueryHandler.cs" />
-    <Compile Include="SerialNumbers\Messages\SerialNumbersRetreived.cs" />
     <Compile Include="SerialNumbers\Queries\AllSerialNumbers.cs" />
     <Compile Include="SerialNumbers\Queries\FindSerialNumbers.cs" />
     <Compile Include="SerialNumbers\Queries\GetSerialNumber.cs" />

@@ -1,5 +1,6 @@
 ﻿using Demo.Domain.Inventory.SerialNumbers.Events;
 using NServiceBus;
+using ProxyFoo;
 using Raven.Client;
 using Raven.Client.Document;
 using System;
@@ -21,14 +22,14 @@ namespace Demo.Application.Inventory.SerialNumbers
 
         public void Handle(Created e)
         {
-            var serial = new SerialNumber
+            var serial = Duck.Cast<ISerialNumber>(new
             {
                 Id = e.SerialNumberId,
                 Serial = e.SerialNumber,
                 Quantity = e.Quantity,
                 Effective = e.Effective,
                 ItemId = e.ItemId,
-            };
+            });
 
             using (IDocumentSession session = _store.OpenSession())
             {
@@ -41,7 +42,7 @@ namespace Demo.Application.Inventory.SerialNumbers
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var item = session.Load<SerialNumber>(e.SerialNumberId);
+                var item = session.Load<ISerialNumber>(e.SerialNumberId);
                 item.Quantity -= e.Quantity;
                 session.Store(item);
                 session.SaveChanges();

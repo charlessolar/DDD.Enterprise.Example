@@ -1,4 +1,5 @@
 ﻿using Demo.Domain.Inventory.Items.Events;
+using Demo.Library.Identity;
 using NES;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Domain.Inventory.Items
 {
-    public class Item : AggregateBase
+    public class Item : IdentityAggregateRoot<Identities.SerialNumber>
     {
         public Item(Guid ItemId, String Number, String Description, String UnitOfMeasure, Decimal? CatalogPrice, Decimal? CostPrice)
         {

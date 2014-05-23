@@ -1,5 +1,6 @@
 ﻿using Demo.Domain.Inventory.Items.Events;
 using NServiceBus;
+using ProxyFoo;
 using Raven.Client;
 using Raven.Client.Document;
 using System;
@@ -21,7 +22,7 @@ namespace Demo.Application.Inventory.Items
 
         public void Handle(Created e)
         {
-            var account = new Item
+            var account = Duck.Cast<IItem>(new
             {
                 Id = e.ItemId,
                 Number = e.Number,
@@ -29,7 +30,8 @@ namespace Demo.Application.Inventory.Items
                 UnitOfMeasure = e.UnitOfMeasure,
                 CatalogPrice = e.CatalogPrice,
                 CostPrice = e.CostPrice,
-            };
+            });
+
 
             using (IDocumentSession session = _store.OpenSession())
             {
@@ -42,7 +44,7 @@ namespace Demo.Application.Inventory.Items
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var item = session.Load<Item>(e.ItemId);
+                var item = session.Load<IItem>(e.ItemId);
                 item.Description = e.Description;
                 session.Store(item);
                 session.SaveChanges();
