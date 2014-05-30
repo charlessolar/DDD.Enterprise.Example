@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Demo.Library.Security
 {
-    public interface IWho
+    public interface IContext
     {
-        String Description { get; }
+        ICollection<IWho> Whos { get; }
+        ICollection<IHow> Hows { get; }
+        ICollection<IWhat> Whats { get; }
     }
 }

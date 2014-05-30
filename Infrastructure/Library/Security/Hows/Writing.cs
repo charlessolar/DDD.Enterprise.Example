@@ -1,23 +1,20 @@
-﻿using Castle.DynamicProxy;
-using Demo.Library.Exceptions;
-using StructureMap;
+﻿using StructureMap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Demo.Library.Security.Hows
 {
-    public class Reading : IHow
+    public class Writing : IHow
     {
         private readonly IContainer _container;
 
-        public Reading(IContainer container)
+        public Writing(IContainer container)
         {
             _container = container;
         }
-        public String Description { get { return "Read"; } }
+        public String Description { get { return "Write"; } }
     }
 }

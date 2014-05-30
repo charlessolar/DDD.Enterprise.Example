@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Library.Security
+namespace Demo.Library.Security.Whos
 {
-    public interface IWho
+    public class Service : IWho
     {
-        String Description { get; }
+        public String Description { get { return "Service"; } }
     }
 }

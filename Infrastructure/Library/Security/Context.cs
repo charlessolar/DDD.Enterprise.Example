@@ -6,10 +6,17 @@ using System.Threading.Tasks;
 
 namespace Demo.Library.Security
 {
-    public class Context
+    public class Context : IContext
     {
-        public IWho Who { get; set; }
-        public IHow How { get; set; }
-        public IWhat What { get; set; }
+        public ICollection<IWho> Whos { get; private set; }
+        public ICollection<IHow> Hows { get; private set; }
+        public ICollection<IWhat> Whats { get; private set; }
+
+        public Context()
+        {
+            Whos = new List<IWho>();
+            Hows = new List<IHow>();
+            Whats = new List<IWhat>();
+        }
     }
 }

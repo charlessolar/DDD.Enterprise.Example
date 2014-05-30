@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Library.Specifications
+namespace Demo.Library.Security.Whos
 {
-    public interface IFact
+    public class User : IWho
     {
+        public String Description { get { return "User"; } }
     }
 }

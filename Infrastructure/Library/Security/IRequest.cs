@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Demo.Library.Security
 {
-    public interface IWho
+    public interface IRequest
     {
-        String Description { get; }
+        Tuple<String, String> Who { get; }
+        Tuple<String, String> What { get; }
+        Tuple<String, String> How { get; }
     }
 }

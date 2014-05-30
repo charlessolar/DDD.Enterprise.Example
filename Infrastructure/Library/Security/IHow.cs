@@ -8,7 +8,6 @@ namespace Demo.Library.Security
 {
     public interface IHow
     {
-        String Description { get; set; }
-        void AddWhat(IWhat what);
+        String Description { get; }
     }
 }

@@ -79,12 +79,23 @@
     <Compile Include="Security\Context.cs" />
     <Compile Include="Security\Hows\Reading.cs" />
     <Compile Include="Security\Hows\Receiving.cs" />
-    <Compile Include="Security\Hows\Retreiving.cs" />
+    <Compile Include="Security\Hows\Querying.cs" />
+    <Compile Include="Security\Hows\Writing.cs" />
+    <Compile Include="Security\IContext.cs" />
     <Compile Include="Security\IHow.cs" />
+    <Compile Include="Security\IRequest.cs" />
+    <Compile Include="Security\MatchDefinition.cs" />
+    <Compile Include="Security\IPolicy.cs" />
+    <Compile Include="Security\IRule.cs" />
     <Compile Include="Security\IWhat.cs" />
     <Compile Include="Security\IWhere.cs" />
     <Compile Include="Security\IWho.cs" />
-    <Compile Include="Specifications\IFact.cs" />
+    <Compile Include="Security\Policies\Default.cs" />
+    <Compile Include="Security\Requests\Default.cs" />
+    <Compile Include="Security\Rules\Default.cs" />
+    <Compile Include="Security\Whats\Context.cs" />
+    <Compile Include="Security\Whos\Service.cs" />
+    <Compile Include="Security\Whos\User.cs" />
     <Compile Include="Validation\StructureMapValidatorFactory.cs" />
     <Compile Include="Validation\ValidationMessageHandler.cs" />
   </ItemGroup>

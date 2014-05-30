@@ -11,20 +11,6 @@ using System.Threading.Tasks;
 
 namespace Demo.Library.Unit.Security
 {
-    public class ConcreteWhat : IWhat
-    {
-        public String Description { get { return "test"; } set { } }
-
-        public void AddWhere<T>(IWhere<T> where)
-        {
-        }
-
-        public Boolean Authorized()
-        {
-            return true;
-        }
-    }
-
     [TestFixture]
     public class ReadingTest
     {
@@ -39,12 +25,20 @@ namespace Demo.Library.Unit.Security
         [Test]
         public void Intercept_call()
         {
-            var fields = new Dictionary<String, Type> { { "test", typeof(Int32) } };
-            var type = DynamicTypeBuilder.GetDynamicSecuredType<ConcreteWhat>(fields);
+            var policy = new Demo.Library.Security.Policies.Default();
+            var rule = new Demo.Library.Security.Rules.Default();
+            rule.Hows.Add(new MatchDefinition { Operation = "equal", Name = "action-id", Value = "read" });
+            rule.Whats.Add(new MatchDefinition { Operation = "equal", Name = "context", Value = "test" });
+            rule.Whos.Add(new MatchDefinition { Operation = "equal", Name = "id", Value = "john" });
+            policy.Rules.Add(new Tuple<IRule, Effect>(rule, Effect.ALLOW));
 
-            dynamic obj = (ConcreteWhat)Activator.CreateInstance(type);
-            var o = obj.test;
-            Assert.AreEqual(0, o);
+            var request = new Demo.Library.Security.Requests.Default();
+            request.SetHow("action-id", "read");
+            request.SetWhat("context", "test");
+            request.SetWho("id", "john");
+
+            Assert.True(policy.Matches(request));
+            Assert.AreEqual(Effect.ALLOW, policy.Resolve(request));
         }
     }
 }

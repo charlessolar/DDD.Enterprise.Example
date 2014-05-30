@@ -13,13 +13,11 @@ namespace Demo.Library.Security.Hows
     {
         private readonly IBus _bus;
         private readonly IContainer _container;
-        private IList<IWhat> _whats;
 
         public Receiving(IBus bus, IContainer container)
         {
             _bus = bus;
             _container = container;
-            _whats = new List<IWhat>();
         }
 
         public void Handle(IMessage message)
@@ -29,10 +27,6 @@ namespace Demo.Library.Security.Hows
             //    _bus.DoNotContinueDispatchingCurrentMessageToHandlers();
         }
 
-        public String Description { get; set; }
-        public void AddWhat(IWhat what)
-        {
-            _whats.Add(what);
-        }
+        public String Description { get { return "Receive"; } }
     }
 }

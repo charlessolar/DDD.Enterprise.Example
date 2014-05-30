@@ -8,8 +8,7 @@ namespace Demo.Library.Security
 {
     public interface IWhat
     {
-        String Description { get; set; }
-        void AddWhere<T>(IWhere<T> where);
+        String Description { get; }
 
         void Authorize();
     }

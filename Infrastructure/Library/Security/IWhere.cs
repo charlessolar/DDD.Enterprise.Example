@@ -6,19 +6,9 @@ using System.Threading.Tasks;
 
 namespace Demo.Library.Security
 {
-    public interface IWhere<T>
+    public interface IWhere
     {
-        String Description { get; set; }
-        Boolean Authorized(T instance);
-    }
-
-    // A where based on the Who requesting
-    public interface IWhereWho<T, TWho> : IWhere<T> where TWho : IWho
-    {
-    }
-
-    // A where based on the What being requested
-    public interface IWhereWhat<T, TWhat> : IWhere<T> where TWhat : IWhat
-    {
+        String Description { get; }
+        Boolean Authorized();
     }
 }
