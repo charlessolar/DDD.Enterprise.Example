@@ -65,9 +65,9 @@
     <Compile Include="Extensions\ForEachWithLastTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\Validation\PagedQueryValidationTests.cs" />
-    <Compile Include="Security\ReadingTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Security\" />
     <Folder Include="Validation\" />
   </ItemGroup>
   <ItemGroup>

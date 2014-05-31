@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Demo.Application.Inventory.SerialNumbers
 {
-    public interface ISerialNumber
+    public class SerialNumber
     {
-        Guid Id { get; set; }
-        String Serial { get; set; }
-        Decimal Quantity { get; set; }
-        DateTime Effective { get; set; }
+        public Guid Id { get; set; }
+        public String Serial { get; set; }
+        public Decimal Quantity { get; set; }
+        public DateTime Effective { get; set; }
 
-        Guid ItemId { get; set; }
+        public Guid ItemId { get; set; }
     }
 }

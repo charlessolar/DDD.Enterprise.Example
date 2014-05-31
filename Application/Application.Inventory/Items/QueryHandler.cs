@@ -25,7 +25,7 @@ namespace Demo.Application.Inventory.Items
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var results = session.Query<IItem>()
+                var results = session.Query<Item>()
                     .Skip((command.Page - 1) * command.PageSize).Take(command.PageSize)
                     .SelectPartial(command.Fields)
                     .ToList();
@@ -42,7 +42,7 @@ namespace Demo.Application.Inventory.Items
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var query = session.Query<IItem>().AsQueryable();
+                var query = session.Query<Item>().AsQueryable();
 
                 if (!String.IsNullOrEmpty(command.Number))
                     query = query.Where(x => x.Number.StartsWith(command.Number));
@@ -66,7 +66,7 @@ namespace Demo.Application.Inventory.Items
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var item = session.Load<IItem>(command.Id);
+                var item = session.Load<Item>(command.Id);
                 if (item == null) return; // Return "Unknown item" or something?
 
                 _bus.Reply<Result>(e =>

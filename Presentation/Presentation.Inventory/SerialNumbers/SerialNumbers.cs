@@ -1,7 +1,7 @@
 ﻿using Demo.Application.Inventory.SerialNumbers;
-using Demo.Application.Inventory.SerialNumbers.Messages;
-using NServiceBus;
+using Demo.Library.Queries;
 using Demo.Presentation.Inventory.SerialNumbers.Models;
+using NServiceBus;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ namespace Demo.Presentation.Inventory.SerialNumbers
                     Id = request.Id
                 }).Register(x =>
                 {
-                    return (x.Messages.First() as SerialNumbersRetreived).SerialNumbers;
+                    return (x.Messages.First() as Result).Records;
                 }).Result;
             });
         }
@@ -45,7 +45,7 @@ namespace Demo.Presentation.Inventory.SerialNumbers
                     ItemId = request.ItemId
                 }).Register(x =>
                 {
-                    return (x.Messages.First() as SerialNumbersRetreived).SerialNumbers;
+                    return (x.Messages.First() as Result).Records;
                 }).Result;
             });
         }

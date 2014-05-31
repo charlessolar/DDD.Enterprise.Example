@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Demo.Library.Security
 {
-    public interface IWho
+    public interface IManager
     {
-        String Description { get; }
+        Boolean Authorize(String Actor, String Context, String Action);
     }
 }

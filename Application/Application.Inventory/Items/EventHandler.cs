@@ -22,7 +22,7 @@ namespace Demo.Application.Inventory.Items
 
         public void Handle(Created e)
         {
-            var account = Duck.Cast<IItem>(new
+            var account = new Item
             {
                 Id = e.ItemId,
                 Number = e.Number,
@@ -30,7 +30,7 @@ namespace Demo.Application.Inventory.Items
                 UnitOfMeasure = e.UnitOfMeasure,
                 CatalogPrice = e.CatalogPrice,
                 CostPrice = e.CostPrice,
-            });
+            };
 
 
             using (IDocumentSession session = _store.OpenSession())
@@ -44,7 +44,7 @@ namespace Demo.Application.Inventory.Items
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var item = session.Load<IItem>(e.ItemId);
+                var item = session.Load<Item>(e.ItemId);
                 item.Description = e.Description;
                 session.Store(item);
                 session.SaveChanges();

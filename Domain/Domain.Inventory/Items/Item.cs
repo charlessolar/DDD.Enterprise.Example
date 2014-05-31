@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Domain.Inventory.Items
 {
-    public class Item : IdentityAggregateRoot<Identities.SerialNumber>
+    public class Item : IdentityAggregateRoot<Identities.Item>
     {
         public Item(Guid ItemId, String Number, String Description, String UnitOfMeasure, Decimal? CatalogPrice, Decimal? CostPrice)
         {
@@ -31,6 +31,16 @@ namespace Demo.Domain.Inventory.Items
         private void Handle(Created e)
         {
             Id = e.ItemId;
+
+            _identity = new Identities.Item
+            {
+                Id = e.ItemId,
+                Number = e.Number,
+                Description = e.Description,
+                UnitOfMeasure = e.UnitOfMeasure,
+                CatalogPrice = e.CatalogPrice,
+                CostPrice = e.CostPrice,
+            };
         }
 
         public void ChangeDescription(String Description)

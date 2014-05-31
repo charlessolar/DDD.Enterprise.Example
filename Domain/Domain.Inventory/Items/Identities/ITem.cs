@@ -9,6 +9,7 @@ namespace Demo.Domain.Inventory.Items.Identities
 {
     public class Item : IIdentity
     {
+        public Guid Id { get; set; }
         public String Number { get; set; }
         public String Description { get; set; }
 

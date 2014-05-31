@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -99,6 +100,26 @@ namespace Demo.Library.Extensions
         public static dynamic ToPartial<T>(this T obj, params String[] propertyNames)
         {
             return obj.ToPartial(propertyNames.AsEnumerable());
+        }
+        public static IQueryable<T> SelectCondition<T>(this IQueryable<T> source, Func<PropertyInfo, Boolean> Condition)
+        {
+            var fields = new List<String>();
+            foreach (var prop in source.ElementType.GetProperties())
+            {
+                if (Condition.Invoke(prop))
+                    fields.Add(prop.Name);
+            }
+            return source.ToPartial(fields);
+        }
+        public static T ToCondition<T>(this T obj, Func<PropertyInfo, Boolean> Condition)
+        {
+            var fields = new List<String>();
+            foreach (var prop in typeof(T).GetProperties())
+            {
+                if (Condition.Invoke(prop))
+                    fields.Add(prop.Name);
+            }
+            return obj.ToPartial(fields);
         }
     }
 }

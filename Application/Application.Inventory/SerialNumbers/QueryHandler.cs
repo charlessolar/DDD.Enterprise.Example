@@ -25,7 +25,7 @@ namespace Demo.Application.Inventory.SerialNumbers
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var results = session.Query<ISerialNumber>()
+                var results = session.Query<SerialNumber>()
                     .Skip((command.Page - 1) * command.PageSize).Take(command.PageSize)
                     .SelectPartial(command.Fields)
                     .ToList();
@@ -42,7 +42,7 @@ namespace Demo.Application.Inventory.SerialNumbers
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var query = session.Query<ISerialNumber>().AsQueryable();
+                var query = session.Query<SerialNumber>().AsQueryable();
                 if (!String.IsNullOrEmpty(command.Serial))
                     query = query.Where(x => x.Serial.StartsWith(command.Serial));
                 if (command.Effective.HasValue)
@@ -67,7 +67,7 @@ namespace Demo.Application.Inventory.SerialNumbers
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var serial = session.Load<ISerialNumber>(command.Id);
+                var serial = session.Load<SerialNumber>(command.Id);
                 if (serial == null) return; // Return "Unknown serial" or something?
 
                 _bus.Reply<Result>(e =>
