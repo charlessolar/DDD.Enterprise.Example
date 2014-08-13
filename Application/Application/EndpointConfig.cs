@@ -23,6 +23,8 @@ namespace Demo.Application
             {
             });
 
+            // Comment out if you lack a NServiceBus license (trial required)
+            Configure.Instance.LicensePath(@"C:\License.xml");
 
             Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             Configure.Serialization.Json();

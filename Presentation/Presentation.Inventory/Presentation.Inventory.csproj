@@ -70,6 +70,7 @@
     <Compile Include="Items\Models\GetItem.cs" />
     <Compile Include="Items\Items.cs" />
     <Compile Include="Items\Validators\CreateItem.cs" />
+    <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialNumbers\Models\CreateSerialNumber.cs" />
     <Compile Include="SerialNumbers\Models\DeleteSerialNumber.cs" />

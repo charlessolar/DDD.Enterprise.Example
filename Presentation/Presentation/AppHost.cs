@@ -6,6 +6,7 @@ using ServiceStack;
 using ServiceStack.Caching;
 using ServiceStack.FluentValidation;
 using ServiceStack.Messaging;
+using ServiceStack.Razor;
 using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,16 @@ namespace Demo.Presentation
     {
         //Tell Service Stack the name of your application and where to find your web services
         public AppHost()
-            : base("Demo Web Services", typeof(Items).Assembly)
+            : base("Demo Web Services", typeof(AppHost).Assembly)
         {
         }
 
         public override void Configure(Funq.Container container)
         {
+            Plugins.Add(new RazorFormat());
+            Plugins.Add(new Presentation.Inventory.Plugin());
+
+
             container.Adapter = new StructureMapContainerAdapter();
 
             //container.Register<IRedisClientsManager>(c =>
@@ -34,6 +39,8 @@ namespace Demo.Presentation
 
             container.Register<ICacheClient>(new MemoryCacheClient());
 
+            // Comment out if you lack a NServiceBus license (trial required)
+            NServiceBus.Configure.Instance.LicensePath(@"C:\License.xml");
 
             NServiceBus.Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             NServiceBus.Configure.Serialization.Json();
