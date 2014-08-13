@@ -1,4 +1,5 @@
 ﻿using Demo.Application.Inventory.SerialNumbers;
+using Demo.Library.Queries;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace Demo.Presentation.Inventory.SerialNumbers.Models
 {
     [Route("/serials/{Id}")]
-    public class GetSerialNumber : IReturn<SerialNumber>
+    public class GetSerialNumber : BasicQuery
     {
         public Guid Id { get; set; }
     }

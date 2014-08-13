@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿
+using FluentValidation;
 using StructureMap;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Demo.Library.Queries.Validation;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace Demo.Application.Inventory.Items.Validators
 {
-    public class AllItems : AbstractValidator<Queries.AllItems>
+    public class AllItems : BasicQueryValidator<Queries.AllItems>
     {
         public AllItems()
+            : base()
         {
         }
     }

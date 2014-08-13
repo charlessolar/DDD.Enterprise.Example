@@ -8,6 +8,7 @@ using ServiceStack.FluentValidation;
 using ServiceStack.Messaging;
 using ServiceStack.Razor;
 using ServiceStack.Redis;
+using ServiceStack.Validation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +28,10 @@ namespace Demo.Presentation
         public override void Configure(Funq.Container container)
         {
             Plugins.Add(new RazorFormat());
+            Plugins.Add(new ValidationFeature());
             Plugins.Add(new Presentation.Inventory.Plugin());
 
+            container.RegisterValidators(typeof(Presentation.Inventory.Plugin).Assembly);
 
             container.Adapter = new StructureMapContainerAdapter();
 

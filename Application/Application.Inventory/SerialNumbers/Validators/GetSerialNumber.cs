@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Demo.Library.Queries.Validation;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Demo.Application.Inventory.SerialNumbers.Validators
 {
-    public class GetSerialNumber : AbstractValidator<Queries.GetSerialNumber>
+    public class GetSerialNumber : BasicQueryValidator<Queries.GetSerialNumber>
     {
-        public GetSerialNumber()
+        public GetSerialNumber() : base()
         {
             RuleFor(x => x.Id).NotEmpty();
         }

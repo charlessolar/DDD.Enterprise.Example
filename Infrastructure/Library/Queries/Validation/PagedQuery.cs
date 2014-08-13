@@ -1,5 +1,5 @@
 ﻿using Demo.Library.Queries;
-using FluentValidation;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +8,23 @@ using System.Threading.Tasks;
 
 namespace Demo.Library.Queries.Validation
 {
-    public class PagedQueryValidator : AbstractValidator<PagedQuery>
+    using FluentValidation;
+    public class PagedQueryValidator<T> : BasicQueryValidator<T> where T : PagedQuery
+    {
+        public PagedQueryValidator() : base()
+        {
+            RuleFor(x => x.Page).GreaterThanOrEqualTo(1);
+            RuleFor(x => x.PageSize).GreaterThanOrEqualTo(1);
+        }
+    }
+}
+namespace Demo.Library.Queries.ServiceStack.Validation
+{
+    using global::ServiceStack.FluentValidation;
+    public class PagedQueryValidator<T> : BasicQueryValidator<T> where T : PagedQuery
     {
         public PagedQueryValidator()
+            : base()
         {
             RuleFor(x => x.Page).GreaterThanOrEqualTo(1);
             RuleFor(x => x.PageSize).GreaterThanOrEqualTo(1);

@@ -21,6 +21,7 @@ namespace Demo.Application
         {
             ObjectFactory.Initialize(x =>
             {
+                x.For<IManager>().Use<Manager>();
             });
 
             // Comment out if you lack a NServiceBus license (trial required)

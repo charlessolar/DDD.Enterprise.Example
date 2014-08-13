@@ -70,6 +70,8 @@
     <Compile Include="Items\Models\GetItem.cs" />
     <Compile Include="Items\Items.cs" />
     <Compile Include="Items\Validators\CreateItem.cs" />
+    <Compile Include="Items\Validators\FindItems.cs" />
+    <Compile Include="Items\Validators\GetItem.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialNumbers\Models\CreateSerialNumber.cs" />
@@ -78,6 +80,8 @@
     <Compile Include="SerialNumbers\Models\GetSerialNumber.cs" />
     <Compile Include="SerialNumbers\SerialNumbers.cs" />
     <Compile Include="SerialNumbers\Validators\CreateSerialNumber.cs" />
+    <Compile Include="SerialNumbers\Validators\FindSerialNumbers.cs" />
+    <Compile Include="SerialNumbers\Validators\GetSerialNumbers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

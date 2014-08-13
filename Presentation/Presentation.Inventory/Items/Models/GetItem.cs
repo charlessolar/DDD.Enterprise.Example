@@ -1,4 +1,5 @@
 ﻿using Demo.Application.Inventory.Items;
+using Demo.Library.Queries;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace Demo.Presentation.Inventory.Items.Models
 {
     [Route("/items/{Id}")]
-    public class GetItem
+    public class GetItem : BasicQuery
     {
         public Guid Id { get; set; }
     }

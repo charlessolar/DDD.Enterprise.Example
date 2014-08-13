@@ -1,4 +1,5 @@
 ﻿using ServiceStack;
+using ServiceStack.Validation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Demo.Presentation.Inventory
         {
             appHost.RegisterService<SerialNumbers.SerialNumbers>("Serials");
             appHost.RegisterService<Items.Items>("Items");
+
         }
     }
 }

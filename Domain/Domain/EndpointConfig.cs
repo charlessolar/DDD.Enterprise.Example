@@ -26,6 +26,7 @@ namespace Demo.Domain
             ObjectFactory.Initialize(x =>
                 {
                     x.For<IRepository>().Use<Repository>();
+                    x.For<IManager>().Use<Manager>();
                 });
 
             // Comment out if you lack a NServiceBus license (trial required)

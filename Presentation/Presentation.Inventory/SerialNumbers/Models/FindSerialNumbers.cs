@@ -1,4 +1,5 @@
 ﻿using Demo.Application.Inventory.SerialNumbers;
+using Demo.Library.Queries;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,8 @@ using System.Threading.Tasks;
 namespace Demo.Presentation.Inventory.SerialNumbers.Models
 {
     [Route("/serials", "GET")]
-    public class FindSerialNumbers : IReturn<List<SerialNumber>>
+    public class FindSerialNumbers : PagedQuery
     {
-        public Int32 Page { get; set; }
-        public Int32 PageSize { get; set; }
 
         public String Serial { get; set; }
         public DateTime? Effective { get; set; }

@@ -23,7 +23,8 @@ namespace Demo.Presentation.Inventory.SerialNumbers
             {
                 return _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.GetSerialNumber
                 {
-                    Id = request.Id
+                    Id = request.Id,
+                    Fields = request.Fields
                 }).Register(x =>
                 {
                     return (x.Messages.First() as Result).Records;
@@ -42,7 +43,8 @@ namespace Demo.Presentation.Inventory.SerialNumbers
                     PageSize = request.PageSize,
                     Serial = request.Serial,
                     Effective = request.Effective,
-                    ItemId = request.ItemId
+                    ItemId = request.ItemId,
+                    Fields = request.Fields
                 }).Register(x =>
                 {
                     return (x.Messages.First() as Result).Records;
