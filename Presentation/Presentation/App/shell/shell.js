@@ -17,3 +17,4 @@ define(["require", "exports", 'plugins/router', 'durandal/app'], function(requir
     }
     exports.activate = activate;
 });
+//# sourceMappingURL=shell.js.map

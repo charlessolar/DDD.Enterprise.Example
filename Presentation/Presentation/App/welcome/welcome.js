@@ -15,3 +15,4 @@
         'Make jQuery & Bootstrap widgets templatable and bindable (or build your own widgets).'
     ];
 });
+//# sourceMappingURL=welcome.js.map

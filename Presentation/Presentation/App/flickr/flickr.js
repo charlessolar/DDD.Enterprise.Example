@@ -31,3 +31,4 @@ define(["require", "exports", 'plugins/http', 'durandal/app', 'knockout'], funct
     }
     exports.canDeactivate = canDeactivate;
 });
+//# sourceMappingURL=flickr.js.map

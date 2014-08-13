@@ -140,7 +140,7 @@
     </Content>
     <Content Include="Content\starterkit.css" />
     <Content Include="packages.config" />
-    <Content Include="default.cshtml" />
+    <Content Include="app.cshtml" />
     <Content Include="Scripts\boot.js">
       <DependentUpon>boot.js.bundle</DependentUpon>
     </Content>
@@ -354,6 +354,9 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptModuleKind>amd</TypeScriptModuleKind>
     <TypeScriptSourceMap>False</TypeScriptSourceMap>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
