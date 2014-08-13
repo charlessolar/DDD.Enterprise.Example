@@ -36,4 +36,3 @@ define(function (require) {
         app.setRoot('shell/shell', 'entrance');
     });
 });
-//# sourceMappingURL=main.js.map
