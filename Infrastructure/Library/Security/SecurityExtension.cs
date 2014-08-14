@@ -1,4 +1,4 @@
-﻿using Castle.DynamicProxy;
+﻿
 using Demo.Library.Dynamics;
 using System;
 using System.Collections.Generic;

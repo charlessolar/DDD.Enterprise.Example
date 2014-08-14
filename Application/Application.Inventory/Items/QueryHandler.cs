@@ -21,13 +21,13 @@ namespace Demo.Application.Inventory.Items
             _bus = bus;
         }
 
-        public void Handle(Queries.AllItems command)
+        public void Handle(Queries.AllItems query)
         {
             using (IDocumentSession session = _store.OpenSession())
             {
                 var results = session.Query<Item>()
-                    .Skip((command.Page - 1) * command.PageSize).Take(command.PageSize)
-                    .SelectPartial(command.Fields)
+                    .Skip((query.Page - 1) * query.PageSize).Take(query.PageSize)
+                    .SelectPartial(query.Fields)
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
@@ -38,20 +38,20 @@ namespace Demo.Application.Inventory.Items
                     });
             }
         }
-        public void Handle(Queries.FindItems command)
+        public void Handle(Queries.FindItems query)
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var query = session.Query<Item>().AsQueryable();
+                var store = session.Query<Item>().AsQueryable();
 
-                if (!String.IsNullOrEmpty(command.Number))
-                    query = query.Where(x => x.Number.StartsWith(command.Number));
-                if (!String.IsNullOrEmpty(command.Description))
-                    query = query.Where(x => x.Number.StartsWith(command.Description));
+                if (!String.IsNullOrEmpty(query.Number))
+                    store = store.Where(x => x.Number.StartsWith(query.Number));
+                if (!String.IsNullOrEmpty(query.Description))
+                    store = store.Where(x => x.Number.StartsWith(query.Description));
 
-                var results = query
-                    .Skip((command.Page - 1) * command.PageSize).Take(command.PageSize)
-                    .SelectPartial(command.Fields)
+                var results = store
+                    .Skip((query.Page - 1) * query.PageSize).Take(query.PageSize)
+                    .SelectPartial(query.Fields)
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
@@ -62,16 +62,16 @@ namespace Demo.Application.Inventory.Items
                 });
             }
         }
-        public void Handle(Queries.GetItem command)
+        public void Handle(Queries.GetItem query)
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var item = session.Load<Item>(command.Id);
+                var item = session.Load<Item>(query.Id);
                 if (item == null) return; // Return "Unknown item" or something?
 
                 _bus.Reply<Result>(e =>
                 {
-                    e.Records = new[] { item.ToPartial(command.Fields) };
+                    e.Records = new[] { item.ToPartial(query.Fields) };
                 });
             }
         }

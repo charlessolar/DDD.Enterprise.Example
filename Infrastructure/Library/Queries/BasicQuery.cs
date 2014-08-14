@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Library.Queries
 {
-    public class BasicQuery : ICommand
+    public class BasicQuery : IMessage
     {
         public String[] Fields { get; set; }
     }

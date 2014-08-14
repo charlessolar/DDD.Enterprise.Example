@@ -26,7 +26,8 @@ namespace Demo.Library.Queries.ServiceStack.Validation
     {
         public BasicQueryValidator()
         {
-            RuleFor(x => x.Fields).NotEmpty();
+            // Servicestack side will use default Field list if this is empty
+            // RuleFor(x => x.Fields).NotEmpty();
         }
     }
 }

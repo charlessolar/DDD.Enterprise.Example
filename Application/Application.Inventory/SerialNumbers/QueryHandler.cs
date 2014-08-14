@@ -21,13 +21,13 @@ namespace Demo.Application.Inventory.SerialNumbers
             _bus = bus;
         }
 
-        public void Handle(Queries.AllSerialNumbers command)
+        public void Handle(Queries.AllSerialNumbers query)
         {
             using (IDocumentSession session = _store.OpenSession())
             {
                 var results = session.Query<SerialNumber>()
-                    .Skip((command.Page - 1) * command.PageSize).Take(command.PageSize)
-                    .SelectPartial(command.Fields)
+                    .Skip((query.Page - 1) * query.PageSize).Take(query.PageSize)
+                    .SelectPartial(query.Fields)
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
@@ -38,21 +38,21 @@ namespace Demo.Application.Inventory.SerialNumbers
                 });
             }
         }
-        public void Handle(Queries.FindSerialNumbers command)
+        public void Handle(Queries.FindSerialNumbers query)
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var query = session.Query<SerialNumber>().AsQueryable();
-                if (!String.IsNullOrEmpty(command.Serial))
-                    query = query.Where(x => x.Serial.StartsWith(command.Serial));
-                if (command.Effective.HasValue)
-                    query = query.Where(x => x.Effective == command.Effective);
-                if (command.ItemId.HasValue)
-                    query = query.Where(x => x.ItemId == command.ItemId);
+                var store = session.Query<SerialNumber>().AsQueryable();
+                if (!String.IsNullOrEmpty(query.Serial))
+                    store = store.Where(x => x.Serial.StartsWith(query.Serial));
+                if (query.Effective.HasValue)
+                    store = store.Where(x => x.Effective == query.Effective);
+                if (query.ItemId.HasValue)
+                    store = store.Where(x => x.ItemId == query.ItemId);
 
-                var results = query
-                    .Skip((command.Page - 1) * command.PageSize).Take(command.PageSize)
-                    .SelectPartial(command.Fields)
+                var results = store
+                    .Skip((query.Page - 1) * query.PageSize).Take(query.PageSize)
+                    .SelectPartial(query.Fields)
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
@@ -63,16 +63,16 @@ namespace Demo.Application.Inventory.SerialNumbers
                 });
             }
         }
-        public void Handle(Queries.GetSerialNumber command)
+        public void Handle(Queries.GetSerialNumber query)
         {
             using (IDocumentSession session = _store.OpenSession())
             {
-                var serial = session.Load<SerialNumber>(command.Id);
+                var serial = session.Load<SerialNumber>(query.Id);
                 if (serial == null) return; // Return "Unknown serial" or something?
 
                 _bus.Reply<Result>(e =>
                 {
-                    e.Records = new[] { serial.ToPartial(command.Fields) };
+                    e.Records = new[] { serial.ToPartial(query.Fields) };
                 });
             }
         }

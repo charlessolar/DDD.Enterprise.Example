@@ -29,7 +29,7 @@ namespace Demo.Presentation.Inventory.Items
                 return _bus.Send("application", new Application.Inventory.Items.Queries.GetItem
                 {
                     Id = request.Id,
-                    Fields = request.Fields
+                    Fields = request.Fields.IsEmpty() ? typeof(Item).GetPropertyNames().ToArray() : request.Fields
                 }).Register(x =>
                 {
                     return (x.Messages.First() as Result).Records;
@@ -49,7 +49,7 @@ namespace Demo.Presentation.Inventory.Items
                     PageSize = request.PageSize,
                     Number = request.Number,
                     Description = request.Description,
-                    Fields = request.Fields
+                    Fields = request.Fields.IsEmpty() ? typeof(Item).GetPropertyNames().ToArray() : request.Fields
                 }).Register(x =>
                 {
                     return (x.Messages.First() as Result).Records;

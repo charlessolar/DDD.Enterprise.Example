@@ -1,4 +1,4 @@
-﻿using Castle.DynamicProxy;
+﻿
 using Demo.Library.Security;
 using StructureMap.Configuration.DSL;
 using System;

@@ -1,4 +1,5 @@
-﻿using Demo.Library.Queries.ServiceStack.Validation;
+﻿
+using ServiceStack.FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,11 @@ using System.Threading.Tasks;
 
 namespace Demo.Presentation.Inventory.SerialNumbers.Validators
 {
-    public class GetSerialNumbers : BasicQueryValidator<Models.GetSerialNumber>
+    public class GetSerialNumbers : AbstractValidator<Models.GetSerialNumber>
     {
-        public GetSerialNumbers() : base() { }
+        public GetSerialNumbers()
+        {
+            RuleFor(x => x.Id).NotEmpty();
+        }
     }
 }
