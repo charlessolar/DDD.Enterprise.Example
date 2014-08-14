@@ -32,6 +32,7 @@ namespace Demo.Application.Inventory.Items
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
 
+                
                 _bus.Reply<Result>(e =>
                     {
                         e.Records = results;

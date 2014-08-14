@@ -42,7 +42,8 @@ namespace Demo.Application
                 .UseInMemoryTimeoutPersister()
                 .InMemoryFaultManagement()
                 .InMemorySagaPersister();
-            LogManager.GetRepository().Threshold = log4net.Core.Level.Warn;
+
+            log4net.Config.XmlConfigurator.Configure();
 
             var store = new DocumentStore { Url = "http://localhost:8080", DefaultDatabase = "Demo-ReadModels" };
             store.Initialize();

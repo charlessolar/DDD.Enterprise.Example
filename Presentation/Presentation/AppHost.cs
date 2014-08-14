@@ -5,6 +5,8 @@ using NServiceBus;
 using ServiceStack;
 using ServiceStack.Caching;
 using ServiceStack.FluentValidation;
+using ServiceStack.Logging;
+using ServiceStack.Logging.Log4Net;
 using ServiceStack.Messaging;
 using ServiceStack.Razor;
 using ServiceStack.Redis;
@@ -28,7 +30,7 @@ namespace Demo.Presentation
         public override void Configure(Funq.Container container)
         {
             Plugins.Add(new RazorFormat());
-            Plugins.Add(new ValidationFeature());
+            //Plugins.Add(new ValidationFeature());
             Plugins.Add(new Presentation.Inventory.Plugin());
 
             container.RegisterValidators(typeof(Presentation.Inventory.Plugin).Assembly);
@@ -51,6 +53,7 @@ namespace Demo.Presentation
                 .With(AllAssemblies.Except("ServiceStack"))
                 .DefineEndpointName("Presentation")
                 .StructureMapBuilder()
+                .Log4Net()
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Events"))
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Commands"))
                 .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")))
@@ -61,6 +64,9 @@ namespace Demo.Presentation
                 .InMemorySagaPersister()
                 .CreateBus()
                 .Start();
+
+            LogManager.LogFactory = new Log4NetFactory(true);
+            log4net.Config.XmlConfigurator.Configure();
 
             container.Register<IBus>(bus);
         }
