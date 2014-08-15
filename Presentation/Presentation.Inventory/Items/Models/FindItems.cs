@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Demo.Presentation.Inventory.Items.Models
 {
     [Route("/items", "GET")]
-    public class FindItems : PagedQuery
+    public class FindItems : PagedQuery, IReturn<IEnumerable<Item>>
     {
 
         public String Number { get; set; }

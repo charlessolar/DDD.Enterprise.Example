@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Demo.Presentation.Inventory.SerialNumbers.Models
 {
     [Route("/serials/{Id}")]
-    public class GetSerialNumber : BasicQuery
+    public class GetSerialNumber : BasicQuery, IReturn<SerialNumber>
     {
         public Guid Id { get; set; }
     }

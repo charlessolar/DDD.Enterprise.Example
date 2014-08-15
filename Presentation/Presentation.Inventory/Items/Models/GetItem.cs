@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Demo.Presentation.Inventory.Items.Models
 {
     [Route("/items/{Id}")]
-    public class GetItem : BasicQuery
+    public class GetItem : BasicQuery, IReturn<Item>
     {
         public Guid Id { get; set; }
     }

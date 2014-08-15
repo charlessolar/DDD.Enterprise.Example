@@ -1,4 +1,5 @@
 ﻿using Demo.Library.IoC;
+using Demo.Library.Security;
 using Demo.Library.Validation;
 using Demo.Presentation.Inventory.Items;
 using NServiceBus;
@@ -11,6 +12,7 @@ using ServiceStack.Messaging;
 using ServiceStack.Razor;
 using ServiceStack.Redis;
 using ServiceStack.Validation;
+using StructureMap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +31,13 @@ namespace Demo.Presentation
 
         public override void Configure(Funq.Container container)
         {
+            ObjectFactory.Initialize(x =>
+            {
+                x.For<IManager>().Use<Manager>();
+            });
+
             Plugins.Add(new RazorFormat());
-            //Plugins.Add(new ValidationFeature());
+            Plugins.Add(new ValidationFeature());
             Plugins.Add(new Presentation.Inventory.Plugin());
 
             container.RegisterValidators(typeof(Presentation.Inventory.Plugin).Assembly);

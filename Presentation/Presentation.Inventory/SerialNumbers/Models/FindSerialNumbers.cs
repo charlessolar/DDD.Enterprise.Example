@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Demo.Presentation.Inventory.SerialNumbers.Models
 {
     [Route("/serials", "GET")]
-    public class FindSerialNumbers : PagedQuery
+    public class FindSerialNumbers : PagedQuery, IReturn<IEnumerable<SerialNumber>>
     {
 
         public String Serial { get; set; }

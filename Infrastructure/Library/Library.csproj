@@ -85,6 +85,7 @@
     <Compile Include="Internal\IFluentInterface.cs" />
     <Compile Include="IoC\LibraryRegistry.cs" />
     <Compile Include="IoC\StructureMapContainerAdapter.cs" />
+    <Compile Include="NServiceBus\ServiceStackSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\BasicQuery.cs" />
     <Compile Include="Queries\PagedQuery.cs" />

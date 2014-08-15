@@ -9,6 +9,6 @@ namespace Demo.Library.Queries
 {
     public class Result : IMessage
     {
-        public IEnumerable<dynamic> Records { get; set; }
+        public IEnumerable<Object> Records { get; set; }
     }
 }
