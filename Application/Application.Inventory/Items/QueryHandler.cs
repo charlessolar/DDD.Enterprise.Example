@@ -27,7 +27,7 @@ namespace Demo.Application.Inventory.Items
             {
                 var results = session.Query<Item>()
                     .Skip((query.Page - 1) * query.PageSize).Take(query.PageSize)
-                    .SelectPartial(query.Fields)
+                    .SelectPartialNoDynamic(query.Fields)
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();
@@ -52,7 +52,7 @@ namespace Demo.Application.Inventory.Items
 
                 var results = store
                     .Skip((query.Page - 1) * query.PageSize).Take(query.PageSize)
-                    .SelectPartial(query.Fields)
+                    .SelectPartialNoDynamic(query.Fields)
                     .ToList();
 
                 _bus.CurrentMessageContext.Headers["Count"] = results.Count.ToString();

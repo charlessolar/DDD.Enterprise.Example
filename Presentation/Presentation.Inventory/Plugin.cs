@@ -15,6 +15,7 @@ namespace Demo.Presentation.Inventory
             appHost.RegisterService<SerialNumbers.SerialNumbers>("Serials");
             appHost.RegisterService<Items.Items>("Items");
 
+            appHost.GetContainer().RegisterValidators(typeof(Plugin).Assembly);
         }
     }
 }
