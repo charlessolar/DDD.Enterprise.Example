@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Demo.Presentation.Inventory.Items.Validators
 {
-    public class GetItem : AbstractValidator<Models.GetItem>
+    public class GetItemValidator : AbstractValidator<GetItem>
     {
-        public GetItem()
+        public GetItemValidator()
         {
             RuleFor(x => x.Id).NotEmpty();
         }

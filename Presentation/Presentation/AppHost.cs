@@ -29,27 +29,17 @@ namespace Demo.Presentation
         {
         }
 
-        public override void Configure(Funq.Container container)
+        public override ServiceStackHost Init()
         {
+            LogManager.LogFactory = new Log4NetFactory(true);
+            log4net.Config.XmlConfigurator.Configure();
+
             ObjectFactory.Initialize(x =>
             {
                 x.For<IManager>().Use<Manager>();
+                x.For<ICacheClient>().Use(new MemoryCacheClient());
             });
 
-            Plugins.Add(new RazorFormat());
-            Plugins.Add(new ValidationFeature());
-            Plugins.Add(new Presentation.Inventory.Plugin());
-
-            container.RegisterValidators(typeof(Presentation.Inventory.Plugin).Assembly);
-
-            container.Adapter = new StructureMapContainerAdapter();
-
-            //container.Register<IRedisClientsManager>(c =>
-            //    new PooledRedisClientManager("localhost:6379"));
-            //container.Register(c => c.Resolve<IRedisClientsManager>().GetCacheClient());
-            //container.Register(c => c.Resolve<IRedisClientsManager>().GetClient());
-
-            container.Register<ICacheClient>(new MemoryCacheClient());
 
             // Comment out if you lack a NServiceBus license (trial required)
             NServiceBus.Configure.Instance.LicensePath(@"C:\License.xml");
@@ -72,10 +62,30 @@ namespace Demo.Presentation
                 .CreateBus()
                 .Start();
 
-            LogManager.LogFactory = new Log4NetFactory(true);
-            log4net.Config.XmlConfigurator.Configure();
 
-            container.Register<IBus>(bus);
+            return base.Init();
+        }
+
+        public override void Configure(Funq.Container container)
+        {
+
+            container.Adapter = new StructureMapContainerAdapter();
+
+            Plugins.Add(new RazorFormat());
+            Plugins.Add(new ValidationFeature());
+            Plugins.Add(new ServerEventsFeature());
+            Plugins.Add(new Presentation.Inventory.Plugin());
+
+
+            //container.Register<IRedisClientsManager>(c =>
+            //    new PooledRedisClientManager("localhost:6379"));
+            //container.Register(c => c.Resolve<IRedisClientsManager>().GetCacheClient());
+            //container.Register(c => c.Resolve<IRedisClientsManager>().GetClient());
+
+            //container.Register<ICacheClient>(new MemoryCacheClient());
+
+
+            //container.Register<IBus>(bus);
         }
     }
 }

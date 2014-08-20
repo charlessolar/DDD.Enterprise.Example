@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace Demo.Presentation.Inventory.Items.Validators
 {
-    public class FindItems : PagedQueryValidator<Models.FindItems>
+    public class FindItemsValidator : PagedQueryValidator<FindItems>
     {
-        public FindItems() : base()
+        public FindItemsValidator()
+            : base()
         {
         }
     }

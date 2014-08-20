@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Presentation.Inventory.SerialNumbers.Models
+namespace Demo.Presentation.Inventory.Items
 {
-    [Route("/serials/{Id}/delete", "DELETE")]
-    public class DeleteSerialNumber
+    [Route("/items/{Id}/delete", "DELETE")]
+    public class DeleteItem
     {
         public Guid Id { get; set; }
     }

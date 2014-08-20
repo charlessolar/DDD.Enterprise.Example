@@ -1,7 +1,6 @@
 ﻿using Demo.Application.Inventory.Items;
 using Demo.Library.Extensions;
 using Demo.Library.Queries;
-using Demo.Presentation.Inventory.Items.Models;
 using NServiceBus;
 using ServiceStack;
 using ServiceStack.Caching;

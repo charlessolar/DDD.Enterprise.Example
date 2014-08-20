@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Demo.Presentation.Inventory.SerialNumbers.Validators
 {
-    public class FindSerialNumbers : PagedQueryValidator<Models.FindSerialNumbers>
+    public class FindSerialNumbersValidator : PagedQueryValidator<FindSerialNumbers>
     {
-        public FindSerialNumbers() : base() { }
+        public FindSerialNumbersValidator() : base() { }
     }
 }

@@ -59,37 +59,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Items\EventHandler.cs" />
-    <Compile Include="Items\Queries\AllItems.cs" />
-    <Compile Include="Items\Queries\FindItems.cs" />
-    <Compile Include="Items\Queries\GetItem.cs" />
     <Compile Include="Items\Validators\AllItems.cs" />
     <Compile Include="Items\Validators\FindItems.cs" />
     <Compile Include="Items\Validators\GetItem.cs" />
     <Compile Include="SerialNumbers\EventHandler.cs" />
-    <Compile Include="Items\Item.cs" />
     <Compile Include="Items\QueryHandler.cs" />
-    <Compile Include="SerialNumbers\Queries\AllSerialNumbers.cs" />
-    <Compile Include="SerialNumbers\Queries\FindSerialNumbers.cs" />
-    <Compile Include="SerialNumbers\Queries\GetSerialNumber.cs" />
-    <Compile Include="SerialNumbers\QueryHandler.cs" />
-    <Compile Include="SerialNumbers\SerialNumber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialNumbers\SerialNumber.cs" />
     <Compile Include="SerialNumbers\Validators\AllSerialNumbers.cs" />
     <Compile Include="SerialNumbers\Validators\FindSerialNumbers.cs" />
     <Compile Include="SerialNumbers\Validators\GetSerialNumber.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Domain\Domain.Inventory\Domain.Inventory.csproj">
-      <Project>{65df737f-99e5-452c-a533-8ee25109cafd}</Project>
-      <Name>Domain.Inventory</Name>
+    <ProjectReference Include="..\..\Domain\Domain.Inventory.Messages\Domain.Inventory.Messages.csproj">
+      <Project>{47eeddc9-f335-4833-9972-1892a2b2ac88}</Project>
+      <Name>Domain.Inventory.Messages</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
       <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
       <Name>Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Application.Inventory.Messages\Application.Inventory.Messages.csproj">
+      <Project>{30c5d76b-1730-478c-aa9e-186d738e7f54}</Project>
+      <Name>Application.Inventory.Messages</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

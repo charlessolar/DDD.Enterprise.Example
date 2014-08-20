@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Demo.Presentation.Inventory.SerialNumbers.Validators
 {
-    public class GetSerialNumbers : AbstractValidator<Models.GetSerialNumber>
+    public class GetSerialNumbersValidator : AbstractValidator<GetSerialNumber>
     {
-        public GetSerialNumbers()
+        public GetSerialNumbersValidator()
         {
             RuleFor(x => x.Id).NotEmpty();
         }

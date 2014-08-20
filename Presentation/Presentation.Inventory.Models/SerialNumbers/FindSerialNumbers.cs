@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Presentation.Inventory.SerialNumbers.Models
+namespace Demo.Presentation.Inventory.SerialNumbers
 {
     [Route("/serials", "GET")]
     public class FindSerialNumbers : PagedQuery, IReturn<IEnumerable<SerialNumber>>

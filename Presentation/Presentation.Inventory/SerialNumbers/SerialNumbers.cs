@@ -1,6 +1,6 @@
-﻿using Demo.Application.Inventory.SerialNumbers;
+﻿
+using Demo.Application.Inventory.SerialNumbers;
 using Demo.Library.Queries;
-using Demo.Presentation.Inventory.SerialNumbers.Models;
 using NServiceBus;
 using ServiceStack;
 using System;

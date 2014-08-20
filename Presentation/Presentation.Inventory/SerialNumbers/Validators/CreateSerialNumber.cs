@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Demo.Presentation.Inventory.SerialNumbers.Validators
 {
-    public class CreateSerialNumber : AbstractValidator<Models.CreateSerialNumber>
+    public class CreateSerialNumberValidator : AbstractValidator<CreateSerialNumber>
     {
-        public CreateSerialNumber()
+        public CreateSerialNumberValidator()
         {
             RuleFor(x => x.SerialNumber).NotEmpty().Length(2, 32).WithMessage("Serial must be between 2 and 32 characters");
             RuleFor(x => x.Effective).NotEmpty();

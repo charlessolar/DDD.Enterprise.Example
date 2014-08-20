@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Presentation.Inventory.Items.Models
+namespace Demo.Presentation.Inventory.Items
 {
     [Route("/items", "GET")]
     public class FindItems : PagedQuery, IReturn<IEnumerable<Item>>

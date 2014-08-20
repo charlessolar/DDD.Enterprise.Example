@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A4DFC71C-F689-4016-9846-C072215CDE41}</ProjectGuid>
+    <ProjectGuid>{F387CC3D-99CE-4CA2-A877-B98137C1AB02}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DemoMessages</RootNamespace>
-    <AssemblyName>DemoMessages</AssemblyName>
+    <RootNamespace>Presentation.Inventory.Models</RootNamespace>
+    <AssemblyName>Presentation.Inventory.Models</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,25 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="NServiceBus">
-      <HintPath>..\packages\NServiceBus.Interfaces.4.6.3\lib\net40\NServiceBus.dll</HintPath>
+      <HintPath>..\..\packages\NServiceBus.Interfaces.4.6.3\lib\net40\NServiceBus.dll</HintPath>
     </Reference>
-    <Reference Include="NServiceBus.Core">
-      <HintPath>..\packages\NServiceBus.4.6.3\lib\net40\NServiceBus.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceBus.Host">
-      <HintPath>..\packages\NServiceBus.Host.4.6.3\lib\net40\NServiceBus.Host.exe</HintPath>
-    </Reference>
-    <Reference Include="NServiceBus.ObjectBuilder.StructureMap">
-      <HintPath>..\packages\NServiceBus.StructureMap.4.6.3\lib\net40\NServiceBus.ObjectBuilder.StructureMap.dll</HintPath>
-    </Reference>
-    <Reference Include="StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\structuremap.2.6.4.1\lib\net40\StructureMap.dll</HintPath>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\..\packages\ServiceStack.Interfaces.4.0.30\lib\portable-wp80+sl5+net40+win8+monotouch+monoandroid\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,17 +45,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EndpointConfig.cs" />
+    <Compile Include="Items\CreateItem.cs" />
+    <Compile Include="Items\DeleteItem.cs" />
+    <Compile Include="Items\FindItems.cs" />
+    <Compile Include="Items\GetItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialNumbers\CreateSerialNumber.cs" />
+    <Compile Include="SerialNumbers\DeleteSerialNumber.cs" />
+    <Compile Include="SerialNumbers\FindSerialNumbers.cs" />
+    <Compile Include="SerialNumbers\GetSerialNumber.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.Inventory.Messages\Domain.Inventory.Messages.csproj">
-      <Project>{47eeddc9-f335-4833-9972-1892a2b2ac88}</Project>
-      <Name>Domain.Inventory.Messages</Name>
+    <ProjectReference Include="..\..\Application\Application.Inventory.Messages\Application.Inventory.Messages.csproj">
+      <Project>{30c5d76b-1730-478c-aa9e-186d738e7f54}</Project>
+      <Name>Application.Inventory.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
+      <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
+      <Name>Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -81,8 +76,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup>
-    <StartAction>Program</StartAction>
-    <StartProgram>$(ProjectDir)$(OutputPath)NServiceBus.Host.exe</StartProgram>
-  </PropertyGroup>
 </Project>
