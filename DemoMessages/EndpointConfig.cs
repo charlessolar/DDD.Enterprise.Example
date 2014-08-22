@@ -22,7 +22,7 @@ namespace Demo.DemoMessages
             Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             Configure.Serialization.Json();
             Configure
-                .With(AllAssemblies.Except("ServiceStack"))
+                .With(AllAssemblies.Matching("DemoMessages"))
                 .DefineEndpointName("DemoMessages")
                 .StructureMapBuilder()
                 .Log4Net()

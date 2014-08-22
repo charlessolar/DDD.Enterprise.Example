@@ -30,7 +30,7 @@ namespace Demo.Application
             Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             Configure.Serialization.Json();
             Configure
-                .With(AllAssemblies.Except("ServiceStack"))
+                .With(AllAssemblies.Matching("Application").And("Domain").And("Library"))
                 .DefineEndpointName("Application")
                 .StructureMapBuilder()
                 .Log4Net()

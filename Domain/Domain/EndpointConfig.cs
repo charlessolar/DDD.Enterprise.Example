@@ -35,7 +35,7 @@ namespace Demo.Domain
             Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             Configure.Serialization.Json();
             Configure
-                .With(AllAssemblies.Except("ServiceStack"))
+                .With(AllAssemblies.Matching("Domain").And("Library"))
                 .DefineEndpointName("Domain")
                 .StructureMapBuilder()
                 .Log4Net()

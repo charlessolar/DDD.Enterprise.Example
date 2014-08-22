@@ -21,7 +21,7 @@ using System.Web;
 
 namespace Demo.Presentation
 {
-    public class AppHost : AppHostBase
+    public class AppHost : AppHostBase, IConfigureThisEndpoint
     {
         //Tell Service Stack the name of your application and where to find your web services
         public AppHost()
@@ -47,7 +47,7 @@ namespace Demo.Presentation
             NServiceBus.Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             NServiceBus.Configure.Serialization.Json();
             var bus = NServiceBus.Configure
-                .With(AllAssemblies.Except("ServiceStack"))
+                .With(AllAssemblies.Matching("Presentation").And("Application").And("Domain").And("Library"))
                 .DefineEndpointName("Presentation")
                 .StructureMapBuilder()
                 .Log4Net()
