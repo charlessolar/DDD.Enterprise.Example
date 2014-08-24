@@ -4,6 +4,7 @@ using Demo.Library.Validation;
 using Demo.Presentation.Inventory.Items;
 using NServiceBus;
 using ServiceStack;
+using ServiceStack.Api.Swagger;
 using ServiceStack.Caching;
 using ServiceStack.FluentValidation;
 using ServiceStack.Logging;
@@ -34,10 +35,23 @@ namespace Demo.Presentation
             LogManager.LogFactory = new Log4NetFactory(true);
             log4net.Config.XmlConfigurator.Configure();
 
+
+            var serverEvents = new MemoryServerEvents
+            {
+                Timeout = TimeSpan.FromSeconds(30),
+                NotifyChannelOfSubscriptions = false
+            };
+
+            serverEvents.OnSubscribe = (x) =>
+                {
+                    Console.Write(x.DisplayName);
+                };
+
             ObjectFactory.Initialize(x =>
             {
                 x.For<IManager>().Use<Manager>();
                 x.For<ICacheClient>().Use(new MemoryCacheClient());
+                x.For<IServerEvents>().Use(serverEvents);
             });
 
 
@@ -62,19 +76,26 @@ namespace Demo.Presentation
                 .CreateBus()
                 .Start();
 
-
             return base.Init();
         }
 
         public override void Configure(Funq.Container container)
         {
 
+
             container.Adapter = new StructureMapContainerAdapter();
 
+            Plugins.Add(new SwaggerFeature());
             Plugins.Add(new RazorFormat());
+            Plugins.Add(new RequestLogsFeature());
+
+            Plugins.Add(new PostmanFeature());
+            Plugins.Add(new CorsFeature());
+
             Plugins.Add(new ValidationFeature());
             Plugins.Add(new ServerEventsFeature());
             Plugins.Add(new Presentation.Inventory.Plugin());
+
 
 
             //container.Register<IRedisClientsManager>(c =>

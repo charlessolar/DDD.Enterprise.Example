@@ -41,8 +41,12 @@
     <Reference Include="NES">
       <HintPath>..\..\packages\NES.4.0.4\lib\net40\NES.dll</HintPath>
     </Reference>
-    <Reference Include="NServiceBus">
-      <HintPath>..\..\packages\NServiceBus.Interfaces.4.6.3\lib\net40\NServiceBus.dll</HintPath>
+    <Reference Include="NServiceBus, Version=4.6.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NServiceBus.Interfaces.4.6.4\lib\net40\NServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core">
+      <HintPath>..\..\packages\NServiceBus.4.6.4\lib\net40\NServiceBus.Core.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack">
       <HintPath>..\..\packages\ServiceStack.4.0.30\lib\net40\ServiceStack.dll</HintPath>

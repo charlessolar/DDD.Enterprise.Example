@@ -12,7 +12,8 @@ export function search() {
 export function activate() {
     router.map([
         { route: '', title: 'Welcome', moduleId: 'welcome/welcome', nav: true },
-        { route: 'flickr', moduleId: 'flickr/flickr', nav: true }
+        { route: 'flickr', moduleId: 'flickr/flickr', nav: true },
+        { route: 'data', moduleId: 'data/data', nav: true }
     ]).buildNavigationModel();
 
     return router.activate();
