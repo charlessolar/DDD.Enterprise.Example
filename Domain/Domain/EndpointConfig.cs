@@ -23,11 +23,15 @@ namespace Demo.Domain
     {
         public void Init()
         {
+            log4net.Config.XmlConfigurator.Configure();
+
             ObjectFactory.Initialize(x =>
                 {
                     x.For<IRepository>().Use<Repository>();
                     x.For<IManager>().Use<Manager>();
                 });
+
+
 
             // Comment out if you lack a NServiceBus license (trial required)
             Configure.Instance.LicensePath(@"C:\License.xml");
@@ -49,12 +53,7 @@ namespace Demo.Domain
                 .InMemorySagaPersister()
                 .NES();
 
-            log4net.Config.XmlConfigurator.Configure();
 
-            Configure.Instance.Configurer.RegisterSingleton<IValidatorFactory>(ObjectFactory.GetInstance<StructureMapValidatorFactory>());
-        }
-        public void Start()
-        {
             Wireup.Init()
                       .UsingRavenPersistence("Demo")
                       .ConsistentQueries()
@@ -62,6 +61,10 @@ namespace Demo.Domain
                       .NES()
                       .UsingJsonSerialization()
                       .Build();
+            Configure.Instance.Configurer.RegisterSingleton<IValidatorFactory>(ObjectFactory.GetInstance<StructureMapValidatorFactory>());
+        }
+        public void Start()
+        {
             //.StartDispatchScheduler();
         }
 

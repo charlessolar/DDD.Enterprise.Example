@@ -22,11 +22,11 @@ namespace Demo.DemoMessages
             Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
             Configure.Serialization.Json();
             Configure
-                .With(AllAssemblies.Matching("DemoMessages"))
+                .With(AllAssemblies.Matching("DemoMessages").And("Domain"))
                 .DefineEndpointName("DemoMessages")
                 .StructureMapBuilder()
                 .Log4Net()
-                .DefiningEventsAs(t => t.Namespace != null && t.Namespace.EndsWith("Events"))
+                .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Events"))
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Commands"))
                 .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")))
                 .UnicastBus()

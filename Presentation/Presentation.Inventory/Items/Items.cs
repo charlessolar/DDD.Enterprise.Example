@@ -1,6 +1,6 @@
-﻿using Demo.Application.Inventory.Items;
-using Demo.Library.Extensions;
+﻿using Demo.Library.Extensions;
 using Demo.Library.Queries;
+using Demo.Library.Cache;
 using NServiceBus;
 using ServiceStack;
 using ServiceStack.Caching;
@@ -12,57 +12,85 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net;
+using Demo.Presentation.Inventory.Models.Items.Responses;
+using Demo.Presentation.Inventory.Models.Items.Services;
+using Demo.Library.Responses;
 
 namespace Demo.Presentation.Inventory.Items
 {
     public class Items : Service
     {
-        public IBus _bus { get; set; }
 
+        private IBus _bus;
 
-        public Object Any(GetItem request)
+        public Items(IBus bus)
         {
-            var cacheKey = UrnId.Create<GetItem>(request.Id);
-            return base.Request.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
+            _bus = bus;
+        }
+
+
+        public Task<Item> Any(GetItem request)
+        {
+
+
+            return _bus.Send("application", new Application.Inventory.Items.Queries.GetItem
             {
-                return _bus.Send("application", new Application.Inventory.Items.Queries.GetItem
-                {
-                    Id = request.Id,
-                    Fields = request.Fields.IsEmpty() ? typeof(Item).GetPropertyNames().ToArray() : request.Fields
-                }).Register(x =>
-                {
-                    return (x.Messages.First() as Result).Records;
-                }).Result;
+                Id = request.Id,
+            }).Register(x =>
+            {
+                var result = (x.Messages.First() as Result).Records.FirstOrDefault();
+
+                if (result == null)
+                    throw new HttpError(HttpStatusCode.NotFound, "Get request failed");
+
+                var item = result.ConvertTo<Item>();
+
+                item.AddSession(base.Cache, Request.GetPermanentSessionId());
+
+                return item;
             });
         }
 
-        public Object Any(FindItems request)
+        public Task<Find> Any(FindItems request)
         {
-            var cacheKey = UrnId.Create<FindItems>(String.Format("{0}.{1}.{2}.{3}", request.Number, request.Description, request.Page, request.PageSize));
-
-            return base.Request.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
+            return _bus.Send("application", new Application.Inventory.Items.Queries.FindItems
             {
-                return _bus.Send("application", new Application.Inventory.Items.Queries.FindItems
+                Page = request.Page,
+                PageSize = request.PageSize,
+                Number = request.Number,
+                Description = request.Description,
+            }).Register(x =>
+            {
+                return new Find
                 {
-                    Page = request.Page,
-                    PageSize = request.PageSize,
-                    Number = request.Number,
-                    Description = request.Description,
-                    Fields = request.Fields.IsEmpty() ? typeof(Item).GetPropertyNames().ToArray() : request.Fields
-                }).Register(x =>
-                {
-                    return (x.Messages.First() as Result).Records;
-                }).Result;
+                    Results = (x.Messages.First() as Result).Records.Select(r => r.ConvertTo<Item>())
+                };
             });
         }
 
-        public Guid Post(CreateItem request)
+        public Task<IdResponse> Post(CreateItem request)
         {
             var command = request.ConvertTo<Domain.Inventory.Items.Commands.Create>();
-            command.ItemId = Guid.NewGuid();
-            _bus.Send("domain", command);
 
-            return command.ItemId;
+            return _bus.Send("domain", command)
+                .Register(x =>
+                    {
+                        // Perhaps we can send a reply to our command with the saved item id
+                        return new IdResponse { Id = command.ItemId };
+                    });
+        }
+
+        public Task<IdResponse> Post(ChangeDescription request)
+        {
+            var command = request.ConvertTo<Domain.Inventory.Items.Commands.ChangeDescription>();
+
+            return _bus.Send("domain", command)
+                .Register(x =>
+                {
+                    // Perhaps we can send a reply to our command with the saved item id
+                    return new IdResponse { Id = command.ItemId };
+                });
         }
     }
 }

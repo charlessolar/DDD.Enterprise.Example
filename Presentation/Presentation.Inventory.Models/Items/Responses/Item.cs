@@ -1,15 +1,18 @@
-﻿using ServiceStack;
+﻿using Demo.Library.Responses;
+using ServiceStack.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Presentation.Inventory.Items
+namespace Demo.Presentation.Inventory.Models.Items.Responses
 {
-    [Route("/items", "POST")]
-    public class CreateItem
+
+    public class Item : IHasGuidId
     {
+        public Guid Id { get; set; }
+
         public String Number { get; set; }
         public String Description { get; set; }
 

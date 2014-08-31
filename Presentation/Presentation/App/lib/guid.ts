@@ -29,7 +29,7 @@
             .toString(16)
             .substring(1);
     }
-    toString(format: string) {
+    toString(format?: string) {
         switch (format) {
             case "x":
             case "X":

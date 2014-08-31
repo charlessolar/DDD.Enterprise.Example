@@ -345,7 +345,10 @@
   <ItemGroup>
     <TypeScriptCompile Include="App\data\data.ts" />
     <TypeScriptCompile Include="App\flickr\flickr.ts" />
+    <TypeScriptCompile Include="App\lib\data\Entity.ts" />
+    <TypeScriptCompile Include="App\lib\data\Repository.ts" />
     <TypeScriptCompile Include="App\lib\guid.ts" />
+    <TypeScriptCompile Include="App\lib\sse.d.ts" />
     <TypeScriptCompile Include="App\main.ts" />
     <TypeScriptCompile Include="App\shell\shell.ts" />
     <TypeScriptCompile Include="App\welcome\welcome.ts" />
@@ -379,7 +382,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>62469</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56394/</IISUrl>
+          <IISUrl>http://localhost:56396/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

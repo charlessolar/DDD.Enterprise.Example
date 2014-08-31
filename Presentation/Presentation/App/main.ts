@@ -38,6 +38,16 @@ define(function (require) {
 
         //Show the app by setting the root view model for our application with a transition.
         app.setRoot('shell/shell', 'entrance');
+
+        // Connect to sse
+        var source = new EventSource('/event-stream?channel=events&t=' + new Date().getTime());
+
+        source.onopen = (e) => {
+            console.log(e);
+        };
+        source.onmessage = (e) => {
+            console.log(e);
+        };
     });
 });
  

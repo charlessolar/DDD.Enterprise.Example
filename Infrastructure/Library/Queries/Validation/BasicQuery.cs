@@ -13,7 +13,6 @@ namespace Demo.Library.Queries.Validation
     {
         public BasicQueryValidator()
         {
-            RuleFor(x => x.Fields).NotEmpty();
         }
     }
 }

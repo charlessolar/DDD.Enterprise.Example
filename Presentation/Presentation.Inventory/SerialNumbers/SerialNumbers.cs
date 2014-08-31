@@ -24,7 +24,6 @@ namespace Demo.Presentation.Inventory.SerialNumbers
                 return _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.GetSerialNumber
                 {
                     Id = request.Id,
-                    Fields = request.Fields.IsEmpty() ? typeof(SerialNumber).GetPropertyNames().ToArray() : request.Fields
                 }).Register(x =>
                 {
                     return (x.Messages.First() as Result).Records;
@@ -44,7 +43,6 @@ namespace Demo.Presentation.Inventory.SerialNumbers
                     Serial = request.Serial,
                     Effective = request.Effective,
                     ItemId = request.ItemId,
-                    Fields = request.Fields.IsEmpty() ? typeof(SerialNumber).GetPropertyNames().ToArray() : request.Fields
                 }).Register(x =>
                 {
                     return (x.Messages.First() as Result).Records;

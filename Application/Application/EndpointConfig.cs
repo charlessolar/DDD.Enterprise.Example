@@ -19,6 +19,8 @@ namespace Demo.Application
     {
         public void Init()
         {
+            log4net.Config.XmlConfigurator.Configure();
+
             ObjectFactory.Initialize(x =>
             {
                 x.For<IManager>().Use<Manager>();
@@ -42,8 +44,6 @@ namespace Demo.Application
                 .UseInMemoryTimeoutPersister()
                 .InMemoryFaultManagement()
                 .InMemorySagaPersister();
-
-            log4net.Config.XmlConfigurator.Configure();
 
             var store = new DocumentStore { Url = "http://localhost:8080", DefaultDatabase = "Demo-ReadModels" };
             store.Initialize();

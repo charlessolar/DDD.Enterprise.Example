@@ -1,6 +1,15 @@
 ﻿<section>
     <h2 data-bind="text: displayName"></h2>
     <ul data-bind="foreach: data">
-        <li data-bind="text: Number"></li>
+        <li><a data-bind="text: Number, click: $parent.getdetail"></a></li>
     </ul>
+    <a data-bind="click: clicky"> Click Here</a>
+</section>
+<section>
+    <h2>Details</h2>
+    <!-- ko with: detailed -->
+    <strong>Id: </strong><span data-bind="text: Id"></span><br />
+    <strong>Number: </strong><span data-bind="text: Number"></span><br />
+    <strong>Description: </strong><span data-bind="text: Description"></span><br />
+    <!-- /ko -->
 </section>

@@ -1,4 +1,5 @@
 ﻿using Demo.Library.Queries.ServiceStack.Validation;
+using Demo.Presentation.Inventory.Models.Items.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

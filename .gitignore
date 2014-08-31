@@ -156,6 +156,4 @@ $RECYCLE.BIN/
 .DS_Store
 packages/
 Logs/
-Presentation/Presentation/App/data/data.js
-Presentation/Presentation/App/lib/guid.js
-Presentation/Presentation/App/shell/shell.js
+Presentation/Presentation/App/**/*.js

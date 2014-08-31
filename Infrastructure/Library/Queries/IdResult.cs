@@ -1,14 +1,13 @@
-﻿using ServiceStack;
+﻿using NServiceBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Presentation.Inventory.Items
+namespace Demo.Library.Queries
 {
-    [Route("/items/{Id}/delete", "DELETE")]
-    public class DeleteItem
+    public class IdResult : IMessage
     {
         public Guid Id { get; set; }
     }

@@ -43,6 +43,11 @@ namespace Demo.Domain.Inventory.Items
             };
         }
 
+        private void Handle(DescriptionChanged e)
+        {
+            _identity.Description = e.Description;
+        }
+
         public void ChangeDescription(String Description)
         {
             Apply<DescriptionChanged>(e =>

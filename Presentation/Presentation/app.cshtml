@@ -39,39 +39,6 @@
 
     <script type="text/javascript" src="~/Scripts/require.js" data-main="/App/main"></script>
 
-    <script type="text/javascript">
-        var itemEventHandler = {
-            Created: function (data) {
-                console.log( data);
-            },
-            DescriptionChanged: function (data) {
-                console.log( data);
-            }
-        };
-
-        $(document).ready(function () {
-            var source = new EventSource('/event-stream?channel=events&t=' + new Date().getTime());
-
-            source.addEventListener('error', function (e) {
-                console.log("ERROR!", e);
-            }, false);
-
-            $.ss.eventReceivers = { 'Item': itemEventHandler };
-
-
-            $(source).handleServerEvents({
-                handlers: {
-                    onConnect: function (subscription) {
-                        activeSub = subscription;
-                        console.log("Connected!");
-                    },
-                    success: function (selector, msg, json) {
-                        console.log(selector, msg, json);
-                    }
-                }
-            });
-        });
-    </script>
 
 </body>
 </html>
