@@ -16,6 +16,8 @@ define('knockout', () => {
     return ko;
 });
 
+function splitOnFirst (s, c) { if (!s) return [s]; var pos = s.indexOf(c); return pos >= 0 ? [s.substring(0, pos), s.substring(pos + 1)] : [s]; };
+
 define(function (require) {
     var app = require('durandal/app'),
         viewLocator = require('durandal/viewLocator'),
@@ -47,6 +49,16 @@ define(function (require) {
         };
         source.onmessage = (e) => {
             console.log(e);
+
+            var parts = splitOnFirst(e.data, ' ');
+            var json = parts[1];
+            var msg = json ? JSON.parse(json) : null;
+
+            console.log(msg.Urn);
+            //var data = $.parseJSON(e.data);
+            if( msg != null && msg.Urn !== undefined )
+                amplify.publish(msg.Urn, msg.Payload);
+
         };
     });
 });

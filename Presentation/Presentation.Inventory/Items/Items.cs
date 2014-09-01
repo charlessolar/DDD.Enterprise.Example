@@ -30,7 +30,7 @@ namespace Demo.Presentation.Inventory.Items
         }
 
 
-        public Task<Item> Any(GetItem request)
+        public Task<Base<Item>> Any(GetItem request)
         {
 
 
@@ -48,7 +48,11 @@ namespace Demo.Presentation.Inventory.Items
 
                 item.AddSession(base.Cache, Request.GetPermanentSessionId());
 
-                return item;
+                // Build the base response
+
+                var key = UrnId.Create<Item>(item.Id);
+
+                return new Base<Item> { Urn = key, Version = 0, Payload = item };
             });
         }
 

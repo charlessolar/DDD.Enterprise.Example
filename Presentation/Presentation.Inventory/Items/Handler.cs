@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Demo.Library.Responses;
 
 namespace Demo.Presentation.Inventory.Items
 {
@@ -40,8 +41,10 @@ namespace Demo.Presentation.Inventory.Items
 
             item.UpdateCache(_cache);
 
+            var response = new Base<Item> { Urn = key, Version = wrapper.Version, Payload = item };
+
             foreach (var session in wrapper.Sessions)
-                _events.NotifySession(session, key, item);
+                _events.NotifySession(session, "update", response);
         }
     }
 }

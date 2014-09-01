@@ -147,13 +147,28 @@
     <Content Include="Content\starterkit.css" />
     <Content Include="packages.config" />
     <Content Include="app.cshtml" />
+    <None Include="Scripts\amplify-vsdoc.js" />
+    <Content Include="Scripts\amplify.js" />
+    <Content Include="Scripts\amplify.min.js" />
+    <Content Include="Scripts\amplify\amplify.core.js" />
+    <Content Include="Scripts\amplify\amplify.core.min.js" />
+    <Content Include="Scripts\amplify\amplify.request.js" />
+    <Content Include="Scripts\amplify\amplify.request.min.js" />
+    <Content Include="Scripts\amplify\amplify.store.js" />
+    <Content Include="Scripts\amplify\amplify.store.min.js" />
     <Content Include="Scripts\boot.js">
       <DependentUpon>boot.js.bundle</DependentUpon>
     </Content>
     <Content Include="Scripts\boot.min.js">
       <DependentUpon>boot.js</DependentUpon>
     </Content>
+    <None Include="Scripts\jquery-1.4.1-vsdoc.js" />
+    <Content Include="Scripts\GPL-LICENSE.txt" />
+    <Content Include="Scripts\jquery-1.4.1.js" />
+    <Content Include="Scripts\jquery-1.4.1.min.js" />
     <Content Include="Scripts\knockout-3.1.0.debug.js" />
+    <Content Include="Scripts\MIT-LICENSE.txt" />
+    <Content Include="Scripts\README.txt" />
     <Content Include="Views\_splash.cshtml" />
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\bootstrap\badges.less" />
@@ -345,30 +360,31 @@
   <ItemGroup>
     <TypeScriptCompile Include="App\data\data.ts" />
     <TypeScriptCompile Include="App\flickr\flickr.ts" />
-    <TypeScriptCompile Include="App\lib\data\Entity.ts" />
     <TypeScriptCompile Include="App\lib\data\Repository.ts" />
-    <TypeScriptCompile Include="App\lib\guid.ts" />
     <TypeScriptCompile Include="App\lib\sse.d.ts" />
     <TypeScriptCompile Include="App\main.ts" />
     <TypeScriptCompile Include="App\shell\shell.ts" />
     <TypeScriptCompile Include="App\welcome\welcome.ts" />
     <TypeScriptCompile Include="Scripts\jaydata.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\amplifyjs\amplifyjs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\durandal\durandal.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\requirejs\require.d.ts" />
+    <TypeScriptCompile Include="$(SolutionDir)\Infrastructure\Library\**\*.ts">
+      <Link>App\Demo\Library\%(RecursiveDir)%(FileName)</Link>
+    </TypeScriptCompile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
-    <TypeScriptSourceMap>False</TypeScriptSourceMap>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptModuleKind>amd</TypeScriptModuleKind>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
