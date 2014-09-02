@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2F966DEA-AFCB-49E2-BE7C-85FC0706EAD6}</ProjectGuid>
+    <ProjectGuid>{18822E29-9A73-4F81-815C-6289465F6DF2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Demo.Application.Inventory</RootNamespace>
-    <AssemblyName>Application.Inventory</AssemblyName>
+    <RootNamespace>Demo.Library.ServiceStack</RootNamespace>
+    <AssemblyName>Library.ServiceStack</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,24 +30,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentValidation.5.4.0.0\lib\Net40\FluentValidation.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceBus, Version=4.6.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="NServiceBus">
       <HintPath>..\..\packages\NServiceBus.Interfaces.4.6.4\lib\net40\NServiceBus.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RavenDB.Client.2.5.2916\lib\net45\Raven.Abstractions.dll</HintPath>
+    <Reference Include="ServiceStack">
+      <HintPath>..\..\packages\ServiceStack.4.0.30\lib\net40\ServiceStack.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RavenDB.Client.2.5.2916\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="ServiceStack.Client">
+      <HintPath>..\..\packages\ServiceStack.Client.4.0.30\lib\net40\ServiceStack.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\..\packages\ServiceStack.Common.4.0.30\lib\net40\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\..\packages\ServiceStack.Interfaces.4.0.30\lib\portable-wp80+sl5+net40+win8+monotouch+monoandroid\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\..\packages\ServiceStack.Text.4.0.30\lib\net40\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,34 +57,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Items\EventHandler.cs" />
-    <Compile Include="Items\Validators\AllItems.cs" />
-    <Compile Include="Items\Validators\FindItems.cs" />
-    <Compile Include="Items\Validators\GetItem.cs" />
-    <Compile Include="SerialNumbers\EventHandler.cs" />
-    <Compile Include="Items\QueryHandler.cs" />
+    <Compile Include="Cache\CacheExtensions.cs" />
+    <Compile Include="Cache\Wrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerialNumbers\QueryHandler.cs" />
-    <Compile Include="SerialNumbers\Validators\AllSerialNumbers.cs" />
-    <Compile Include="SerialNumbers\Validators\FindSerialNumbers.cs" />
-    <Compile Include="SerialNumbers\Validators\GetSerialNumber.cs" />
+    <Compile Include="Responses\Base.cs" />
+    <Compile Include="Responses\IdResponse.cs" />
+    <Compile Include="Responses\IIsList.cs" />
+    <Compile Include="Responses\ResponseExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Domain\Domain.Inventory.Messages\Domain.Inventory.Messages.csproj">
-      <Project>{47eeddc9-f335-4833-9972-1892a2b2ac88}</Project>
-      <Name>Domain.Inventory.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
+    <ProjectReference Include="..\Library\Library.csproj">
       <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
       <Name>Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Application.Inventory.Messages\Application.Inventory.Messages.csproj">
-      <Project>{30c5d76b-1730-478c-aa9e-186d738e7f54}</Project>
-      <Name>Application.Inventory.Messages</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

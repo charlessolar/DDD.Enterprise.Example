@@ -1,5 +1,5 @@
 ﻿using Demo.Domain.Inventory.Items.Events;
-using Demo.Library.Cache;
+using Demo.Library.Extensions;
 using NServiceBus;
 using Demo.Presentation.Inventory.Models.Items.Responses;
 using ServiceStack;
@@ -32,16 +32,13 @@ namespace Demo.Presentation.Inventory.Items
         {
             var key =  UrnId.Create<Item>(e.ItemId);
 
-            var wrapper = key.FromCache(_cache);
+            var wrapper = key.FromCache<Item>(_cache);
             if (wrapper == null) return;
+            
+            wrapper.Payload.Description = e.Description;
+            wrapper.UpdateCache(_cache, key);
 
-            var item = wrapper.Payload as Item;
-
-            item.Description = e.Description;
-
-            item.UpdateCache(_cache);
-
-            var response = new Base<Item> { Urn = key, Version = wrapper.Version, Payload = item };
+            var response = wrapper.ToDiff(e);
 
             foreach (var session in wrapper.Sessions)
                 _events.NotifySession(session, "update", response);

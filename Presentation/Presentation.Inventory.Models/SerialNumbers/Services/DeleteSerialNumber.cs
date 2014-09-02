@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Presentation.Inventory.SerialNumbers
+namespace Demo.Presentation.Inventory.Models.SerialNumbers.Services
 {
     [Route("/serials/{Id}/delete", "DELETE")]
     public class DeleteSerialNumber

@@ -1,4 +1,5 @@
-﻿module Demo.Items {
+﻿
+module Demo.Items {
     import Guid = Demo.Library.Guid;
 
     export class CreateItem {

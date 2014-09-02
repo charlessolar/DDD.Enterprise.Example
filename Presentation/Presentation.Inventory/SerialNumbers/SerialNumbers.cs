@@ -1,14 +1,18 @@
 ﻿
-using Demo.Application.Inventory.SerialNumbers;
 using Demo.Library.Queries;
+using Demo.Library.Responses;
+using Demo.Library.Extensions;
 using NServiceBus;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Demo.Presentation.Inventory.Models.SerialNumbers.Services;
+using Demo.Presentation.Inventory.Models.SerialNumbers.Responses;
 
 namespace Demo.Presentation.Inventory.SerialNumbers
 {
@@ -16,37 +20,44 @@ namespace Demo.Presentation.Inventory.SerialNumbers
     {
         public IBus _bus { get; set; }
 
-        public Object Any(GetSerialNumber request)
+        public Task<Full<SerialNumber>> Any(GetSerialNumber request)
         {
-            var cacheKey = UrnId.Create<GetSerialNumber>(request.Id);
-            return base.Request.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
+            return _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.GetSerialNumber
             {
-                return _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.GetSerialNumber
-                {
-                    Id = request.Id,
-                }).Register(x =>
-                {
-                    return (x.Messages.First() as Result).Records;
-                }).Result;
+                Id = request.Id,
+            }).Register(x =>
+            {
+                var result = x.GetQueryResponse<Application.Inventory.SerialNumbers.SerialNumber>();
+
+                if (result == null)
+                    throw new HttpError(HttpStatusCode.NotFound, "Get request failed");
+
+                // Convert to our DTO
+                var serial = result.ConvertTo<SerialNumber>();
+
+
+                // Save DTO in cache along with this session Id
+                var wrapper = serial.AddSession(base.Cache, Request.GetPermanentSessionId());
+
+                return wrapper.ToResponse();
             });
         }
 
         public Object Any(FindSerialNumbers request)
         {
-            var cacheKey = UrnId.Create<FindSerialNumbers>(String.Format("{0}.{1}.{2:N}.{3}.{4}", request.Serial, request.Effective, request.ItemId, request.Page, request.PageSize));
-            return base.Request.ToOptimizedResultUsingCache(base.Cache, cacheKey, () =>
+            return _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.FindSerialNumbers
             {
-                return _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.FindSerialNumbers
+                Page = request.Page,
+                PageSize = request.PageSize,
+                Serial = request.Serial,
+                Effective = request.Effective,
+                ItemId = request.ItemId,
+            }).Register(x =>
+            {
+                return new Find
                 {
-                    Page = request.Page,
-                    PageSize = request.PageSize,
-                    Serial = request.Serial,
-                    Effective = request.Effective,
-                    ItemId = request.ItemId,
-                }).Register(x =>
-                {
-                    return (x.Messages.First() as Result).Records;
-                }).Result;
+                    Results = x.GetQueryListResponse<Application.Inventory.SerialNumbers.SerialNumber>().Select(r => r.ConvertTo<SerialNumber>())
+                };
             });
         }
 

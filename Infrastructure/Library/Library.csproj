@@ -56,21 +56,9 @@
     <Reference Include="NServiceBus.Core">
       <HintPath>..\..\packages\NServiceBus.4.6.4\lib\net40\NServiceBus.Core.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack">
-      <HintPath>..\..\packages\ServiceStack.4.0.30\lib\net40\ServiceStack.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Client">
-      <HintPath>..\..\packages\ServiceStack.Client.4.0.30\lib\net40\ServiceStack.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\..\packages\ServiceStack.Common.4.0.30\lib\net40\ServiceStack.Common.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.Interfaces, Version=4.0.0.0, Culture=neutral, PublicKeyToken=e06fbc6124f57c43, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\ServiceStack.Interfaces.4.0.30\lib\portable-wp80+sl5+net40+win8+monotouch+monoandroid\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\..\packages\ServiceStack.Text.4.0.30\lib\net40\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=2.6.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -86,8 +74,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\CacheExtensions.cs" />
-    <Compile Include="Cache\Wrapper.cs" />
     <Compile Include="Dynamics\DynamicTypeBuilder.cs" />
     <Compile Include="Dynamics\DynamicExtensions.cs" />
     <Compile Include="Exceptions\BusinessLogicException.cs" />
@@ -105,14 +91,11 @@
     <Compile Include="Queries\Result.cs" />
     <Compile Include="Queries\Validation\BasicQuery.cs" />
     <Compile Include="Queries\Validation\PagedQuery.cs" />
-    <Compile Include="Responses\Base.cs" />
-    <Compile Include="Responses\IIsList.cs" />
     <Compile Include="Security\IManager.cs" />
     <Compile Include="Security\Manager.cs" />
     <Compile Include="Security\SecurityInterceptor.cs" />
     <Compile Include="Security\SecurityMessageHandler.cs" />
     <Compile Include="Security\SecurityExtension.cs" />
-    <Compile Include="Responses\IdResponse.cs" />
     <Compile Include="Validation\StructureMapValidatorFactory.cs" />
     <Compile Include="Validation\ValidationMessageHandler.cs" />
   </ItemGroup>

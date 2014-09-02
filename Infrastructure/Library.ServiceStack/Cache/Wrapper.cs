@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Library.Cache
 {
-    public class Wrapper
+    public class Wrapper<T> where T : IHasGuidId
     {
         public Wrapper()
         {
@@ -21,6 +21,6 @@ namespace Demo.Library.Cache
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 
-        public IHasGuidId Payload { get; set; }
+        public T Payload { get; set; }
     }
 }

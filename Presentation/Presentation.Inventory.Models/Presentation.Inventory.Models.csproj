@@ -54,10 +54,12 @@
     <Compile Include="Items\Services\FindItems.cs" />
     <Compile Include="Items\Services\GetItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerialNumbers\CreateSerialNumber.cs" />
-    <Compile Include="SerialNumbers\DeleteSerialNumber.cs" />
-    <Compile Include="SerialNumbers\FindSerialNumbers.cs" />
-    <Compile Include="SerialNumbers\GetSerialNumber.cs" />
+    <Compile Include="SerialNumbers\Responses\Find.cs" />
+    <Compile Include="SerialNumbers\Responses\SerialNumber.cs" />
+    <Compile Include="SerialNumbers\Services\CreateSerialNumber.cs" />
+    <Compile Include="SerialNumbers\Services\DeleteSerialNumber.cs" />
+    <Compile Include="SerialNumbers\Services\FindSerialNumbers.cs" />
+    <Compile Include="SerialNumbers\Services\GetSerialNumber.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -66,6 +68,10 @@
     <ProjectReference Include="..\..\Application\Application.Inventory.Messages\Application.Inventory.Messages.csproj">
       <Project>{30c5d76b-1730-478c-aa9e-186d738e7f54}</Project>
       <Name>Application.Inventory.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\Library.ServiceStack\Library.ServiceStack.csproj">
+      <Project>{18822e29-9a73-4f81-815c-6289465f6df2}</Project>
+      <Name>Library.ServiceStack</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
       <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>

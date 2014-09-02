@@ -1,4 +1,5 @@
 ﻿
+using Demo.Presentation.Inventory.Models.SerialNumbers.Services;
 using ServiceStack.FluentValidation;
 using System;
 using System.Collections.Generic;

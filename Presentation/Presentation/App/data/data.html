@@ -7,10 +7,19 @@
 </section>
 <section>
     <h2>Details</h2>
-    <!-- ko with: detailed -->
-    <strong>Id: </strong><span data-bind="text: Id"></span><br />
-    <strong>Number: </strong><span data-bind="text: Number"></span><br />
-    <strong>Description: </strong><span data-bind="text: Description"></span><br />
-    <!-- /ko -->
+    <div data-bind="template: { if: hasDetail, name: 'detail-template', data: detailedMapping }"></div>
     <strong>Change: </strong><input type="text" data-bind="value: ChangeDescriptionTo" />
 </section>
+
+<script type="text/html" id="detail-template">
+
+    <strong>Id: </strong>
+    <span data-bind="text: Id"></span>
+    <br />
+    <strong>Number: </strong>
+    <span data-bind="text: Number"></span>
+    <br />
+    <strong>Description: </strong>
+    <span data-bind="text: Description"></span>
+    <br />
+</script>

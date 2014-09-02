@@ -30,29 +30,25 @@ namespace Demo.Presentation.Inventory.Items
         }
 
 
-        public Task<Base<Item>> Any(GetItem request)
+        public Task<Full<Item>> Any(GetItem request)
         {
-
-
             return _bus.Send("application", new Application.Inventory.Items.Queries.GetItem
             {
                 Id = request.Id,
             }).Register(x =>
             {
-                var result = (x.Messages.First() as Result).Records.FirstOrDefault();
+                var result = x.GetQueryResponse<Application.Inventory.Items.Item>();
 
                 if (result == null)
                     throw new HttpError(HttpStatusCode.NotFound, "Get request failed");
 
+                // Convert application object to our DTO
                 var item = result.ConvertTo<Item>();
+                
+                // Save DTO in cache along with this session Id
+                var wrapper = item.AddSession(base.Cache, Request.GetPermanentSessionId());
 
-                item.AddSession(base.Cache, Request.GetPermanentSessionId());
-
-                // Build the base response
-
-                var key = UrnId.Create<Item>(item.Id);
-
-                return new Base<Item> { Urn = key, Version = 0, Payload = item };
+                return wrapper.ToResponse();
             });
         }
 
@@ -68,7 +64,7 @@ namespace Demo.Presentation.Inventory.Items
             {
                 return new Find
                 {
-                    Results = (x.Messages.First() as Result).Records.Select(r => r.ConvertTo<Item>())
+                    Results = x.GetQueryListResponse<Application.Inventory.Items.Item>().Select(r => r.ConvertTo<Item>())
                 };
             });
         }

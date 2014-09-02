@@ -1,6 +1,5 @@
 ﻿using Demo.Domain.Inventory.Items.Events;
 using NServiceBus;
-using ProxyFoo;
 using Raven.Client;
 using Raven.Client.Document;
 using System;

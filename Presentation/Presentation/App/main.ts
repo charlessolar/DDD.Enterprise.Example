@@ -5,7 +5,9 @@ requirejs.config({
         'text': '../Scripts/text',
         'durandal': '../Scripts/durandal',
         'plugins': '../Scripts/durandal/plugins',
-        'transitions': '../Scripts/durandal/transitions'
+        'transitions': '../Scripts/durandal/transitions',
+        'knockout.mapping': '../Scripts/knockout.mapping-latest',
+        'scripts': '../Scripts'
     }
 });
 
@@ -48,14 +50,10 @@ define(function (require) {
             console.log(e);
         };
         source.onmessage = (e) => {
-            console.log(e);
-
             var parts = splitOnFirst(e.data, ' ');
             var json = parts[1];
             var msg = json ? JSON.parse(json) : null;
 
-            console.log(msg.Urn);
-            //var data = $.parseJSON(e.data);
             if( msg != null && msg.Urn !== undefined )
                 amplify.publish(msg.Urn, msg.Payload);
 

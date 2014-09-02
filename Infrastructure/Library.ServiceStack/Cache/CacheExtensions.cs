@@ -1,4 +1,5 @@
-﻿using Demo.Library.Responses;
+﻿using Demo.Library.Cache;
+using Demo.Library.Responses;
 using ServiceStack;
 using ServiceStack.Caching;
 using ServiceStack.Model;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Library.Cache
+namespace Demo.Library.Extensions
 {
     public static class CacheExtensions
     {
@@ -18,9 +19,9 @@ namespace Demo.Library.Cache
         /// <param name="obj">The object to be wrapped</param>
         /// <param name="version">Optional initial version</param>
         /// <returns>A wrapper object to serialize into cache</returns>
-        public static Wrapper Wrap(this IHasGuidId obj, Int32 version = 0)
+        public static Wrapper<T> Wrap<T>(this T obj, Int32 version = 0) where T : class, IHasGuidId
         {
-            return new Wrapper
+            return new Wrapper<T>
             {
                 Created = DateTime.UtcNow,
                 Updated = DateTime.UtcNow,
@@ -32,27 +33,30 @@ namespace Demo.Library.Cache
 
 
 
-        public static void AddSession<T>( this T obj, ICacheClient cache, String session) where T : class, IHasGuidId
+        public static Wrapper<T> AddSession<T>( this T obj, ICacheClient cache, String session) where T : class, IHasGuidId
         {
             var key = UrnId.Create<T>(obj.Id);
 
-            var cached = key.FromCache(cache) 
+            var cached = key.FromCache<T>(cache) 
                 ?? obj.Wrap();
 
-            if (cached == null) return;
             if (cached.Sessions == null)
                 cached.Sessions = new List<String>();
 
+            // Don't allow duplicate session strings, so remove if it exists first
+            cached.Sessions.Remove(session);
             cached.Sessions.Add(session);
 
             cached.UpdateCache(cache, key);
+
+            return cached;
         }
 
         public static void RemoveSession<T>( this T obj, ICacheClient cache, String session) where T : class, IHasGuidId
         {
             var key = UrnId.Create<T>(obj.Id);
 
-            var cached = key.FromCache(cache);
+            var cached = key.FromCache<T>(cache);
 
             if (cached == null || cached.Sessions == null) return;
 
@@ -61,19 +65,19 @@ namespace Demo.Library.Cache
             cached.UpdateCache(cache, key);
         }
 
-        public static Wrapper FromCache( this String urn, ICacheClient cache)
+        public static Wrapper<T> FromCache<T>(this String urn, ICacheClient cache) where T : class, IHasGuidId
         {
             var cached = cache.Get<String>(urn);
             if (cached == null) return null;
-            return cached.FromJson<Wrapper>();
+            return cached.FromJson<Wrapper<T>>();
         }
 
 
-        public static void AddCache(this Wrapper wrapper, ICacheClient cache, String key)
+        public static void AddCache<T>(this Wrapper<T> wrapper, ICacheClient cache, String key) where T : class, IHasGuidId
         {
             cache.Add(key, wrapper.ToJson());
         }
-        public static void UpdateCache( this Wrapper wrapper, ICacheClient cache, String key )
+        public static void UpdateCache<T>(this Wrapper<T> wrapper, ICacheClient cache, String key) where T : class, IHasGuidId
         {
             cache.Set(key, wrapper.ToJson());
         }
@@ -89,7 +93,7 @@ namespace Demo.Library.Cache
         {
             var key = UrnId.Create<T>(obj.Id);
 
-            Wrapper wrapper = key.FromCache(cache)
+            Wrapper<T> wrapper = key.FromCache<T>(cache)
                 ?? obj.Wrap();
 
             wrapper.Payload = obj;

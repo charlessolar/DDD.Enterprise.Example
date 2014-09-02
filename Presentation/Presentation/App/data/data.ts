@@ -1,14 +1,17 @@
 ﻿/// <reference path="../../Scripts/typings/durandal/durandal.d.ts" />
 /// <reference path="../../Scripts/typings/knockout/knockout.d.ts" />
+/// <reference path="../../Scripts/typings/knockout.mapping/knockout.mapping.d.ts" />
 /// <reference path="../../Scripts/typings/amplifyjs/amplifyjs.d.ts" />
+/// <reference path="../../Scripts/typings/moment/moment.d.ts" />
 /// <reference path="../lib/data/Repository.ts" />
 
     import http = require('plugins/http');
     import app = require('durandal/app');
-    import ko = require('knockout');
+    import mapping = require('knockout.mapping');
     import Guid = Demo.Library.Guid;
 
     export class Model implements Demo.Library.IHasGuidId {
+
         Id: Guid;
         Number: string;
         Description: string;
@@ -28,7 +31,7 @@
 
     class ItemRepository implements Repository<Model>{
 
-        get(id: Guid): JQueryPromise<Demo.Library.Responses.Base<Model>> {
+        get(id: Guid): JQueryPromise<Demo.Library.Responses.Full<Model>> {
             return http.get('/items/' + id.toString(), { format: 'json' });
         }
         update(model: Model): JQueryPromise<boolean> {
@@ -49,21 +52,25 @@
         }
 
         changeDescription(id: Guid, description: string) {
-            return http.post('/items/' + id.toString(), { description: description });
+            return http.post('/items/' + id.toString(), { Description: description });
         }
     }
-
+    
     export var displayName = 'Data';
     export var data = ko.observableArray<Model>();
-    export var detailed = ko.observable<Model>();
+    export var detailedMapping = ko.observable<any>();
     export var ChangeDescriptionTo = ko.observable<string>();
+
+    export var hasDetail = ko.computed(function () {
+        return detailedMapping() != null;
+    });
 
     export function activate() {
         //the router's activator calls this function and waits for it to complete before proceeding
         if (this.data().length > 0) {
             return;
         }
-
+        
 
         var that = this;
 
@@ -77,17 +84,17 @@
         var repo = new ItemRepository();
         repo.get(item.Id).then((r) => {
             amplify.subscribe(r.Urn, (d) => {
-                detailed(d);
+                mapping.fromJS(d, detailedMapping());
             });
 
-            detailed(r.Payload)
+            detailedMapping(mapping.fromJS(r.Payload));
+            //detailed(r.Payload)
         });
     }
 
     export function clicky() {
 
         var repo = new ItemRepository();
-
-        repo.changeDescription(detailed().Id, ChangeDescriptionTo());
+        repo.changeDescription(detailedMapping().Id(), ChangeDescriptionTo());
     }
 

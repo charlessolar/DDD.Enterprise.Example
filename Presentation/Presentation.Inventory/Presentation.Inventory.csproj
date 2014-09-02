@@ -59,6 +59,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -89,6 +90,10 @@
     <ProjectReference Include="..\..\Domain\Domain.Inventory.Messages\Domain.Inventory.Messages.csproj">
       <Project>{47eeddc9-f335-4833-9972-1892a2b2ac88}</Project>
       <Name>Domain.Inventory.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Infrastructure\Library.ServiceStack\Library.ServiceStack.csproj">
+      <Project>{18822e29-9a73-4f81-815c-6289465f6df2}</Project>
+      <Name>Library.ServiceStack</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
       <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>

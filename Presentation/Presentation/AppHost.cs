@@ -12,6 +12,7 @@ using ServiceStack.Logging.Log4Net;
 using ServiceStack.Messaging;
 using ServiceStack.Razor;
 using ServiceStack.Redis;
+using ServiceStack.Text;
 using ServiceStack.Validation;
 using StructureMap;
 using System;
@@ -81,7 +82,8 @@ namespace Demo.Presentation
 
         public override void Configure(Funq.Container container)
         {
-
+            JsConfig.IncludeNullValues = true;
+            JsConfig.AlwaysUseUtc = true;
 
             container.Adapter = new StructureMapContainerAdapter();
 
