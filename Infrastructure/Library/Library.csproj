@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -98,18 +97,34 @@
     <Compile Include="Security\SecurityExtension.cs" />
     <Compile Include="Validation\StructureMapValidatorFactory.cs" />
     <Compile Include="Validation\ValidationMessageHandler.cs" />
+    <Compile Include="ValueObject\ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\Guid.ts" />
-    <TypeScriptCompile Include="Scripts\IHasId.ts" />
-    <TypeScriptCompile Include="Scripts\Queries\BasicQuery.ts" />
-    <TypeScriptCompile Include="Scripts\Queries\PagedQuery.ts" />
-    <TypeScriptCompile Include="Scripts\Responses\Base.ts" />
+    <TypeScriptCompile Include="Scripts\Demo\Guid.ts" />
+    <TypeScriptCompile Include="Scripts\Demo\IHasId.ts" />
+    <TypeScriptCompile Include="Scripts\Demo\Queries\BasicQuery.ts" />
+    <TypeScriptCompile Include="Scripts\Demo\Queries\PagedQuery.ts" />
+    <TypeScriptCompile Include="Scripts\Demo\Responses\Base.ts" />
+    <TypeScriptCompile Include="Scripts\Demo\Services\Definition.ts" />
+    <TypeScriptCompile Include="$(SolutionDir)\Presentation\Presentation\Scripts\typings\**\*.ts">
+      <Link>Scripts\typings\%(RecursiveDir)%(FileName)</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Scripts\Demo\Services\Decoder.ts" />
   </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -162,6 +162,7 @@
     <Content Include="Scripts\boot.min.js">
       <DependentUpon>boot.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\Demo.js" />
     <Content Include="Scripts\GPL-LICENSE.txt" />
     <Content Include="Scripts\knockout-2.0.0.debug.js" />
     <Content Include="Scripts\knockout-2.0.0.js" />
@@ -253,6 +254,7 @@
       <DependentUpon>boot.min.js</DependentUpon>
     </Content>
     <Content Include="Content\site.css.bundle" />
+    <Content Include="Scripts\amplify\amplify.request.deferred.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -264,7 +266,6 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\almond-custom.js" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\datajs-1.1.3.js" />
     <Content Include="Scripts\durandal\activator.js" />
     <Content Include="Scripts\durandal\app.js" />
     <Content Include="Scripts\durandal\binder.js" />
@@ -281,54 +282,6 @@
     <Content Include="Scripts\durandal\transitions\entrance.js" />
     <Content Include="Scripts\durandal\viewEngine.js" />
     <Content Include="Scripts\durandal\viewLocator.js" />
-    <None Include="Scripts\jaydata-vsdoc.js" />
-    <Content Include="Scripts\jaydata.js" />
-    <Content Include="Scripts\jaydatamodules\angular.js" />
-    <Content Include="Scripts\jaydatamodules\angular.min.js" />
-    <Content Include="Scripts\jaydatamodules\deferred.js" />
-    <Content Include="Scripts\jaydatamodules\deferred.min.js" />
-    <Content Include="Scripts\jaydatamodules\errorhandler.js" />
-    <Content Include="Scripts\jaydatamodules\errorhandler.min.js" />
-    <Content Include="Scripts\jaydatamodules\formBinder.js" />
-    <Content Include="Scripts\jaydatamodules\formBinder.min.js" />
-    <Content Include="Scripts\jaydatamodules\handlebars.js" />
-    <Content Include="Scripts\jaydatamodules\inMemory.js" />
-    <Content Include="Scripts\jaydatamodules\inMemory.min.js" />
-    <Content Include="Scripts\jaydatamodules\jaydata.mscrm.js" />
-    <Content Include="Scripts\jaydatamodules\jaydata.mscrm.min.js" />
-    <Content Include="Scripts\jaydatamodules\jaydata.mscrm.server.js" />
-    <Content Include="Scripts\jaydatamodules\jaydata.mscrm.server.min.js" />
-    <Content Include="Scripts\jaydatamodules\kendo.js" />
-    <Content Include="Scripts\jaydatamodules\kendo.min.js" />
-    <Content Include="Scripts\jaydatamodules\knockout.js" />
-    <Content Include="Scripts\jaydatamodules\knockout.min.js" />
-    <Content Include="Scripts\jaydatamodules\NoBatch.min.js" />
-    <Content Include="Scripts\jaydatamodules\qDeferred.js" />
-    <Content Include="Scripts\jaydatamodules\qDeferred.min.js" />
-    <Content Include="Scripts\jaydatamodules\sencha.js" />
-    <Content Include="Scripts\jaydatamodules\sencha.min.js" />
-    <Content Include="Scripts\jaydatamodules\template.js" />
-    <Content Include="Scripts\jaydatamodules\template.min.js" />
-    <Content Include="Scripts\jaydatamodules\validate.js" />
-    <Content Include="Scripts\jaydatamodules\validate.min.js" />
-    <Content Include="Scripts\jaydataproviders\FacebookProvider.js" />
-    <Content Include="Scripts\jaydataproviders\FacebookProvider.min.js" />
-    <Content Include="Scripts\jaydataproviders\IndexedDbProvider.js" />
-    <Content Include="Scripts\jaydataproviders\IndexedDbProvider.min.js" />
-    <Content Include="Scripts\jaydataproviders\InMemoryProvider.js" />
-    <Content Include="Scripts\jaydataproviders\InMemoryProvider.min.js" />
-    <Content Include="Scripts\jaydataproviders\MongoDbProvider.js" />
-    <Content Include="Scripts\jaydataproviders\MongoDbProvider.min.js" />
-    <Content Include="Scripts\jaydataproviders\oDataProvider.js" />
-    <Content Include="Scripts\jaydataproviders\oDataProvider.min.js" />
-    <Content Include="Scripts\jaydataproviders\SqLiteProvider.js" />
-    <Content Include="Scripts\jaydataproviders\SqLiteProvider.min.js" />
-    <Content Include="Scripts\jaydataproviders\StormProvider.js" />
-    <Content Include="Scripts\jaydataproviders\StormProvider.min.js" />
-    <Content Include="Scripts\jaydataproviders\WebApiProvider.js" />
-    <Content Include="Scripts\jaydataproviders\WebApiProvider.min.js" />
-    <Content Include="Scripts\jaydataproviders\YQLProvider.js" />
-    <Content Include="Scripts\jaydataproviders\YQLProvider.min.js" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\moment-with-locales.js" />
@@ -366,7 +319,6 @@
     <TypeScriptCompile Include="App\main.ts" />
     <TypeScriptCompile Include="App\shell\shell.ts" />
     <TypeScriptCompile Include="App\welcome\welcome.ts" />
-    <TypeScriptCompile Include="Scripts\jaydata.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\amplifyjs\amplifyjs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\durandal\durandal.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
@@ -374,21 +326,33 @@
     <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\requirejs\require.d.ts" />
-    <TypeScriptCompile Include="$(SolutionDir)\Infrastructure\Library\**\*.ts">
-      <Link>App\Demo\Library\%(RecursiveDir)%(FileName)</Link>
+    <TypeScriptCompile Include="$(SolutionDir)\Infrastructure\Library\Scripts\Demo\**\*.ts">
+      <Link>_Reference\Demo\Library\%(RecursiveDir)%(FileName)</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="$(SolutionDir)\Presentation\Presentation.Inventory\**\*.ts">
+      <Link>_Reference\Demo\Inventory\%(RecursiveDir)%(FileName)</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="$(SolutionDir)\Presentation\Presentation.Inventory.Models\**\*.ts">
+      <Link>_Reference\Demo\Inventory\Models\%(RecursiveDir)%(FileName)</Link>
     </TypeScriptCompile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>amd</TypeScriptModuleKind>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

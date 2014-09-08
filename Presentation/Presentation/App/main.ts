@@ -1,4 +1,4 @@
-﻿/// <reference path="../Scripts/typings/requirejs/require.d.ts" />
+﻿
 
 requirejs.config({
     paths: {
@@ -7,7 +7,6 @@ requirejs.config({
         'plugins': '../Scripts/durandal/plugins',
         'transitions': '../Scripts/durandal/transitions',
         'knockout.mapping': '../Scripts/knockout.mapping-latest',
-        'scripts': '../Scripts'
     }
 });
 
@@ -17,8 +16,11 @@ define('jquery', () => {
 define('knockout', () => {
     return ko;
 });
+define('amplify', () => {
+    return amplify;
+});
 
-function splitOnFirst (s, c) { if (!s) return [s]; var pos = s.indexOf(c); return pos >= 0 ? [s.substring(0, pos), s.substring(pos + 1)] : [s]; };
+function splitOnFirst (s: string, c: string) { if (!s) return [s]; var pos = s.indexOf(c); return pos >= 0 ? [s.substring(0, pos), s.substring(pos + 1)] : [s]; };
 
 define(function (require) {
     var app = require('durandal/app'),

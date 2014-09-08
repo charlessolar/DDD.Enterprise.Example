@@ -105,12 +105,27 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Items\Handler.ts" />
     <TypeScriptCompile Include="Items\Items.ts" />
-    <TypeScriptCompile Include="$(SolutionDir)\Infrastructure\Library\**\*.ts">
-      <Link>Reference\Demo\Library\%(RecursiveDir)%(FileName)</Link>
+    <TypeScriptCompile Include="$(SolutionDir)\Infrastructure\Library\Scripts\Demo\**\*.ts">
+      <Link>_Reference\Demo\Library\%(RecursiveDir)%(FileName)</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="$(SolutionDir)\Presentation\Presentation\Scripts\typings\**\*.ts">
+      <Link>_Reference\typings\%(RecursiveDir)%(FileName)</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="$(SolutionDir)\Presentation\Presentation.Inventory.Models\**\*.ts">
+      <Link>_Reference\Demo\Inventory\Models\%(RecursiveDir)%(FileName)</Link>
     </TypeScriptCompile>
   </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

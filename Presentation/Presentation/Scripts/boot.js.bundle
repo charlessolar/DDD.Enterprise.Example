@@ -14,5 +14,6 @@
     <file>/Scripts/knockout-3.1.0.debug.js</file>
     <file>/Scripts/bootstrap.js</file>
     <file>/Scripts/amplify.js</file>
+    <file>/Scripts/amplify/amplify.request.deferred.js</file>
   </files>
 </bundle>

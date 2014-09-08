@@ -1,48 +1,30 @@
-﻿
-module Demo.Items {
-    import Guid = Demo.Library.Guid;
+﻿module Demo.Inventory.Items {
+    import Services = Demo.Library.Services;
+    import s = Demo.Inventory.Models.Items.Services;
+    import r = Demo.Inventory.Models.Items.Responses;
 
-    export class CreateItem {
-        Id: Guid;
-        Number: string;
-        Description: string;
-        UnitOfMeasure: string;
+    export class Service {
+        static resources: Services.Definitions = {
+            'create': new Services.Definition('/items', 'POST'),
+            'find': new Services.Definition('/items', 'GET'),
+            'read': new Services.Definition('/items/{id}', 'GET', 'full'),
+            'update': new Services.Definition('/items/{id}', 'PUT'),
+            'delete': new Services.Definition('/items/{id}', 'DELETE')
+        };
 
-        CatalogPrice: number;
-        CostPrice: number;
-    }
 
-    export class ChangeDescription {
-        ItemId: Guid;
-        Description: string;
-    }
+        Get(model: s.Get): JQueryPromise<r.Item> {
+            return Service.resources['read'].request(model);
+        }
+        Find(model: s.Find): JQueryPromise<r.Find> {
+            return Service.resources['find'].request(model);
+        }
+        Create(model: s.Create): JQueryPromise<Demo.Library.Guid> {
+            return Service.resources['create'].request(model);
+        }
+        ChangeDescription(model: s.ChangeDescription): JQueryPromise<Demo.Library.Guid> {
+            return Service.resources['update'].request(model);
+        }
 
-    export class DeleteItem {
-        Id: Guid;
-    }
-
-    export class FindItems implements Demo.Library.Queries.PagedQuery {
-        Number: string;
-        Description: string;
-
-        Page: number;
-        PageSize: number;
-    }
-
-    export class GetItem implements Demo.Library.Queries.BasicQuery {
-        Id: Guid;
-    }
-
-    export class Find {
-        Results: Item[];
-    }
-
-    export class Item implements Demo.Library.IHasGuidId {
-        Id: Guid;
-        Number: string;
-        Description: string;
-        UnitOfMeasure: string;
-        CatalogPrice: number;
-        CostPrice: number;
     }
 }

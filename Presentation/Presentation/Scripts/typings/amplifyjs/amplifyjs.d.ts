@@ -40,7 +40,7 @@ interface amplifyRequest {
     * data: A set of key/value pairs of data to be sent to the resource.
     * callback: A function to invoke if the resource is retrieved successfully.
     */
-    (resourceId: string, hash?: any, callback?: Function): void;
+    (resourceId: string, hash?: any): JQueryPromise<any>;
 
     /***
     * Request a resource.
