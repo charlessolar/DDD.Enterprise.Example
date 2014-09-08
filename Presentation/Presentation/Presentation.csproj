@@ -162,7 +162,6 @@
     <Content Include="Scripts\boot.min.js">
       <DependentUpon>boot.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\Demo.js" />
     <Content Include="Scripts\GPL-LICENSE.txt" />
     <Content Include="Scripts\knockout-2.0.0.debug.js" />
     <Content Include="Scripts\knockout-2.0.0.js" />

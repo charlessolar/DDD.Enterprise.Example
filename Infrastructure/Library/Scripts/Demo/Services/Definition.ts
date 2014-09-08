@@ -1,10 +1,19 @@
 ﻿module Demo.Library.Services {
     
     export interface Definitions {
-        [index: string]: Definition;
+        [index: string]: IDefinition;
     }
 
-    export class Definition {
+    export interface IDefinition {
+        id: Guid;
+        url: string;
+        type: string;
+        toString(format?: string);
+        valueOf();
+        request(model: any): JQueryPromise<any>;
+    }
+
+    export class Definition<T> implements IDefinition {
         constructor(url: string, type: string, decoder?: string) {
             this.id = Guid.newGuid();
             this.url = url;
@@ -29,7 +38,7 @@
             return this.id;
         }
 
-        request(model: any): JQueryPromise<any> {
+        request(model: T): JQueryPromise<T> {
             return amplify.request(this.toString(), model);
         }
     }
