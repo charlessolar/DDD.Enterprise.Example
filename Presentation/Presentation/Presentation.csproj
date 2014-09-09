@@ -313,11 +313,12 @@
   <ItemGroup>
     <TypeScriptCompile Include="App\data\data.ts" />
     <TypeScriptCompile Include="App\flickr\flickr.ts" />
-    <TypeScriptCompile Include="App\lib\data\Repository.ts" />
     <TypeScriptCompile Include="App\lib\sse.d.ts" />
     <TypeScriptCompile Include="App\main.ts" />
     <TypeScriptCompile Include="App\shell\shell.ts" />
     <TypeScriptCompile Include="App\welcome\welcome.ts" />
+    <TypeScriptCompile Include="App\lib\Demo\Inventory\Items.ts" />
+    <TypeScriptCompile Include="App\lib\Demo\Library.ts" />
     <TypeScriptCompile Include="Scripts\typings\amplifyjs\amplifyjs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\durandal\durandal.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
@@ -325,15 +326,6 @@
     <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\requirejs\require.d.ts" />
-    <TypeScriptCompile Include="$(SolutionDir)\Infrastructure\Library\Scripts\Demo\**\*.ts">
-      <Link>_Reference\Demo\Library\%(RecursiveDir)%(FileName)</Link>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="$(SolutionDir)\Presentation\Presentation.Inventory\**\*.ts">
-      <Link>_Reference\Demo\Inventory\%(RecursiveDir)%(FileName)</Link>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="$(SolutionDir)\Presentation\Presentation.Inventory.Models\**\*.ts">
-      <Link>_Reference\Demo\Inventory\Models\%(RecursiveDir)%(FileName)</Link>
-    </TypeScriptCompile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

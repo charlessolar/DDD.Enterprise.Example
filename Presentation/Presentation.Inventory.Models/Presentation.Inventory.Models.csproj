@@ -80,16 +80,6 @@
       <Name>Library</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Items\Responses.ts" />
-    <TypeScriptCompile Include="Items\Services.ts" />
-    <TypeScriptCompile Include="$(SolutionDir)\Infrastructure\Library\Scripts\Demo\**\*.ts">
-      <Link>_Reference\Demo\Library\%(RecursiveDir)%(FileName)</Link>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="$(SolutionDir)\Presentation\Presentation\Scripts\typings\**\*.ts">
-      <Link>_Reference\typings\%(RecursiveDir)%(FileName)</Link>
-    </TypeScriptCompile>
-  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>

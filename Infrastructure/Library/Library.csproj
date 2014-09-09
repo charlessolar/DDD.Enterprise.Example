@@ -104,26 +104,40 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\Demo\Guid.ts" />
-    <TypeScriptCompile Include="Scripts\Demo\IHasId.ts" />
-    <TypeScriptCompile Include="Scripts\Demo\Queries\BasicQuery.ts" />
-    <TypeScriptCompile Include="Scripts\Demo\Queries\PagedQuery.ts" />
-    <TypeScriptCompile Include="Scripts\Demo\Responses\Base.ts" />
-    <TypeScriptCompile Include="Scripts\Demo\Services\Definition.ts" />
-    <TypeScriptCompile Include="$(SolutionDir)\Presentation\Presentation\Scripts\typings\**\*.ts">
-      <Link>Scripts\typings\%(RecursiveDir)%(FileName)</Link>
+    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\amplifyjs\amplifyjs.d.ts">
+      <Link>Scripts\typings\amplifyjs\amplifyjs.d</Link>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Scripts\Demo\Services\Decoder.ts" />
+    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\durandal\durandal.d.ts">
+      <Link>Scripts\typings\durandal\durandal.d</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\jquery\jquery.d.ts">
+      <Link>Scripts\typings\jquery\jquery.d</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\knockout.mapping\knockout.mapping.d.ts">
+      <Link>Scripts\typings\knockout.mapping\knockout.mapping.d</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\knockout\knockout.d.ts">
+      <Link>Scripts\typings\knockout\knockout.d</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\moment\moment.d.ts">
+      <Link>Scripts\typings\moment\moment.d</Link>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\requirejs\require.d.ts">
+      <Link>Scripts\typings\requirejs\require.d</Link>
+    </TypeScriptCompile>
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>amd</TypeScriptModuleKind>
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>amd</TypeScriptModuleKind>
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

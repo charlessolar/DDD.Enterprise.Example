@@ -104,18 +104,6 @@
       <Name>Presentation.Inventory.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Items\Items.ts" />
-    <TypeScriptCompile Include="$(SolutionDir)\Infrastructure\Library\Scripts\Demo\**\*.ts">
-      <Link>_Reference\Demo\Library\%(RecursiveDir)%(FileName)</Link>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="$(SolutionDir)\Presentation\Presentation\Scripts\typings\**\*.ts">
-      <Link>_Reference\typings\%(RecursiveDir)%(FileName)</Link>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="$(SolutionDir)\Presentation\Presentation.Inventory.Models\**\*.ts">
-      <Link>_Reference\Demo\Inventory\Models\%(RecursiveDir)%(FileName)</Link>
-    </TypeScriptCompile>
-  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>

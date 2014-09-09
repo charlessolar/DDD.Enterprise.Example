@@ -3,16 +3,14 @@
     import http = require('plugins/http');
     import app = require('durandal/app');
     import mapping = require('knockout.mapping');
+    import Library = require('../lib/Demo/Library');
+    import Items = require('../lib/Demo/Inventory/Items');
 
-    //import Service = Demo.Inventory.Items.Service;
-    import Guid = Demo.Library.Guid;
-    import Models = Demo.Inventory.Models.Items;
-    import Service = Demo.Inventory.Items.Service;
-
+    
 
     
     export var displayName = 'Data';
-    export var data = ko.observableArray<Models.Responses.Item>();
+    export var data = ko.observableArray<Items.Responses.Item>();
     export var detailedMapping = ko.observable<any>();
     export var ChangeDescriptionTo = ko.observable<string>();
 
@@ -29,14 +27,14 @@
 
         var that = this;
 
-        var s = new Service();
+        var s = new Items.Service();
         s.Find({ Page: 1, PageSize: 10 }).then((r) => {
             that.data(r.Results);
         });
     }
 
-    export function getdetail(item: Models.Responses.Item) {
-        var s = new Service();
+    export function getdetail(item: Items.Responses.Item) {
+        var s = new Items.Service();
         s.Get({ Id: item.Id }).then((r) => {
             //amplify.subscribe(r.Urn, (d) => {
             //    mapping.fromJS(d, detailedMapping());
@@ -49,7 +47,7 @@
 
     export function clicky() {
 
-        var s = new Service();
+        var s = new Items.Service();
         s.ChangeDescription({ Id: detailedMapping().Id(), Description: ChangeDescriptionTo() });
     }
 
