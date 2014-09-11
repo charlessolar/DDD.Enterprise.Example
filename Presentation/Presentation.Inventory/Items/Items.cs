@@ -30,7 +30,7 @@ namespace Demo.Presentation.Inventory.Items
         }
 
 
-        public Task<Full<Item>> Any(GetItem request)
+        public Task<Envelope<Item>> Any(GetItem request)
         {
             return _bus.Send("application", new Application.Inventory.Items.Queries.GetItem
             {
@@ -44,11 +44,8 @@ namespace Demo.Presentation.Inventory.Items
 
                 // Convert application object to our DTO
                 var item = result.ConvertTo<Item>();
-                
-                // Save DTO in cache along with this session Id
-                var wrapper = item.AddSession(base.Cache, Request.GetPermanentSessionId());
 
-                return wrapper.ToResponse();
+                return new Envelope<Item> { Status = "success", Payload = item };
             });
         }
 

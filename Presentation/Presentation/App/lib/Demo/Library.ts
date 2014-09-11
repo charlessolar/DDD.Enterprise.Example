@@ -72,26 +72,20 @@ export module Queries {
 }
 
 export module Responses {
-    export interface Basic {
+    export interface Envelope {
         Status: string;
         Message: string;
-    }
-
-    export interface Diff extends Basic {
-        Urn: string;
-        Version: number;
-        Updated: string;
-
         Payload: any;
     }
 
-    export interface Full<T extends IHasGuidId> extends Basic {
-        Urn: string;
-        Version: number;
-        Sessions: string[];
-        Created: string;
-        Updated: string;
-        Payload: T;
+    export interface IEvent {
+        domain: string;
+        eventName: string;
+
+        urn: string;
+        updated: string;
+
+        Payload: any;
     }
 }
 
@@ -136,12 +130,12 @@ export module Services {
             return this.id;
         }
 
-        request(model: T): JQueryPromise<T> {
+        request(model: T): JQueryPromise<any> {
             return amplify.request(this.toString(), model);
         }
     }
 
-    amplify.request.decoders['full'] = (data?: any, status?: string, xhr?: JQueryXHR, success?: (...args: any[]) => void, error?: (...args: any[]) => void) => {
+    amplify.request.decoders['full'] = (data?: Responses.Envelope, status?: string, xhr?: JQueryXHR, success?: (...args: any[]) => void, error?: (...args: any[]) => void) => {
         if (data.Status === "success") {
             success(data.Payload);
         } else if (data.Status === "fail" || data.Status === "error") {
@@ -154,11 +148,27 @@ export module Services {
     }
 
 export module Events {
-    export interface IHandler {
-        apply(name: string, event: any): void;
+    export class Handler {
+        private _domain: string;
+
+        constructor(domain: string) {
+            this._domain = domain;
+
+            var m: string;
+            for (m in this) {
+                if (typeof this[m] !== 'function' || m.substr(0,2) !== 'on' ) continue;
+
+                // register new event handler
+                var event = this._domain + '.' + m.substr(2);
+                amplify.subscribe(event, this.apply);
+            }
+        }
+
+        apply(event: Responses.IEvent): void {
+            var func = this['on' + event.eventName];
+            if (func === undefined) return;
+            func(event.Payload);
+        }
     }
 
-    export interface IEvent {
-        name: string;
-    }
 }

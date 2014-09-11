@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.Library.Responses;
+using Demo.Infrastructure.Library.SSE;
+using Demo.Library.ServiceStack.Responses;
 
 namespace Demo.Presentation.Inventory.Items
 {
@@ -17,31 +19,49 @@ namespace Demo.Presentation.Inventory.Items
     {
         private IServerEvents _events { get; set; }
         private ICacheClient _cache { get; set; }
+        private ISubscriptionManager _manager { get; set; }
 
-        public Handler(IServerEvents events, ICacheClient cache)
+        public Handler(IServerEvents events, ICacheClient cache, ISubscriptionManager manager)
         {
             _events = events;
             _cache = cache;
+            _manager = manager;
         }
 
         public void Handle(Created e)
         {
+            var subs = _manager.GetSubscriptions("Inventory.Item");
+
+            var key = UrnId.Create<Item>(e.ItemId);
+            var sse = new Event<Created>
+            {
+                Domain = "Inventory.Item",
+                EventName = "Created",
+                Urn = key,
+                Updated = DateTime.UtcNow,
+                Payload = e
+            };
+
+            foreach (var session in subs)
+                _events.NotifySession(session, "events", sse);
 
         }
         public void Handle(DescriptionChanged e)
         {
-            var key =  UrnId.Create<Item>(e.ItemId);
+            var subs = _manager.GetSubscriptions("Inventory.Item");
 
-            var wrapper = key.FromCache<Item>(_cache);
-            if (wrapper == null) return;
-            
-            wrapper.Payload.Description = e.Description;
-            wrapper.UpdateCache(_cache, key);
+            var key = UrnId.Create<Item>(e.ItemId);
+            var sse = new Event<DescriptionChanged>
+            {
+                Domain = "Inventory.Item",
+                EventName = "DescriptionChanged",
+                Urn = key,
+                Updated = DateTime.UtcNow,
+                Payload = e
+            };            
 
-            var response = wrapper.ToDiff(e);
-
-            foreach (var session in wrapper.Sessions)
-                _events.NotifySession(session, "update", response);
+            foreach (var session in subs)
+                _events.NotifySession(session, "events", sse);
         }
     }
 }

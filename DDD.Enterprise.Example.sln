@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Inventory.Messa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.ServiceStack", "Infrastructure\Library.ServiceStack\Library.ServiceStack.csproj", "{18822E29-9A73-4F81-815C-6289465F6DF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.Models", "Presentation\Presentation.Models\Presentation.Models.csproj", "{D5499EE8-6793-497A-AD08-2A8042E3E0CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +108,10 @@ Global
 		{18822E29-9A73-4F81-815C-6289465F6DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18822E29-9A73-4F81-815C-6289465F6DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18822E29-9A73-4F81-815C-6289465F6DF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5499EE8-6793-497A-AD08-2A8042E3E0CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5499EE8-6793-497A-AD08-2A8042E3E0CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5499EE8-6793-497A-AD08-2A8042E3E0CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5499EE8-6793-497A-AD08-2A8042E3E0CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,5 +129,6 @@ Global
 		{F387CC3D-99CE-4CA2-A877-B98137C1AB02} = {BBCCEC16-28B5-4D2D-8E9B-3EE8546F47A4}
 		{30C5D76B-1730-478C-AA9E-186D738E7F54} = {74042738-30F6-4006-B57A-3750F9423407}
 		{18822E29-9A73-4F81-815C-6289465F6DF2} = {C4243940-753C-4C29-BD4C-91EE38A56837}
+		{D5499EE8-6793-497A-AD08-2A8042E3E0CA} = {BBCCEC16-28B5-4D2D-8E9B-3EE8546F47A4}
 	EndGlobalSection
 EndGlobal

@@ -20,7 +20,7 @@ namespace Demo.Presentation.Inventory.SerialNumbers
     {
         public IBus _bus { get; set; }
 
-        public Task<Full<SerialNumber>> Any(GetSerialNumber request)
+        public Task<Envelope<SerialNumber>> Any(GetSerialNumber request)
         {
             return _bus.Send("application", new Application.Inventory.SerialNumbers.Queries.GetSerialNumber
             {
@@ -35,11 +35,7 @@ namespace Demo.Presentation.Inventory.SerialNumbers
                 // Convert to our DTO
                 var serial = result.ConvertTo<SerialNumber>();
 
-
-                // Save DTO in cache along with this session Id
-                var wrapper = serial.AddSession(base.Cache, Request.GetPermanentSessionId());
-
-                return wrapper.ToResponse();
+                return new Envelope<SerialNumber> { Status = "success", Payload = serial };
             });
         }
 

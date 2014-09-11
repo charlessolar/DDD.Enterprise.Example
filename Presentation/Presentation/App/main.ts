@@ -25,7 +25,8 @@ function splitOnFirst (s: string, c: string) { if (!s) return [s]; var pos = s.i
 define(function (require) {
     var app = require('durandal/app'),
         viewLocator = require('durandal/viewLocator'),
-        system = require('durandal/system');
+        system = require('durandal/system'),
+        SSE = require('lib/Demo/SSE');
 
     system.debug(true);
     //>>excludeEnd("build");
@@ -45,24 +46,8 @@ define(function (require) {
         //Show the app by setting the root view model for our application with a transition.
         app.setRoot('shell/shell', 'entrance');
 
-        // Connect to sse
-        var source = new EventSource('/event-stream?channel=events&t=' + new Date().getTime());
+        var source = new SSE.SSE('/event-stream', 'events');
 
-        source.onopen = (e) => {
-            console.log('con');
-            console.log(e);
-        };
-        source.onmessage = (e) => {
-            console.log('here');
-            console.log(e);
-            //var parts = splitOnFirst(e.data, ' ');
-            //var json = parts[1];
-            //var msg = json ? JSON.parse(json) : null;
-
-            //if( msg != null && msg.Urn !== undefined )
-            //    amplify.publish(msg.Urn, msg.Payload);
-
-        };
     });
 });
  

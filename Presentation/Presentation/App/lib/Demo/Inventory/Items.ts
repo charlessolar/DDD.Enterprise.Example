@@ -1,5 +1,5 @@
 ﻿
-import Library = require("../Library");
+import Library = require("lib/Demo/Library");
 import Guid = Library.Guid;
 
 export module Responses {
@@ -61,16 +61,16 @@ export class Service {
     };
 
 
-    Get(model: Services.Get): JQueryPromise<Responses.Item> {
+    static Get(model: Services.Get): JQueryPromise<Responses.Item> {
         return Service.resources['read'].request(model);
     }
-    Find(model: Services.Find): JQueryPromise<Responses.Find> {
+    static Find(model: Services.Find): JQueryPromise<Responses.Find> {
         return Service.resources['find'].request(model);
     }
-    Create(model: Services.Create): JQueryPromise<Guid> {
+    static Create(model: Services.Create): JQueryPromise<Guid> {
         return Service.resources['create'].request(model);
     }
-    ChangeDescription(model: Services.ChangeDescription): JQueryPromise<Guid> {
+    static ChangeDescription(model: Services.ChangeDescription): JQueryPromise<Guid> {
         return Service.resources['update'].request(model);
     }
 }
@@ -90,10 +90,4 @@ export module Events {
 
         Description: string;
     }
-}
-
-
-export interface IHandler extends Library.Events.IHandler {
-    Created?(event: Events.Created): void;
-    DescriptionChanged?(event: Events.DescriptionChanged): void;
 }

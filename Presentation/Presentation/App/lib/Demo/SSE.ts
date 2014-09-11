@@ -1,9 +1,17 @@
-﻿export class SSE {
-    private _sse: sse.IEventSourceStatic;
-    private _observers: Observers.IObserver[];
+﻿
+import Library = require("lib/Demo/Library");
 
-    constructor(url: string) {
-        this._sse = new EventSource(url + '&t=' + new Date().getTime());
+export class SSE {
+    private _sse: sse.IEventSourceStatic;
+
+    static splitOnFirst(s: string, c: string) {
+        if (!s) return [s];
+        var pos = s.indexOf(c);
+        return pos >= 0 ? [s.substr(0, pos), s.substr(pos + 1)] : [s];
+    }
+
+    constructor(url: string, channel: string) {
+        this._sse = new EventSource(url + '?channel=' + channel + '&t=' + new Date().getTime());
 
         this._sse.onmessage = this.handle;
         this._sse.onerror = this.onError;
@@ -14,17 +22,21 @@
         return this._sse.readyState;
     }
 
-    addObserver(observer: Observers.IObserver): void {
-        this._observers.push(observer);
-    }
-    removeObserver(observer: Observers.IObserver): void {
-        var idx = this._observers.indexOf(observer);
-        if (idx == -1) return;
-        this._observers.splice(idx, 1);
-    }
-
     handle(message: sse.IMessageEvent): void {
+        console.log(message);
+        var parts = SSE.splitOnFirst(message.data, ' ');
+        console.log(parts);
+        if (parts[0] !== 'events') return;
 
+        var json = parts[1];
+        console.log('json: ' + json);
+        var data : Library.Responses.IEvent = json ? JSON.parse(json) : null;
+        console.log('data: ' + data);
+        if (data === null) return;
+
+        var event = data.domain + '.' + data.eventName;
+        console.log('Publishing to: ' + event);
+        amplify.publish(event, data);
     }
 
     onOpen(event: Event): void {
@@ -35,31 +47,27 @@
     }
 }
 
-export module Observers {
-    export interface IObserver {
-        Connected(event: Event): void;
-        Error(event: Event): void
+import s = Library.Services;
+export class Service {
+    static resources: s.Definitions = {
+        'subscribe': new s.Definition<Services.Subscribe>('/subscribe', 'POST'),
+        'unsubscribe': new s.Definition<Services.Unsubscribe>('/unsubscribe', 'POST')
+    };
 
-        All? (type: string, data: string): void;
+    static Subscribe(model: Services.Subscribe): JQueryPromise<boolean> {
+        return Service.resources['subscribe'].request(model);
     }
-
-    export class AmplifyObserver implements IObserver {
-        Connected(event: Event): void {
-            amplify.publish("application", "event.connected");
-        }
-        Error(event: Event): void {
-            amplify.publish("application", "event.error");
-        }
-
-        All(type: string, data: any): void {
-
-        }
+    static Unsubscribe(model: Services.Unsubscribe): JQueryPromise<boolean> {
+        return Service.resources['unsubscribe'].request(model);
     }
 }
 
-export module Events {
-    export interface Event {
-        type: string;
-        rawData: string;
+export module Services {
+    export interface Subscribe {
+        domain: string;
+    }
+
+    export interface Unsubscribe {
+        domain: string;
     }
 }

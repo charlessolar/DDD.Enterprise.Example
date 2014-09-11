@@ -1,4 +1,5 @@
-﻿using Demo.Library.IoC;
+﻿using Demo.Infrastructure.Library.SSE;
+using Demo.Library.IoC;
 using Demo.Library.Security;
 using Demo.Library.Validation;
 using Demo.Presentation.Inventory.Items;
@@ -53,6 +54,7 @@ namespace Demo.Presentation
                 x.For<IManager>().Use<Manager>();
                 x.For<ICacheClient>().Use(new MemoryCacheClient());
                 x.For<IServerEvents>().Use(serverEvents);
+                x.For<ISubscriptionManager>().Use(new MemorySubscriptionManager());
             });
 
 
@@ -87,6 +89,7 @@ namespace Demo.Presentation
 
             container.Adapter = new StructureMapContainerAdapter();
 
+            Plugins.Add(new SessionFeature());
             Plugins.Add(new SwaggerFeature());
             Plugins.Add(new RazorFormat());
             Plugins.Add(new RequestLogsFeature());
@@ -97,7 +100,6 @@ namespace Demo.Presentation
             Plugins.Add(new ValidationFeature());
             Plugins.Add(new ServerEventsFeature());
             Plugins.Add(new Presentation.Inventory.Plugin());
-
 
 
             //container.Register<IRedisClientsManager>(c =>
