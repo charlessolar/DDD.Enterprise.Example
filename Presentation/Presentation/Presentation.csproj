@@ -313,6 +313,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="App\data\data.ts" />
     <TypeScriptCompile Include="App\flickr\flickr.ts" />
+    <TypeScriptCompile Include="App\lib\Demo\SSE.ts" />
     <TypeScriptCompile Include="App\lib\sse.d.ts" />
     <TypeScriptCompile Include="App\main.ts" />
     <TypeScriptCompile Include="App\shell\shell.ts" />

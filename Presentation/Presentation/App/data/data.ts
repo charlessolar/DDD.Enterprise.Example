@@ -5,14 +5,47 @@
     import mapping = require('knockout.mapping');
     import Library = require('../lib/Demo/Library');
     import Items = require('../lib/Demo/Inventory/Items');
+    import Guid = Library.Guid;
+
+    interface Model extends Library.IHasGuidId {
+        Id: Guid;
+        Number: string;
+        Description: string;
+        UnitOfMeasure: string;
+        CatalogPrice: number;
+        CostPrice: number;
+    }
+
+    class Handler implements Items.IHandler {
+        apply(name: string, event: any): void {
+            this[name](event);
+        }
+        Created(event: Items.Events.Created): void {
+            data.push({
+                Id: event.ItemId,
+                Number: event.Number,
+                Description: event.Description,
+                UnitOfMeasure: event.UnitOfMeasure,
+                CatalogPrice: event.CatalogPrice,
+                CostPrice: event.CostPrice
+            });
+        }
+        DescriptionChanged(event: Items.Events.DescriptionChanged): void {
+            var item = ko.utils.arrayFirst(data(), (i) => {
+                return i.Id === event.ItemId;
+            });
+
+            if (item === null) return;
+
+            item.Description = event.Description;
+        }
+    }
 
     
-
-    
-    export var displayName = 'Data';
-    export var data = ko.observableArray<Items.Responses.Item>();
-    export var detailedMapping = ko.observable<any>();
-    export var ChangeDescriptionTo = ko.observable<string>();
+    var displayName = 'Data';
+    var data = ko.observableArray<Model>();
+    var detailedMapping = ko.observable<any>();
+    var ChangeDescriptionTo = ko.observable<string>();
 
     export var hasDetail = ko.computed(function () {
         return detailedMapping() != null;

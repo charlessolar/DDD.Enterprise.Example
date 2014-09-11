@@ -103,29 +103,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\amplifyjs\amplifyjs.d.ts">
-      <Link>Scripts\typings\amplifyjs\amplifyjs.d</Link>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\durandal\durandal.d.ts">
-      <Link>Scripts\typings\durandal\durandal.d</Link>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\jquery\jquery.d.ts">
-      <Link>Scripts\typings\jquery\jquery.d</Link>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\knockout.mapping\knockout.mapping.d.ts">
-      <Link>Scripts\typings\knockout.mapping\knockout.mapping.d</Link>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\knockout\knockout.d.ts">
-      <Link>Scripts\typings\knockout\knockout.d</Link>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\moment\moment.d.ts">
-      <Link>Scripts\typings\moment\moment.d</Link>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="C:\Users\Charles\Projects\DDD.Enterprise.Example\\Presentation\Presentation\Scripts\typings\requirejs\require.d.ts">
-      <Link>Scripts\typings\requirejs\require.d</Link>
-    </TypeScriptCompile>
-  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>

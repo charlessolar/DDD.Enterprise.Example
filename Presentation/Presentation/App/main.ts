@@ -49,15 +49,18 @@ define(function (require) {
         var source = new EventSource('/event-stream?channel=events&t=' + new Date().getTime());
 
         source.onopen = (e) => {
+            console.log('con');
             console.log(e);
         };
         source.onmessage = (e) => {
-            var parts = splitOnFirst(e.data, ' ');
-            var json = parts[1];
-            var msg = json ? JSON.parse(json) : null;
+            console.log('here');
+            console.log(e);
+            //var parts = splitOnFirst(e.data, ' ');
+            //var json = parts[1];
+            //var msg = json ? JSON.parse(json) : null;
 
-            if( msg != null && msg.Urn !== undefined )
-                amplify.publish(msg.Urn, msg.Payload);
+            //if( msg != null && msg.Urn !== undefined )
+            //    amplify.publish(msg.Urn, msg.Payload);
 
         };
     });

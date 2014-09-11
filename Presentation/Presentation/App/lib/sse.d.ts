@@ -12,13 +12,10 @@ declare module sse {
         new (url: string, eventSourceInitDict?: IEventSourceInit): IEventSourceStatic;
         url: string;
         withCredentials: boolean;
-        CONNECTING: ReadyState; // constant, always 0
-        OPEN: ReadyState; // constant, always 1
-        CLOSED: ReadyState; // constant, always 2
         readyState: ReadyState;
-        onopen: Function;
-        onmessage: (event: IOnMessageEvent) => void;
-        onerror: Function;
+        onopen: (event: Event) => void;
+        onmessage: (event: IMessageEvent) => void;
+        onerror: (event: Event) => void;
         close: () => void;
     }
 
@@ -26,7 +23,9 @@ declare module sse {
         withCredentials?: boolean;
     }
 
-    interface IOnMessageEvent {
+    interface IMessageEvent extends Event {
         data: string;
+        lastEventId: number;
+        origin: string;
     }
 }

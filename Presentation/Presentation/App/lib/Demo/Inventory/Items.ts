@@ -3,11 +3,11 @@ import Library = require("../Library");
 import Guid = Library.Guid;
 
 export module Responses {
-    export class Find {
+    export interface Find {
         Results: Item[];
     }
 
-    export class Item implements Library.IHasGuidId {
+    export interface Item extends Library.IHasGuidId {
         Id: Guid;
         Number: string;
         Description: string;
@@ -73,5 +73,27 @@ export class Service {
     ChangeDescription(model: Services.ChangeDescription): JQueryPromise<Guid> {
         return Service.resources['update'].request(model);
     }
+}
 
+export module Events {
+    export interface Created {
+        ItemId: Guid;
+        Number: string;
+        Description: string;
+
+        UnitOfMeasure: string;
+        CatalogPrice?: number;
+        CostPrice?: number;
+    }
+    export interface DescriptionChanged {
+        ItemId: Guid;
+
+        Description: string;
+    }
+}
+
+
+export interface IHandler extends Library.Events.IHandler {
+    Created?(event: Events.Created): void;
+    DescriptionChanged?(event: Events.DescriptionChanged): void;
 }
