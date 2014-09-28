@@ -176,6 +176,7 @@ interface amplifyStatic {
     request: amplifyRequest;
 
 }
-
-declare var amplify: amplifyStatic;
-
+declare module 'amplify' {
+    var theModule: amplifyStatic;
+    export = theModule;
+}

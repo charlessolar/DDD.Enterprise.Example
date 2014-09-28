@@ -2,6 +2,7 @@
 
     import http = require('plugins/http');
     import app = require('durandal/app');
+    import ko = require('knockout');
     import mapping = require('knockout.mapping');
     import Library = require('lib/Demo/Library');
     import SSE = require('lib/Demo/SSE');

@@ -1,5 +1,6 @@
 ﻿
 import Library = require("lib/Demo/Library");
+import amplify = require('amplify');
 
 export class SSE {
     private _sse: sse.IEventSourceStatic;

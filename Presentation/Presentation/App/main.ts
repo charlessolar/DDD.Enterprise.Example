@@ -1,24 +1,28 @@
 ﻿
-
 requirejs.config({
     paths: {
         'text': '../Scripts/text',
         'durandal': '../Scripts/durandal',
         'plugins': '../Scripts/durandal/plugins',
         'transitions': '../Scripts/durandal/transitions',
+        'knockout': '../Scripts/knockout-3.2.0',
         'knockout.mapping': '../Scripts/knockout.mapping-latest',
+        'bootstrap': '../Scripts/bootstrap',
+        'jquery': '../Scripts/jquery-2.1.1',
+        'amplify': '../Scripts/amplify',
+    },
+    shim: {
+        'bootstrap': {
+            deps: ['jquery'],
+            exports: 'jQuery'
+        },
+        'amplify': {
+            deps: ['jquery'],
+            exports: 'amplify'
+        }
     }
 });
 
-define('jquery', () => {
-    return jQuery;
-});
-define('knockout', () => {
-    return ko;
-});
-define('amplify', () => {
-    return amplify;
-});
 
 function splitOnFirst (s: string, c: string) { if (!s) return [s]; var pos = s.indexOf(c); return pos >= 0 ? [s.substring(0, pos), s.substring(pos + 1)] : [s]; };
 

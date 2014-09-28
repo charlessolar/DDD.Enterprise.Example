@@ -89,6 +89,7 @@ export module Responses {
     }
 }
 
+import amplify = require('amplify');
 export module Services {
 
     export interface Definitions {
