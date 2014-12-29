@@ -1,4 +1,5 @@
-﻿using NES;
+﻿using Aggregates;
+using Demo.Library.Queries;
 using NServiceBus;
 using System;
 using System.Collections.Generic;
@@ -10,28 +11,30 @@ namespace Demo.Domain.Inventory.SerialNumbers
 {
     public class Handler : IHandleMessages<Commands.Create>, IHandleMessages<Commands.TakeQuantity>
     {
-        private readonly IRepository _repository;
+        private readonly IUnitOfWork _uow;
+        private readonly IBus _bus;
 
-        public Handler(IRepository repository)
+        public Handler(IUnitOfWork uow, IBus bus)
         {
-            _repository = repository;
+            _uow = uow;
+            _bus = bus;
         }
 
         public void Handle(Commands.Create command)
         {
-            var serial = new SerialNumber(
-                command.SerialNumberId,
-                command.SerialNumber,
-                command.Quantity,
-                command.Effective,
-                command.ItemId
-                );
-            _repository.Add(serial);
+            var serial = _uow.For<SerialNumber>().New(command.SerialNumberId);
+            
+            serial.Create(command.SerialNumber, command.Quantity, command.Effective, command.ItemId);
+
+            _bus.Reply<IdResult>(e =>
+            {
+                e.Id = serial.Id;
+            });
         }
 
         public void Handle(Commands.TakeQuantity command)
         {
-            var serial = _repository.Get<SerialNumber>(command.SerialNumberId);
+            var serial = _uow.For<SerialNumber>().Get(command.SerialNumberId);
             serial.TakeQuantity(command.Quantity);
         }
     }

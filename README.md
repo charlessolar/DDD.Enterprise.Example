@@ -9,13 +9,10 @@ Projects used in this example:
 
 - [NServiceBus](https://github.com/Particular/NServiceBus)
 - [NEventStore](https://github.com/NEventStore/NEventStore)
-- [NES](https://github.com/elliotritchie/NES)
+- [Aggregates.NET](https://github.com/volak/Aggregates.NET)
 - [ServiceStack](https://github.com/ServiceStack/ServiceStack)
 - [RavenDB](https://github.com/ravendb/ravendb)
 - [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
-- [PostSharp](http://www.postsharp.net/)
-
-
 
 **Architecture Overview**
 
@@ -37,7 +34,7 @@ The presentation layer is currently a WIP.  In order to run it you will need red
 
 - Unit tests
 - Simple HTML site
-- SignalR for receiving events to the client
+- Receiving events to the client
 
 **Project References**
 

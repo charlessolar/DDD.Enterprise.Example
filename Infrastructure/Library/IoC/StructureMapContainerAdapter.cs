@@ -10,14 +10,21 @@ namespace Demo.Library.IoC
 {
     public class StructureMapContainerAdapter : IContainerAdapter
     {
+        private IContainer _container;
+
+        public StructureMapContainerAdapter(IContainer container)
+        {
+            _container = container;
+        }
+
         public T TryResolve<T>()
         {
-            return ObjectFactory.TryGetInstance<T>();
+            return _container.TryGetInstance<T>();
         }
 
         public T Resolve<T>()
         {
-            return ObjectFactory.TryGetInstance<T>();
+            return _container.TryGetInstance<T>();
         }
     }
 }

@@ -30,12 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation">
-      <HintPath>..\..\packages\FluentValidation.5.4.0.0\lib\Net40\FluentValidation.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceBus, Version=4.6.5.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+    <Reference Include="FluentValidation, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NServiceBus.Interfaces.4.6.5\lib\net40\NServiceBus.dll</HintPath>
+      <HintPath>..\..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core">
+      <HintPath>..\..\packages\NServiceBus.5.0.0\lib\net45\NServiceBus.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,7 +50,6 @@
     <Compile Include="Items\Commands\Create.cs" />
     <Compile Include="Items\Events\Created.cs" />
     <Compile Include="Items\Events\DescriptionChanged.cs" />
-    <Compile Include="Items\Identities\ITem.cs" />
     <Compile Include="Items\Validators\ChangeDescription.cs" />
     <Compile Include="Items\Validators\Create.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,7 +57,6 @@
     <Compile Include="SerialNumbers\Commands\TakeQuantity.cs" />
     <Compile Include="SerialNumbers\Events\Created.cs" />
     <Compile Include="SerialNumbers\Events\QuantityTaken.cs" />
-    <Compile Include="SerialNumbers\Identities\SerialNumber.cs" />
     <Compile Include="SerialNumbers\Validators\Create.cs" />
     <Compile Include="SerialNumbers\Validators\TakeQuantity.cs" />
   </ItemGroup>

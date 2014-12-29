@@ -1,6 +1,5 @@
 ﻿using Demo.Domain.Inventory.Items.Events;
-using Demo.Library.Identity;
-using NES;
+using Aggregates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace Demo.Domain.Inventory.Items
 {
-    public class Item : IdentityAggregateRoot<Identities.Item>
+    public class Item : Aggregate<Guid>
     {
-        public Item(Guid ItemId, String Number, String Description, String UnitOfMeasure, Decimal? CatalogPrice, Decimal? CostPrice)
+        private Item() { }
+        public void Create(String Number, String Description, String UnitOfMeasure, Decimal? CatalogPrice, Decimal? CostPrice)
         {
             Apply<Created>(e =>
                 {
-                    e.ItemId = ItemId;
+                    e.ItemId = Id;
                     e.Number = Number;
                     e.Description = Description;
                     e.UnitOfMeasure = UnitOfMeasure;
@@ -24,28 +24,12 @@ namespace Demo.Domain.Inventory.Items
                 });
         }
 
-        private Item()
-        {
-        }
-
         private void Handle(Created e)
         {
-            Id = e.ItemId;
-
-            _identity = new Identities.Item
-            {
-                Id = e.ItemId,
-                Number = e.Number,
-                Description = e.Description,
-                UnitOfMeasure = e.UnitOfMeasure,
-                CatalogPrice = e.CatalogPrice,
-                CostPrice = e.CostPrice,
-            };
         }
 
         private void Handle(DescriptionChanged e)
         {
-            _identity.Description = e.Description;
         }
 
         public void ChangeDescription(String Description)

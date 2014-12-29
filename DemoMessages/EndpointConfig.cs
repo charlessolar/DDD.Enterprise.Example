@@ -2,6 +2,8 @@ namespace Demo.DemoMessages
 {
     using log4net;
     using NServiceBus;
+    using NServiceBus.Log4Net;
+    using StructureMap;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -11,30 +13,34 @@ namespace Demo.DemoMessages
         can be found here: http://particular.net/articles/the-nservicebus-host
     */
 
-    public class EndpointConfig : IConfigureThisEndpoint, AsA_Publisher, IWantToRunWhenBusStartsAndStops, IWantCustomInitialization
+    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server, IWantToRunWhenBusStartsAndStops
     {
+        private IContainer _container;
         public IBus Bus { get; set; }
-        public void Init()
-        {
-            // Comment out if you lack a NServiceBus license (trial required)
-            Configure.Instance.LicensePath(@"C:\License.xml");
 
-            Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
-            Configure.Serialization.Json();
-            Configure
-                .With(AllAssemblies.Matching("DemoMessages").And("Domain"))
-                .DefineEndpointName("DemoMessages")
-                .StructureMapBuilder()
-                .Log4Net()
+        public void Customize(BusConfiguration config)
+        {
+            log4net.Config.XmlConfigurator.Configure();
+            NServiceBus.Logging.LogManager.Use<Log4NetFactory>();
+
+
+            var conventions = config.Conventions();
+            conventions
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Events"))
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Commands"))
-                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")))
-                .UnicastBus()
-                .InMemorySubscriptionStorage()
-                .UseInMemoryTimeoutPersister()
-                .InMemoryFaultManagement()
-                .InMemorySagaPersister();
-            LogManager.GetRepository().Threshold = log4net.Core.Level.Warn;
+                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")));
+
+            config.LicensePath(@"C:\License.xml");
+
+            config.EndpointName("DemoMessages");
+            config.EndpointVersion("0.0.0");
+            config.AssembliesToScan(AllAssemblies.Matching("DemoMessages").And("Domain"));
+
+            config.UsePersistence<InMemoryPersistence>();
+            config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
+            config.UseSerialization<NServiceBus.JsonSerializer>();
+            
+
         }
 
         public void Start()

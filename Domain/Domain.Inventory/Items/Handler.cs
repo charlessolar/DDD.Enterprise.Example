@@ -1,5 +1,5 @@
 ﻿using Demo.Library.Queries;
-using NES;
+using Aggregates;
 using NServiceBus;
 using System;
 using System.Collections.Generic;
@@ -11,26 +11,25 @@ namespace Demo.Domain.Inventory.Items
 {
     public class Handler : IHandleMessages<Commands.Create>, IHandleMessages<Commands.ChangeDescription>
     {
-        private readonly IRepository _repository;
+        private readonly IUnitOfWork _uow;
         private readonly IBus _bus;
 
-        public Handler(IRepository repository, IBus bus)
+        public Handler(IUnitOfWork uow, IBus bus)
         {
-            _repository = repository;
+            _uow = uow;
             _bus = bus;
         }
 
         public void Handle(Commands.Create command)
         {
-            var item = new Item(
-                command.ItemId,
+            var item = _uow.For<Item>().New(command.ItemId);
+            item.Create(              
                 command.Number,
                 command.Description,
                 command.UnitOfMeasure,
                 command.CatalogPrice,
                 command.CostPrice
                 );
-            _repository.Add(item);
 
             _bus.Reply<IdResult>(e =>
             {
@@ -40,7 +39,7 @@ namespace Demo.Domain.Inventory.Items
 
         public void Handle(Commands.ChangeDescription command)
         {
-            var item = _repository.Get<Item>(command.ItemId);
+            var item = _uow.For<Item>().Get(command.ItemId);
             item.ChangeDescription(command.Description);
 
             _bus.Reply<IdResult>(e =>
