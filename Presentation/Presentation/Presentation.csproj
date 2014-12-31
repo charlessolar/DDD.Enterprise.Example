@@ -52,6 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NServiceBus.5.1.2\lib\net45\NServiceBus.Core.dll</HintPath>
     </Reference>
+    <Reference Include="NServiceBus.Log4Net">
+      <HintPath>..\..\packages\NServiceBus.Log4Net.1.0.0\lib\net45\NServiceBus.Log4Net.dll</HintPath>
+    </Reference>
     <Reference Include="NServiceBus.ObjectBuilder.StructureMap, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NServiceBus.StructureMap.5.0.1\lib\net45\NServiceBus.ObjectBuilder.StructureMap.dll</HintPath>
@@ -80,14 +83,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\ServiceStack.Logging.Log4Net.4.0.34\lib\net40\ServiceStack.Logging.Log4Net.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite, Version=4.0.34.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ServiceStack.OrmLite.4.0.34\lib\net45\ServiceStack.OrmLite.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Razor, Version=4.0.34.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ServiceStack.Razor.4.0.34\lib\net45\ServiceStack.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.Redis, Version=4.0.34.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\ServiceStack.Redis.4.0.34\lib\net40\ServiceStack.Redis.dll</HintPath>
@@ -113,10 +108,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=e06fbc6124f57c43, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ServiceStack.Razor.4.0.34\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -150,30 +141,13 @@
     <Content Include="Content\starterkit.css" />
     <Content Include="packages.config" />
     <Content Include="app.cshtml" />
-    <None Include="Scripts\amplify-vsdoc.js" />
-    <Content Include="Scripts\amplify.js" />
-    <Content Include="Scripts\amplify.min.js" />
-    <Content Include="Scripts\amplify\amplify.core.js" />
-    <Content Include="Scripts\amplify\amplify.core.min.js" />
-    <Content Include="Scripts\amplify\amplify.request.js" />
-    <Content Include="Scripts\amplify\amplify.request.min.js" />
-    <Content Include="Scripts\amplify\amplify.store.js" />
-    <Content Include="Scripts\amplify\amplify.store.min.js" />
     <Content Include="Scripts\boot.js">
       <DependentUpon>boot.js.bundle</DependentUpon>
     </Content>
     <Content Include="Scripts\boot.min.js">
       <DependentUpon>boot.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\GPL-LICENSE.txt" />
-    <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\knockout-3.1.0.debug.js" />
-    <Content Include="Scripts\knockout-3.2.0.debug.js" />
-    <Content Include="Scripts\knockout-3.2.0.js" />
-    <Content Include="Scripts\knockout.mapping-latest.debug.js" />
-    <Content Include="Scripts\knockout.mapping-latest.js" />
-    <Content Include="Scripts\MIT-LICENSE.txt" />
-    <Content Include="Scripts\README.txt" />
     <Content Include="Views\_splash.cshtml" />
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\bootstrap\badges.less" />
@@ -258,7 +232,6 @@
     </Content>
     <Content Include="Content\site.css.bundle" />
     <Content Include="Scripts\amplify\amplify.request.deferred.js" />
-    <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -286,8 +259,6 @@
     <Content Include="Scripts\durandal\transitions\entrance.js" />
     <Content Include="Scripts\durandal\viewEngine.js" />
     <Content Include="Scripts\durandal\viewLocator.js" />
-    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
-    <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\r.js" />
@@ -336,9 +307,6 @@
     <TypeScriptCompile Include="App\lib\Demo\Library.ts" />
     <TypeScriptCompile Include="Scripts\typings\amplifyjs\amplifyjs.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\durandal\durandal.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\knockout.mapping\knockout.mapping.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\requirejs\require.d.ts" />
   </ItemGroup>

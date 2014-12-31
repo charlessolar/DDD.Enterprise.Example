@@ -9,9 +9,7 @@ using ServiceStack.Api.Swagger;
 using ServiceStack.Caching;
 using ServiceStack.FluentValidation;
 using ServiceStack.Logging;
-using ServiceStack.Logging.Log4Net;
 using ServiceStack.Messaging;
-using ServiceStack.Razor;
 using ServiceStack.Redis;
 using ServiceStack.Text;
 using ServiceStack.Validation;
@@ -24,8 +22,10 @@ using System.Web;
 
 namespace Demo.Presentation
 {
-    public class AppHost : AppHostBase, IConfigureThisEndpoint
+    public class AppHost : AppHostBase
     {
+        private IContainer _container;
+
         //Tell Service Stack the name of your application and where to find your web services
         public AppHost()
             : base("Demo Web Services", typeof(AppHost).Assembly)
@@ -34,50 +34,46 @@ namespace Demo.Presentation
 
         public override ServiceStackHost Init()
         {
-            LogManager.LogFactory = new Log4NetFactory(true);
             log4net.Config.XmlConfigurator.Configure();
-
+            LogManager.LogFactory = new ServiceStack.Logging.Log4Net.Log4NetFactory();
+            NServiceBus.Logging.LogManager.Use<NServiceBus.Log4Net.Log4NetFactory>();
 
             var serverEvents = new MemoryServerEvents
             {
-                Timeout = TimeSpan.FromSeconds(30),
+                IdleTimeout = TimeSpan.FromSeconds(30),
                 NotifyChannelOfSubscriptions = false
             };
 
-            serverEvents.OnSubscribe = (x) =>
-                {
-                    Console.Write(x.DisplayName);
-                };
-
-            ObjectFactory.Initialize(x =>
+            _container = new Container(x =>
             {
+                x.For<IManager>().Use<Manager>();
                 x.For<IManager>().Use<Manager>();
                 x.For<ICacheClient>().Use(new MemoryCacheClient());
                 x.For<IServerEvents>().Use(serverEvents);
                 x.For<ISubscriptionManager>().Use(new MemorySubscriptionManager());
             });
 
-
-            // Comment out if you lack a NServiceBus license (trial required)
-            NServiceBus.Configure.Instance.LicensePath(@"C:\License.xml");
-
-            NServiceBus.Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
-            NServiceBus.Configure.Serialization.Json();
-            var bus = NServiceBus.Configure
-                .With(AllAssemblies.Matching("Presentation").And("Application").And("Domain").And("Library"))
-                .DefineEndpointName("Presentation")
-                .StructureMapBuilder()
-                .Log4Net()
+            var config = new BusConfiguration();
+            var conventions = config.Conventions();
+            conventions
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Events"))
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Commands"))
-                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")))
-                .UnicastBus()
-                .InMemorySubscriptionStorage()
-                .UseInMemoryTimeoutPersister()
-                .InMemoryFaultManagement()
-                .InMemorySagaPersister()
-                .CreateBus()
-                .Start();
+                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")));
+
+            config.LicensePath(@"C:\License.xml");
+
+            config.EndpointName("Presentation");
+            config.EndpointVersion("0.0.0");
+            config.AssembliesToScan(AllAssemblies.Matching("Presentation").And("Application").And("Domain").And("Library"));
+
+            config.UsePersistence<InMemoryPersistence>();
+            config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
+            config.UseSerialization<NServiceBus.JsonSerializer>();
+
+            using (var bus = Bus.Create(config))
+            {
+                bus.Start();
+            }
 
             return base.Init();
         }
@@ -87,15 +83,14 @@ namespace Demo.Presentation
             JsConfig.IncludeNullValues = true;
             JsConfig.AlwaysUseUtc = true;
 
-            container.Adapter = new StructureMapContainerAdapter();
+            container.Adapter = new StructureMapContainerAdapter(_container);
 
             Plugins.Add(new SessionFeature());
             Plugins.Add(new SwaggerFeature());
-            Plugins.Add(new RazorFormat());
             Plugins.Add(new RequestLogsFeature());
 
             Plugins.Add(new PostmanFeature());
-            Plugins.Add(new CorsFeature());
+            Plugins.Add(new CorsFeature(allowedHeaders: "Content-Type, Authorization"));
 
             Plugins.Add(new ValidationFeature());
             Plugins.Add(new ServerEventsFeature());

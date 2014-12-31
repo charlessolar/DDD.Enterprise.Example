@@ -5,6 +5,7 @@ namespace Demo.Application
     using FluentValidation;
     using log4net;
     using NServiceBus;
+    using NServiceBus.Log4Net;
     using Raven.Client;
     using Raven.Client.Document;
     using StructureMap;
@@ -15,41 +16,42 @@ namespace Demo.Application
         can be found here: http://particular.net/articles/the-nservicebus-host
     */
 
-    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server, IWantCustomInitialization, ISpecifyMessageHandlerOrdering
+    public class EndpointConfig : IConfigureThisEndpoint, AsA_Server, ISpecifyMessageHandlerOrdering
     {
-        public void Init()
+        private IContainer _container;
+
+        public void Customize(BusConfiguration config)
         {
             log4net.Config.XmlConfigurator.Configure();
+            NServiceBus.Logging.LogManager.Use<Log4NetFactory>();
 
-            ObjectFactory.Initialize(x =>
+
+            var store = new DocumentStore { Url = "http://localhost:8080", DefaultDatabase = "Demo-ReadModels" }.Initialize();
+
+            _container = new Container(x =>
             {
                 x.For<IManager>().Use<Manager>();
+                x.For<IDocumentStore>().Use(store).Singleton();
             });
 
-            // Comment out if you lack a NServiceBus license (trial required)
-            Configure.Instance.LicensePath(@"C:\License.xml");
 
-            Configure.Transactions.Advanced(t => t.DefaultTimeout(new TimeSpan(0, 5, 0)));
-            Configure.Serialization.Json();
-            Configure
-                .With(AllAssemblies.Matching("Application").And("Domain").And("Library"))
-                .DefineEndpointName("Application")
-                .StructureMapBuilder()
-                .Log4Net()
+            var conventions = config.Conventions();
+            conventions
                 .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Events"))
                 .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Commands"))
-                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")))
-                .UnicastBus()
-                .InMemorySubscriptionStorage()
-                .UseInMemoryTimeoutPersister()
-                .InMemoryFaultManagement()
-                .InMemorySagaPersister();
+                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")));
 
-            var store = new DocumentStore { Url = "http://localhost:8080", DefaultDatabase = "Demo-ReadModels" };
-            store.Initialize();
+            config.LicensePath(@"C:\License.xml");
 
-            Configure.Instance.Configurer.RegisterSingleton<IDocumentStore>(store);
-            Configure.Instance.Configurer.RegisterSingleton<IValidatorFactory>(ObjectFactory.GetInstance<StructureMapValidatorFactory>());
+            config.EndpointName("Application");
+            config.EndpointVersion("0.0.0");
+            config.AssembliesToScan(AllAssemblies.Matching("Application").And("Domain").And("Library"));
+
+            config.UsePersistence<InMemoryPersistence>();
+            config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
+            config.UseSerialization<NServiceBus.JsonSerializer>();
+
+
         }
         public void SpecifyOrder(Order order)
         {
