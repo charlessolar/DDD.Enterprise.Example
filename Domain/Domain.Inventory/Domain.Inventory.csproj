@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aggregates">
-      <HintPath>..\..\depends\Aggregates.dll</HintPath>
+    <Reference Include="Aggregates.NET">
+      <HintPath>..\..\packages\Aggregates.NET.0.0.1.10\lib\net45\Aggregates.NET.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

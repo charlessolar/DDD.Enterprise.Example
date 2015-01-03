@@ -52,9 +52,7 @@ namespace Demo.Domain
             config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
             config.UseSerialization<NServiceBus.JsonSerializer>();
 
-            config.UseAggregates();
-
-            config.ConnectEventStore(y =>
+            config.UseAggregates(y =>
             {
                 return Wireup.Init()
                     .UseAggregates(y)

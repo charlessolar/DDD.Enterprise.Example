@@ -141,12 +141,6 @@
     <Content Include="Content\starterkit.css" />
     <Content Include="packages.config" />
     <Content Include="app.cshtml" />
-    <Content Include="Scripts\boot.js">
-      <DependentUpon>boot.js.bundle</DependentUpon>
-    </Content>
-    <Content Include="Scripts\boot.min.js">
-      <DependentUpon>boot.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\knockout-3.1.0.debug.js" />
     <Content Include="Views\_splash.cshtml" />
     <Content Include="Content\bootstrap\alerts.less" />
@@ -226,10 +220,6 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Scripts\boot.js.bundle" />
-    <Content Include="Scripts\boot.min.js.map">
-      <DependentUpon>boot.min.js</DependentUpon>
-    </Content>
     <Content Include="Content\site.css.bundle" />
     <Content Include="Scripts\amplify\amplify.request.deferred.js" />
     <None Include="Web.Debug.config">

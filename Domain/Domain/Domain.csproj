@@ -30,9 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aggregates, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Aggregates.NET\src\Aggregates.NET\bin\Debug\Aggregates.dll</HintPath>
+    <Reference Include="Aggregates.NET">
+      <HintPath>..\..\packages\Aggregates.NET.0.0.1.10\lib\net45\Aggregates.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Aggregates.NET.RavenDB">
+      <HintPath>..\..\packages\Aggregates.NET.RavenDB.0.0.1.0\lib\net45\Aggregates.NET.RavenDB.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -42,13 +44,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="NEventStore, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NEventStore, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\NEventStore.Persistence.RavenDB\src\NEventStore.Persistence.RavenDB\bin\Debug\NEventStore.dll</HintPath>
+      <HintPath>..\..\packages\NEventStore.5.0.0.100\lib\net40\NEventStore.dll</HintPath>
     </Reference>
     <Reference Include="NEventStore.Persistence.RavenDB, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\NEventStore.Persistence.RavenDB\src\NEventStore.Persistence.RavenDB\bin\Debug\NEventStore.Persistence.RavenDB.dll</HintPath>
+      <HintPath>..\..\packages\NEventStore.Persistence.RavenDB.5.0.0.86\lib\net40\NEventStore.Persistence.RavenDB.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
