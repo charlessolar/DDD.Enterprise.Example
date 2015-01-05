@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Domain.Inventory.SerialNumbers
+namespace Demo.Domain.Inventory.Items.SerialNumbers
 {
     public class Handler : IHandleMessages<Commands.Create>, IHandleMessages<Commands.TakeQuantity>
     {
@@ -22,7 +22,8 @@ namespace Demo.Domain.Inventory.SerialNumbers
 
         public void Handle(Commands.Create command)
         {
-            var serial = _uow.For<SerialNumber>().New(command.SerialNumberId);
+            var item = _uow.Repository<Item>().Get(command.ItemId);
+            var serial = item.Entity<SerialNumber>().New(command.SerialNumberId);
             
             serial.Create(command.SerialNumber, command.Quantity, command.Effective, command.ItemId);
 
@@ -34,7 +35,9 @@ namespace Demo.Domain.Inventory.SerialNumbers
 
         public void Handle(Commands.TakeQuantity command)
         {
-            var serial = _uow.For<SerialNumber>().Get(command.SerialNumberId);
+            var item = _uow.Repository<Item>().Get(command.ItemId);
+            var serial = item.Entity<SerialNumber>().Get(command.SerialNumberId);
+
             serial.TakeQuantity(command.Quantity);
         }
     }

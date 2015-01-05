@@ -1,4 +1,4 @@
-﻿using Demo.Domain.Inventory.SerialNumbers.Events;
+﻿using Demo.Domain.Inventory.Items.SerialNumbers.Events;
 using NServiceBus;
 using Raven.Client;
 using Raven.Client.Document;

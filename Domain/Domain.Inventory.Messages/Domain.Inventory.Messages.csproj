@@ -53,12 +53,12 @@
     <Compile Include="Items\Validators\ChangeDescription.cs" />
     <Compile Include="Items\Validators\Create.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerialNumbers\Commands\Create.cs" />
-    <Compile Include="SerialNumbers\Commands\TakeQuantity.cs" />
-    <Compile Include="SerialNumbers\Events\Created.cs" />
-    <Compile Include="SerialNumbers\Events\QuantityTaken.cs" />
-    <Compile Include="SerialNumbers\Validators\Create.cs" />
-    <Compile Include="SerialNumbers\Validators\TakeQuantity.cs" />
+    <Compile Include="Items\SerialNumbers\Commands\Create.cs" />
+    <Compile Include="Items\SerialNumbers\Commands\TakeQuantity.cs" />
+    <Compile Include="Items\SerialNumbers\Events\Created.cs" />
+    <Compile Include="Items\SerialNumbers\Events\QuantityTaken.cs" />
+    <Compile Include="Items\SerialNumbers\Validators\Create.cs" />
+    <Compile Include="Items\SerialNumbers\Validators\TakeQuantity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -72,7 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Items\Rules\" />
-    <Folder Include="SerialNumbers\Rules\" />
+    <Folder Include="Items\SerialNumbers\Rules\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

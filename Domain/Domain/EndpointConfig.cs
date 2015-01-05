@@ -52,11 +52,12 @@ namespace Demo.Domain
             config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
             config.UseSerialization<NServiceBus.JsonSerializer>();
 
-            config.UseAggregates(y =>
+            config.UseAggregatesWithRaven(y =>
             {
                 return Wireup.Init()
                     .UseAggregates(y)
-                    .UsingRavenPersistence("Demo")
+                    .UsingInMemoryPersistence()
+                    //.UsingRavenPersistence("Demo")
                     .InitializeStorageEngine()
                     .Build();
             });

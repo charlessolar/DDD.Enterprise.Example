@@ -69,7 +69,7 @@ namespace Demo.DemoMessages
                 watch.Reset();
 
                 // Add some stock to said item
-                var newStock = new Domain.Inventory.SerialNumbers.Commands.Create()
+                var newStock = new Domain.Inventory.Items.SerialNumbers.Commands.Create()
                 {
                     SerialNumberId = Guid.NewGuid(),
                     SerialNumber = "0001",
@@ -85,8 +85,9 @@ namespace Demo.DemoMessages
 
                 watch.Start();
                 // Take some stock from item
-                Bus.Send("domain", new Domain.Inventory.SerialNumbers.Commands.TakeQuantity()
+                Bus.Send("domain", new Domain.Inventory.Items.SerialNumbers.Commands.TakeQuantity()
                 {
+                    ItemId = newItem.ItemId,
                     SerialNumberId = newStock.SerialNumberId,
                     Quantity = 2.2M,
                 });
@@ -95,8 +96,9 @@ namespace Demo.DemoMessages
                 watch.Reset();
 
                 watch.Start();
-                Bus.Send("domain", new Domain.Inventory.SerialNumbers.Commands.TakeQuantity()
+                Bus.Send("domain", new Domain.Inventory.Items.SerialNumbers.Commands.TakeQuantity()
                 {
+                    ItemId = newItem.ItemId,
                     SerialNumberId = newStock.SerialNumberId,
                     Quantity = 0.8M,
                 });
@@ -105,8 +107,9 @@ namespace Demo.DemoMessages
                 watch.Reset();
 
                 watch.Start();
-                Bus.Send("domain", new Domain.Inventory.SerialNumbers.Commands.TakeQuantity()
+                Bus.Send("domain", new Domain.Inventory.Items.SerialNumbers.Commands.TakeQuantity()
                 {
+                    ItemId = newItem.ItemId,
                     SerialNumberId = newStock.SerialNumberId,
                     Quantity = 3M,
                 });

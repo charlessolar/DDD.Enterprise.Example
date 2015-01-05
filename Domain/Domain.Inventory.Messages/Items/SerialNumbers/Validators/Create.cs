@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Domain.Inventory.SerialNumbers.Validators
+namespace Demo.Domain.Inventory.Items.SerialNumbers.Validators
 {
     public class Create : AbstractValidator<Commands.Create>
     {

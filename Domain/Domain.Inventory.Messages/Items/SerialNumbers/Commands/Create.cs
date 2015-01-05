@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Domain.Inventory.SerialNumbers.Commands
+namespace Demo.Domain.Inventory.Items.SerialNumbers.Commands
 {
     public class Create : ICommand
     {

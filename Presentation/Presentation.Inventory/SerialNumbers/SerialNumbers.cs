@@ -59,7 +59,7 @@ namespace Demo.Presentation.Inventory.SerialNumbers
 
         public Guid Post(CreateSerialNumber request)
         {
-            var command = request.ConvertTo<Domain.Inventory.SerialNumbers.Commands.Create>();
+            var command = request.ConvertTo<Domain.Inventory.Items.SerialNumbers.Commands.Create>();
             command.ItemId = Guid.NewGuid();
             _bus.Send("domain", command);
 
