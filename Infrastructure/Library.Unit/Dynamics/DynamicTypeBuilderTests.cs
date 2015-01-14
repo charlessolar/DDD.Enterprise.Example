@@ -4,8 +4,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Unit.Dynamics
 {
@@ -38,6 +36,7 @@ namespace Demo.Library.Unit.Dynamics
             var projection = data.AsQueryable().SelectPartial("Test").First();
             Assert.That(() => projection.Test, Throws.Nothing);
         }
+
         [Test]
         public void Select_partial_not_has_field()
         {
@@ -45,6 +44,7 @@ namespace Demo.Library.Unit.Dynamics
             var projection = data.AsQueryable().SelectPartial("Not").First();
             Assert.That(() => projection.Not, Throws.Exception);
         }
+
         [Test]
         public void Select_partial_mismatch_case()
         {
@@ -52,6 +52,7 @@ namespace Demo.Library.Unit.Dynamics
             var projection = data.AsQueryable().SelectPartial("test").First();
             Assert.That(() => projection.test, Throws.Exception);
         }
+
         [Test]
         public void Select_partial_access_wrong_property()
         {
@@ -67,6 +68,7 @@ namespace Demo.Library.Unit.Dynamics
             var projection = data.ToPartial("Test");
             Assert.That(() => projection.Test, Throws.Nothing);
         }
+
         [Test]
         public void To_partial_not_has_field()
         {
@@ -74,6 +76,7 @@ namespace Demo.Library.Unit.Dynamics
             var projection = data.ToPartial("Not");
             Assert.That(() => projection.Not, Throws.Exception);
         }
+
         [Test]
         public void To_partial_mismatch_case()
         {
@@ -81,6 +84,7 @@ namespace Demo.Library.Unit.Dynamics
             var projection = data.ToPartial("test");
             Assert.That(() => projection.test, Throws.Exception);
         }
+
         [Test]
         public void To_partial_access_wrong_property()
         {

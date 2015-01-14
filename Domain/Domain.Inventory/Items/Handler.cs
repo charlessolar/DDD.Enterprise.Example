@@ -1,11 +1,5 @@
-﻿using Demo.Library.Queries;
-using Aggregates;
+﻿using Aggregates;
 using NServiceBus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Domain.Inventory.Items
 {
@@ -23,29 +17,19 @@ namespace Demo.Domain.Inventory.Items
         public void Handle(Commands.Create command)
         {
             var item = _uow.For<Item>().New(command.ItemId);
-            item.Create(              
+            item.Create(
                 command.Number,
                 command.Description,
                 command.UnitOfMeasure,
                 command.CatalogPrice,
                 command.CostPrice
                 );
-
-            _bus.Reply<IdResult>(e =>
-            {
-                e.Id = item.Id;
-            });
         }
 
         public void Handle(Commands.ChangeDescription command)
         {
             var item = _uow.For<Item>().Get(command.ItemId);
             item.ChangeDescription(command.Description);
-
-            _bus.Reply<IdResult>(e =>
-            {
-                e.Id = item.Id;
-            });
         }
     }
 }

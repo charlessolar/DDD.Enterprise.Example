@@ -1,10 +1,6 @@
 ﻿using ServiceStack.Configuration;
 using StructureMap;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.IoC
 {
@@ -24,7 +20,9 @@ namespace Demo.Library.IoC
 
         public T Resolve<T>()
         {
-            return _container.TryGetInstance<T>();
+            var ret = _container.TryGetInstance<T>();
+            if (ret == null) throw new ArgumentException(String.Format("Unknown resolution type '{0}'", typeof(T)));
+            return ret;
         }
     }
 }

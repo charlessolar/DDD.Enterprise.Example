@@ -1,68 +1,62 @@
-﻿using System;
+﻿using ServiceStack;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Demo.Infrastructure.Library.SSE
 {
+    class Listener
+    {
+        public String Receiver { get; set; }
+        public DateTime? Timeout { get; set; }
+    }
     public class MemorySubscriptionManager : ISubscriptionManager
     {
-        private Dictionary<String, ISet<String>> _subscriptions;
+        private readonly IServerEvents _sse;
+        private ConcurrentDictionary<Guid, IDictionary<String, Listener>> _subscriptions;
 
-        public MemorySubscriptionManager()
+        public MemorySubscriptionManager(IServerEvents sse)
         {
-            _subscriptions = new Dictionary<String, ISet<String>>();
+            _sse = sse;
+            _subscriptions = new ConcurrentDictionary<Guid, IDictionary<String, Listener>>();
         }
 
-        public Boolean IsSubscribed(String Session, String Domain)
+        public void AddTracked(String Session, String Receiver, Guid QueryId, Int32? Timeout)
         {
-            ISet<String> sessions;
-            if (!_subscriptions.TryGetValue(Domain, out sessions))
-                return false;
+            var listener = new Listener { Receiver = Receiver, Timeout = Timeout.HasValue ? DateTime.UtcNow.AddSeconds( Timeout.Value ) : (DateTime?)null };
 
-            if (!sessions.Contains(Domain))
-                return false;
-
-            return true;
+            _subscriptions.AddOrUpdate(
+                QueryId,
+                new Dictionary<String, Listener> { { Session, listener } },
+                (k, v) => { v[Session] = listener; return v; }
+            );
         }
-
-        public ISet<String> GetSubscriptions(String Domain)
+        public void RemoveTracked(String Session, Guid QueryId)
         {
-            ISet<String> sessions;
-            if (!_subscriptions.TryGetValue(Domain, out sessions))
-                return new HashSet<String>();
-
-            return sessions;
-        }
-
-        public void Subscribe(String Session, String Domain)
-        {
-            if (String.IsNullOrEmpty(Session)) return;
-            if (String.IsNullOrEmpty(Domain)) return;
-
-            ISet<String> sessions;
-            if (_subscriptions.TryGetValue(Domain, out sessions))
-            {
-                sessions.Add(Session);
-                return;
+            IDictionary<String, Listener> listeners;
+            if( _subscriptions.TryGetValue(QueryId, out listeners)){
+                var newValue = new Dictionary<String, Listener>(listeners);
+                newValue.Remove(Session);
+                _subscriptions.TryUpdate(QueryId, newValue, listeners);
             }
-
-            sessions = new HashSet<String>();
-            sessions.Add(Session);
-
-            _subscriptions[Domain] = sessions;
         }
 
-        public void Unsubscribe(String Session, String Domain)
+        public void Publish(Guid QueryId, Int32 Version, Object Payload)
         {
-            if (String.IsNullOrEmpty(Session)) return;
-            if (String.IsNullOrEmpty(Domain)) return;
-
-            ISet<String> sessions;
-            if (!_subscriptions.TryGetValue(Domain, out sessions))
+            IDictionary<String, Listener> listeners;
+            if (!_subscriptions.TryGetValue(QueryId, out listeners))
                 return;
 
-            sessions.Remove(Session);
+            foreach (var listener in listeners)
+            {
+                if( listener.Value.Timeout < DateTime.UtcNow )
+                {
+                    RemoveTracked(listener.Key, QueryId);
+                    return;
+                }
+
+                _sse.NotifySession(listener.Key, new { Version = Version, Payload = Payload });
+            }
         }
     }
 }

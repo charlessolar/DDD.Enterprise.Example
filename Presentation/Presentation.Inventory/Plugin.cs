@@ -1,10 +1,5 @@
 ﻿using ServiceStack;
 using ServiceStack.Validation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Presentation.Inventory
 {
@@ -12,8 +7,10 @@ namespace Demo.Presentation.Inventory
     {
         public void Register(IAppHost appHost)
         {
-            appHost.RegisterService<SerialNumbers.SerialNumbers>("Serials");
-            appHost.RegisterService<Items.Items>("Items");
+            appHost.GetContainer().RegisterAutoWiredType(typeof(Items.Serials.Service));
+            appHost.GetContainer().RegisterAutoWiredType(typeof(Items.Service));
+            appHost.RegisterService<Items.Serials.Service>("/items/{ItemId}/serials");
+            appHost.RegisterService<Items.Service>("/items");
 
             appHost.GetContainer().RegisterValidators(typeof(Plugin).Assembly);
         }

@@ -1,24 +1,20 @@
 ﻿using Demo.Infrastructure.Library.SSE;
+using Demo.Library.Authentication;
+using Demo.Library.Extensions;
 using Demo.Library.IoC;
 using Demo.Library.Security;
-using Demo.Library.Validation;
-using Demo.Presentation.Inventory.Items;
 using NServiceBus;
 using ServiceStack;
 using ServiceStack.Api.Swagger;
 using ServiceStack.Caching;
-using ServiceStack.FluentValidation;
+using ServiceStack.Configuration;
 using ServiceStack.Logging;
-using ServiceStack.Messaging;
-using ServiceStack.Redis;
+using ServiceStack.Logging.Log4Net;
 using ServiceStack.Text;
 using ServiceStack.Validation;
+using ServiceStack.Web;
 using StructureMap;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web;
 
 namespace Demo.Presentation
 {
@@ -28,14 +24,14 @@ namespace Demo.Presentation
 
         //Tell Service Stack the name of your application and where to find your web services
         public AppHost()
-            : base("Demo Web Services", typeof(AppHost).Assembly)
+            : base("Demo.Api", typeof(AppHost).Assembly)
         {
         }
 
         public override ServiceStackHost Init()
         {
             log4net.Config.XmlConfigurator.Configure();
-            LogManager.LogFactory = new ServiceStack.Logging.Log4Net.Log4NetFactory();
+            LogManager.LogFactory = new Log4NetFactory();
             NServiceBus.Logging.LogManager.Use<NServiceBus.Log4Net.Log4NetFactory>();
 
             var serverEvents = new MemoryServerEvents
@@ -47,33 +43,31 @@ namespace Demo.Presentation
             _container = new Container(x =>
             {
                 x.For<IManager>().Use<Manager>();
-                x.For<IManager>().Use<Manager>();
                 x.For<ICacheClient>().Use(new MemoryCacheClient());
                 x.For<IServerEvents>().Use(serverEvents);
-                x.For<ISubscriptionManager>().Use(new MemorySubscriptionManager());
+                x.For<ISubscriptionManager>().Use<MemorySubscriptionManager>();
             });
 
             var config = new BusConfiguration();
-            var conventions = config.Conventions();
-            conventions
-                .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Events"))
-                .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Commands"))
-                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")));
+            //var conventions = config.Conventions();
+            //conventions
+            //    .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Events"))
+            //    .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Commands"))
+            //    .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")));
 
             config.LicensePath(@"C:\License.xml");
 
             config.EndpointName("Presentation");
             config.EndpointVersion("0.0.0");
-            config.AssembliesToScan(AllAssemblies.Matching("Presentation").And("Application").And("Domain").And("Library"));
+            //config.AssembliesToScan(AllAssemblies.Matching("Presentation").And("Application").And("Domain").And("Library"));
 
             config.UsePersistence<InMemoryPersistence>();
             config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
             config.UseSerialization<NServiceBus.JsonSerializer>();
 
-            using (var bus = Bus.Create(config))
-            {
-                bus.Start();
-            }
+            var bus = Bus.Create(config).Start();
+
+            _container.Configure(x => x.For<IBus>().Use(bus).Singleton());
 
             return base.Init();
         }
@@ -82,6 +76,8 @@ namespace Demo.Presentation
         {
             JsConfig.IncludeNullValues = true;
             JsConfig.AlwaysUseUtc = true;
+
+            SetConfig(new HostConfig { DebugMode = true });
 
             container.Adapter = new StructureMapContainerAdapter(_container);
 
@@ -92,10 +88,12 @@ namespace Demo.Presentation
             Plugins.Add(new PostmanFeature());
             Plugins.Add(new CorsFeature(allowedHeaders: "Content-Type, Authorization"));
 
+            var appSettings = new AppSettings();
+
             Plugins.Add(new ValidationFeature());
             Plugins.Add(new ServerEventsFeature());
             Plugins.Add(new Presentation.Inventory.Plugin());
-
+            Plugins.Add(new Presentation.Authentication.Plugin());
 
             //container.Register<IRedisClientsManager>(c =>
             //    new PooledRedisClientManager("localhost:6379"));
@@ -103,7 +101,6 @@ namespace Demo.Presentation
             //container.Register(c => c.Resolve<IRedisClientsManager>().GetClient());
 
             //container.Register<ICacheClient>(new MemoryCacheClient());
-
 
             //container.Register<IBus>(bus);
         }

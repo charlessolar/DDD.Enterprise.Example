@@ -1,11 +1,7 @@
-﻿
-using FluentValidation;
+﻿using FluentValidation;
 using StructureMap;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Validation
 {
@@ -25,7 +21,6 @@ namespace Demo.Library.Validation
         {
             if (!_validatorsByType.ContainsKey(type))
                 return null;
-
 
             var instance = _container.GetInstance(_validatorsByType[type]) as IValidator;
             return instance;

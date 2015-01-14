@@ -1,13 +1,9 @@
 ﻿using Demo.Library.Cache;
-using Demo.Library.Responses;
 using ServiceStack;
 using ServiceStack.Caching;
 using ServiceStack.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Extensions
 {
@@ -30,14 +26,11 @@ namespace Demo.Library.Extensions
             };
         }
 
-
-
-
-        public static Wrapper<T> AddSession<T>( this T obj, ICacheClient cache, String session) where T : class, IHasGuidId
+        public static Wrapper<T> AddSession<T>(this T obj, ICacheClient cache, String session) where T : class, IHasGuidId
         {
             var key = UrnId.Create<T>(obj.Id);
 
-            var cached = key.FromCache<T>(cache) 
+            var cached = key.FromCache<T>(cache)
                 ?? obj.Wrap();
 
             if (cached.Sessions == null)
@@ -52,7 +45,7 @@ namespace Demo.Library.Extensions
             return cached;
         }
 
-        public static void RemoveSession<T>( this T obj, ICacheClient cache, String session) where T : class, IHasGuidId
+        public static void RemoveSession<T>(this T obj, ICacheClient cache, String session) where T : class, IHasGuidId
         {
             var key = UrnId.Create<T>(obj.Id);
 
@@ -72,15 +65,16 @@ namespace Demo.Library.Extensions
             return cached.FromJson<Wrapper<T>>();
         }
 
-
         public static void AddCache<T>(this Wrapper<T> wrapper, ICacheClient cache, String key) where T : class, IHasGuidId
         {
             cache.Add(key, wrapper.ToJson());
         }
+
         public static void UpdateCache<T>(this Wrapper<T> wrapper, ICacheClient cache, String key) where T : class, IHasGuidId
         {
             cache.Set(key, wrapper.ToJson());
         }
+
         public static void AddCache<T>(this T obj, ICacheClient cache) where T : class, IHasGuidId
         {
             var key = UrnId.Create<T>(obj.Id);
@@ -89,6 +83,7 @@ namespace Demo.Library.Extensions
 
             cache.Add(key, wrapper.ToJson());
         }
+
         public static void UpdateCache<T>(this T obj, ICacheClient cache) where T : class, IHasGuidId
         {
             var key = UrnId.Create<T>(obj.Id);

@@ -1,22 +1,23 @@
-﻿using Demo.Domain.Inventory.Items.SerialNumbers.Events;
+﻿using Aggregates;
+using Demo.Domain.Inventory.Items.SerialNumbers.Events;
 using Demo.Library.Exceptions;
-using Aggregates;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Domain.Inventory.Items.SerialNumbers
 {
     public class SerialNumber : Entity<Guid>
     {
         public ValueObjects.SerialNumber Serial { get; private set; }
+
         public ValueObjects.Quantity Quantity { get; private set; }
+
         public ValueObjects.Effective Effective { get; private set; }
+
         public Guid ItemId { get; private set; }
 
-        private SerialNumber() { }
+        private SerialNumber()
+        {
+        }
 
         public void Create(String SerialNumber, Decimal Quantity, DateTime Effective, Guid ItemId)
         {
@@ -29,6 +30,7 @@ namespace Demo.Domain.Inventory.Items.SerialNumbers
                 e.ItemId = ItemId;
             });
         }
+
         private void Handle(Created e)
         {
             this.Serial = new ValueObjects.SerialNumber(e.SerialNumber);
@@ -46,10 +48,10 @@ namespace Demo.Domain.Inventory.Items.SerialNumbers
                 throw new BusinessLogicException("Can't take more quantity than is on hand");
 
             Apply<QuantityTaken>(e =>
-                {
-                    e.SerialNumberId = this.Id;
-                    e.Quantity = Quantity;
-                });
+            {
+                e.SerialNumberId = this.Id;
+                e.Quantity = Quantity;
+            });
         }
 
         private void Handle(QuantityTaken @event)

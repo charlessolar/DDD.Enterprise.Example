@@ -1,33 +1,36 @@
-﻿using Demo.Domain.Inventory.Items.Events;
-using Aggregates;
+﻿using Aggregates;
+using Demo.Domain.Inventory.Items.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Domain.Inventory.Items
 {
     public class Item : Aggregate<Guid>
     {
         public ValueObjects.ItemNumber ItemNumber { get; private set; }
+
         public ValueObjects.Description Description { get; private set; }
+
         public ValueObjects.UnitOfMeasure UnitOfMeasure { get; private set; }
+
         public ValueObjects.Price CatalogPrice { get; private set; }
+
         public ValueObjects.Price CostPrice { get; private set; }
 
-        private Item() { }
+        private Item()
+        {
+        }
+
         public void Create(String Number, String Description, String UnitOfMeasure, Decimal? CatalogPrice, Decimal? CostPrice)
         {
             Apply<Created>(e =>
-                {
-                    e.ItemId = Id;
-                    e.Number = Number;
-                    e.Description = Description;
-                    e.UnitOfMeasure = UnitOfMeasure;
-                    e.CatalogPrice = CatalogPrice;
-                    e.CostPrice = CostPrice;
-                });
+            {
+                e.ItemId = Id;
+                e.Number = Number;
+                e.Description = Description;
+                e.UnitOfMeasure = UnitOfMeasure;
+                e.CatalogPrice = CatalogPrice;
+                e.CostPrice = CostPrice;
+            });
         }
 
         private void Handle(Created e)
@@ -47,10 +50,10 @@ namespace Demo.Domain.Inventory.Items
         public void ChangeDescription(String Description)
         {
             Apply<DescriptionChanged>(e =>
-                {
-                    e.ItemId = this.Id;
-                    e.Description = Description;
-                });
+            {
+                e.ItemId = this.Id;
+                e.Description = Description;
+            });
         }
     }
 }

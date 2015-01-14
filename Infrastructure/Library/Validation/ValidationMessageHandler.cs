@@ -1,11 +1,8 @@
 ﻿using FluentValidation;
+using Demo.Library.Command;
 using NServiceBus;
 using StructureMap;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Validation
 {
@@ -34,7 +31,14 @@ namespace Demo.Library.Validation
                 .ToList();
 
             if (validationErrors.Count > 0)
+            {
+                _bus.Reply<Reject>(e =>
+                {
+                    e.Message = "Validation";
+                    e.ValidationResults = validationErrors;
+                });
                 _bus.DoNotContinueDispatchingCurrentMessageToHandlers();
+            }
         }
     }
 }

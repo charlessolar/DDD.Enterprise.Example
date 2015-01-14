@@ -1,0 +1,5 @@
+﻿Placeholder to force nuget to deprecate the NServiceBus.Interfaces package
+
+If nuget fails to clean up this file it can be deleted.
+
+You may also need to manually uninstall the 'NServiceBus.Interfaces' nuget and install the 'NServiceBus' nuget.

@@ -1,12 +1,7 @@
 ﻿using Demo.Infrastructure.Library.SSE;
-using Demo.Library.Responses;
 using Demo.Presentation.Models.Cache.Services;
 using ServiceStack;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Demo.Presentation.Services
 {
@@ -14,21 +9,21 @@ namespace Demo.Presentation.Services
     {
         private ISubscriptionManager _manager;
 
-        public SSE( ISubscriptionManager manager )
+        public SSE(ISubscriptionManager manager)
         {
             _manager = manager;
         }
 
-        public Task<Base> Post( Subscribe request )
+        public Task Post(Subscribe request)
         {
-            _manager.Subscribe(Request.GetPermanentSessionId(), request.Domain);
-            return Task.FromResult(new Base { Status = "success" });
+            _manager.AddTracked(Request.GetPermanentSessionId(), request.Receiver, request.QueryId, request.Timeout);
+            return Task.FromResult(true);
         }
 
-        public Task<Base> Post(Unsubscribe request)
+        public Task Post(Unsubscribe request)
         {
-            _manager.Unsubscribe(Request.GetPermanentSessionId(), request.Domain);
-            return Task.FromResult(new Base { Status = "success" });
+            _manager.RemoveTracked(Request.GetPermanentSessionId(), request.QueryId);
+            return Task.FromResult(true);
         }
     }
 }

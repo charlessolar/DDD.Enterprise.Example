@@ -1,15 +1,7 @@
-﻿using Demo.Library.Cache;
-using Demo.Library.Queries;
-using Demo.Library.Responses;
+﻿using Demo.Library.Queries;
 using NServiceBus;
-using ServiceStack;
-using ServiceStack.Model;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Extensions
 {
@@ -28,7 +20,5 @@ namespace Demo.Library.Extensions
             if (result == null) return null;
             return records.Cast<T>();
         }
-
-        
     }
 }

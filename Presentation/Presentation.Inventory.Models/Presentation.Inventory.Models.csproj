@@ -12,7 +12,7 @@
     <AssemblyName>Presentation.Inventory.Models</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TypeScriptToolsVersion>1.1</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,13 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NServiceBus.Core">
-      <HintPath>..\..\packages\NServiceBus.5.0.0\lib\net45\NServiceBus.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=4.0.0.0, Culture=neutral, PublicKeyToken=e06fbc6124f57c43, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\ServiceStack.Interfaces.4.0.34\lib\portable-wp80+sl5+net40+win8+monotouch+monoandroid\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,29 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Items\Responses\Find.cs" />
-    <Compile Include="Items\Responses\Item.cs" />
-    <Compile Include="Items\Services\ChangeDescription.cs" />
-    <Compile Include="Items\Services\CreateItem.cs" />
-    <Compile Include="Items\Services\DeleteItem.cs" />
-    <Compile Include="Items\Services\FindItems.cs" />
-    <Compile Include="Items\Services\GetItem.cs" />
+    <Compile Include="Items\Description.cs" />
+    <Compile Include="Items\Create.cs" />
+    <Compile Include="Items\Delete.cs" />
+    <Compile Include="Items\Find.cs" />
+    <Compile Include="Items\Get.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerialNumbers\Responses\Find.cs" />
-    <Compile Include="SerialNumbers\Responses\SerialNumber.cs" />
-    <Compile Include="SerialNumbers\Services\CreateSerialNumber.cs" />
-    <Compile Include="SerialNumbers\Services\DeleteSerialNumber.cs" />
-    <Compile Include="SerialNumbers\Services\FindSerialNumbers.cs" />
-    <Compile Include="SerialNumbers\Services\GetSerialNumber.cs" />
+    <Compile Include="Items\Serials\Create.cs" />
+    <Compile Include="Items\Serials\Delete.cs" />
+    <Compile Include="Items\Serials\Find.cs" />
+    <Compile Include="Items\Serials\Get.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Application\Application.Inventory.Messages\Application.Inventory.Messages.csproj">
-      <Project>{30c5d76b-1730-478c-aa9e-186d738e7f54}</Project>
-      <Name>Application.Inventory.Messages</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Library.ServiceStack\Library.ServiceStack.csproj">
       <Project>{18822e29-9a73-4f81-815c-6289465f6df2}</Project>
       <Name>Library.ServiceStack</Name>

@@ -1,9 +1,6 @@
 ﻿using ServiceStack.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Cache
 {
@@ -19,6 +16,7 @@ namespace Demo.Library.Cache
         public ICollection<String> Sessions { get; set; }
 
         public DateTime Created { get; set; }
+
         public DateTime Updated { get; set; }
 
         public T Payload { get; set; }

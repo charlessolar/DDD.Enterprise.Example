@@ -3,10 +3,6 @@ using Demo.Library.Exceptions;
 using Demo.Library.Extensions;
 using StructureMap;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Security
 {
