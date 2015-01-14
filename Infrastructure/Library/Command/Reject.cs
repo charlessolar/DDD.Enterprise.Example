@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Demo.Library.Command
 {
-    public class Reject : Aggregates.Messages.Reject
+    public class Reject : Aggregates.Messages.IReject
     {
         public String Message { get; set; }
 

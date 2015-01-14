@@ -1,6 +1,6 @@
 ﻿namespace Demo.Library.Command
 {
-    public class Accept : Aggregates.Messages.Accept
+    public class Accept : Aggregates.Messages.IAccept
     {
     }
 }
