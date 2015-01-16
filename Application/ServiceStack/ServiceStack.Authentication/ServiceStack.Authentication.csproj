@@ -7,7 +7,7 @@
     <ProjectGuid>{EC289046-2773-4688-9143-080D002D1567}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Forte.Application.ServiceStack.Authentication</RootNamespace>
+    <RootNamespace>Demo.Application.ServiceStack.Authentication</RootNamespace>
     <AssemblyName>Application.ServiceStack.Authentication</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

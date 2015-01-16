@@ -1,7 +1,7 @@
 ﻿using ServiceStack;
 using System;
 
-namespace Forte.Application.ServiceStack.Models.Cache.Services
+namespace Demo.Application.ServiceStack.Models.Cache.Services
 {
     [Route("/subscribe", "POST")]
     public class Subscribe

@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Forte.Application.Servicestack.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Demo.Application.Servicestack.Global" Language="C#" %>

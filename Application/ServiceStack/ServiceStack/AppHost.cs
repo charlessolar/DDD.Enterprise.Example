@@ -1,8 +1,8 @@
-﻿using Forte.Infrastructure.Library.SSE;
-using Forte.Library.Authentication;
-using Forte.Library.Extensions;
-using Forte.Library.IoC;
-using Forte.Library.Security;
+﻿using Demo.Infrastructure.Library.SSE;
+using Demo.Library.Authentication;
+using Demo.Library.Extensions;
+using Demo.Library.IoC;
+using Demo.Library.Security;
 using NServiceBus;
 using ServiceStack;
 using ServiceStack.Api.Swagger;
@@ -16,7 +16,7 @@ using ServiceStack.Web;
 using StructureMap;
 using System;
 
-namespace Forte.Application.ServiceStack
+namespace Demo.Application.ServiceStack
 {
     public class AppHost : AppHostBase
     {
@@ -24,7 +24,7 @@ namespace Forte.Application.ServiceStack
 
         //Tell Service Stack the name of your application and where to find your web services
         public AppHost()
-            : base("Forte.Api", typeof(AppHost).Assembly)
+            : base("Demo.Api", typeof(AppHost).Assembly)
         {
         }
 
@@ -51,9 +51,9 @@ namespace Forte.Application.ServiceStack
             var config = new BusConfiguration();
             //var conventions = config.Conventions();
             //conventions
-            //    .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Forte") && t.Namespace.EndsWith("Events"))
-            //    .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Forte") && t.Namespace.EndsWith("Commands"))
-            //    .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Forte") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")));
+            //    .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Events"))
+            //    .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && t.Namespace.EndsWith("Commands"))
+            //    .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("Demo") && (t.Namespace.EndsWith("Messages") || t.Namespace.EndsWith("Queries")));
 
             config.LicensePath(@"C:\License.xml");
 

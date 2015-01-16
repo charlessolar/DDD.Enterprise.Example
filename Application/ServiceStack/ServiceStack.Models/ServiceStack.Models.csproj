@@ -7,7 +7,7 @@
     <ProjectGuid>{AED92C97-6CA1-4243-8109-CB1A75DCD59A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Forte.Application.ServiceStack.Models</RootNamespace>
+    <RootNamespace>Demo.Application.ServiceStack.Models</RootNamespace>
     <AssemblyName>Application.ServiceStack.Models</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

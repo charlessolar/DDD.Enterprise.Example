@@ -1,10 +1,10 @@
-﻿using Forte.Library.Queries;
-using Forte.Library.Responses;
+﻿using Demo.Library.Queries;
+using Demo.Library.Responses;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
 
-namespace Forte.Application.ServiceStack.Inventory.Models.Items
+namespace Demo.Application.ServiceStack.Inventory.Models.Items
 {
     [Api("Inventory")]
     [Route("/items", "GET")]

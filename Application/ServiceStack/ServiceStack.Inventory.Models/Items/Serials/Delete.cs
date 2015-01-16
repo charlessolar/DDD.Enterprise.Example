@@ -1,8 +1,8 @@
-﻿using Forte.Library.Responses;
+﻿using Demo.Library.Responses;
 using ServiceStack;
 using System;
 
-namespace Forte.Application.ServiceStack.Inventory.Models.Items.Serials
+namespace Demo.Application.ServiceStack.Inventory.Models.Items.Serials
 {
     [Route("/items/{ItemId}/serials/{Id}", "DELETE")]
     public class Delete : IReturn<Base>

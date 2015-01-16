@@ -1,7 +1,7 @@
 ﻿using ServiceStack;
 using ServiceStack.Validation;
 
-namespace Forte.Application.ServiceStack.Inventory
+namespace Demo.Application.ServiceStack.Inventory
 {
     public class Plugin : IPlugin
     {

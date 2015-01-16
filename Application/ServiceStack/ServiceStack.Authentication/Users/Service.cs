@@ -1,8 +1,8 @@
-﻿using Forte.Application.ServiceStack.Authentication.Models.Users;
-using Forte.Library.Authentication;
-using Forte.Library.Extensions;
-using Forte.Library.Responses;
-using Forte.Library.Services;
+﻿using Demo.Application.ServiceStack.Authentication.Models.Users;
+using Demo.Library.Authentication;
+using Demo.Library.Extensions;
+using Demo.Library.Responses;
+using Demo.Library.Services;
 using NServiceBus;
 using ServiceStack;
 using System;
@@ -10,10 +10,10 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Forte.Application.ServiceStack.Authentication.Users
+namespace Demo.Application.ServiceStack.Authentication.Users
 {
     [RequireJWT]
-    public class Service : ForteService
+    public class Service : DemoService
     {
         private IBus _bus;
 
@@ -24,12 +24,12 @@ namespace Forte.Application.ServiceStack.Authentication.Users
 
         public Task<GetResponse> Any(Get request)
         {
-            return _bus.Send("application.ravendb", new Forte.Application.RavenDB.Authentication.Users.Queries.Get
+            return _bus.Send("application.ravendb", new Demo.Application.RavenDB.Authentication.Users.Queries.Get
             {
                 Id = Profile.UserId
             }).Register(x =>
             {
-                var result = x.GetQueryResponse<Forte.Application.RavenDB.Authentication.Users.User>();
+                var result = x.GetQueryResponse<Demo.Application.RavenDB.Authentication.Users.User>();
 
                 if (result == null)
                     throw new HttpError(HttpStatusCode.NotFound, "Get request failed");

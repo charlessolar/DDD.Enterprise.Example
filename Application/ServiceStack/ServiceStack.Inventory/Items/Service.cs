@@ -1,18 +1,18 @@
-﻿using Forte.Library.Authentication;
-using Forte.Library.Extensions;
-using Forte.Library.Responses;
-using Forte.Library.Services;
-using Forte.Application.ServiceStack.Inventory.Models.Items;
+﻿using Demo.Library.Authentication;
+using Demo.Library.Extensions;
+using Demo.Library.Responses;
+using Demo.Library.Services;
+using Demo.Application.ServiceStack.Inventory.Models.Items;
 using NServiceBus;
 using ServiceStack;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Forte.Application.ServiceStack.Inventory.Items
+namespace Demo.Application.ServiceStack.Inventory.Items
 {
     [RequireJWT]
-    public class Service : ForteService
+    public class Service : DemoService
     {
         private IBus _bus;
 

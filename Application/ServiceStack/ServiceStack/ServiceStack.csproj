@@ -7,7 +7,7 @@
     <ProjectGuid>{CF36BF58-D08F-425A-9A6A-D0A86C506110}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Forte.Application.ServiceStack</RootNamespace>
+    <RootNamespace>Demo.Application.ServiceStack</RootNamespace>
     <AssemblyName>Application.ServiceStack</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

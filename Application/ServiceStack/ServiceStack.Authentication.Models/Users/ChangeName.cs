@@ -1,4 +1,4 @@
-﻿using Forte.Library.Responses;
+﻿using Demo.Library.Responses;
 using ServiceStack;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Forte.Application.ServiceStack.Authentication.Models.Users
+namespace Demo.Application.ServiceStack.Authentication.Models.Users
 {
     [Api("Users")]
     [Route("/user/name", "PUT, POST")]

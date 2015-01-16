@@ -1,7 +1,7 @@
-﻿using Forte.Application.ServiceStack.Inventory.Models.Items.Serials;
+﻿using Demo.Application.ServiceStack.Inventory.Models.Items.Serials;
 using ServiceStack.FluentValidation;
 
-namespace Forte.Application.ServiceStack.Inventory.Items.Serials.Validators
+namespace Demo.Application.ServiceStack.Inventory.Items.Serials.Validators
 {
     public class CreateValidator : AbstractValidator<Create>
     {

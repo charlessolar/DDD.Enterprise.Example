@@ -1,8 +1,8 @@
-﻿using Forte.Library.Responses;
+﻿using Demo.Library.Responses;
 using ServiceStack;
 using System;
 
-namespace Forte.Application.ServiceStack.Authentication.Models.Users
+namespace Demo.Application.ServiceStack.Authentication.Models.Users
 {
     [Api("Authentication")]
     [Route("/user/login", "POST")]
