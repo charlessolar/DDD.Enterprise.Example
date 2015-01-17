@@ -92,8 +92,8 @@ namespace Demo.Application.ServiceStack
 
             Plugins.Add(new ValidationFeature());
             Plugins.Add(new ServerEventsFeature());
-            Plugins.Add(new Presentation.Inventory.Plugin());
-            Plugins.Add(new Presentation.Authentication.Plugin());
+            Plugins.Add(new ServiceStack.Inventory.Plugin());
+            Plugins.Add(new ServiceStack.Authentication.Plugin());
 
             //container.Register<IRedisClientsManager>(c =>
             //    new PooledRedisClientManager("localhost:6379"));
@@ -104,4 +104,5 @@ namespace Demo.Application.ServiceStack
 
             //container.Register<IBus>(bus);
         }
+    }
 }

@@ -67,7 +67,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Inventory.Mode
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Models", "Application\ServiceStack\ServiceStack.Models\ServiceStack.Models.csproj", "{AED92C97-6CA1-4243-8109-CB1A75DCD59A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servicestack", "Application\ServiceStack\Servicestack2\Servicestack.csproj", "{D52B0FA4-5AB9-4CFB-9D2D-BAF08643BB10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servicestack", "Application\ServiceStack\Servicestack\Servicestack.csproj", "{D52B0FA4-5AB9-4CFB-9D2D-BAF08643BB10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
