@@ -89,33 +89,7 @@
     <Compile Include="Country\Services\Destroy.cs" />
     <Compile Include="Country\Services\Index.cs" />
     <Compile Include="Country\Services\UpdateName.cs" />
-    <Compile Include="PaymentMethod\Entities\Detail\Responses\Index.cs" />
-    <Compile Include="PaymentMethod\Entities\Detail\Services\Create.cs" />
-    <Compile Include="PaymentMethod\Entities\Detail\Services\Destroy.cs" />
-    <Compile Include="PaymentMethod\Entities\Detail\Services\Index.cs" />
-    <Compile Include="PaymentMethod\Responses\Index.cs" />
-    <Compile Include="PaymentMethod\Services\Create.cs" />
-    <Compile Include="PaymentMethod\Services\Destroy.cs" />
-    <Compile Include="PaymentMethod\Services\Index.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Region\Entities\Match\Responses\Index.cs" />
-    <Compile Include="Region\Entities\Match\Services\ChangeOperation.cs" />
-    <Compile Include="Region\Entities\Match\Services\ChangeType.cs" />
-    <Compile Include="Region\Entities\Match\Services\ChangeValue.cs" />
-    <Compile Include="Region\Entities\Match\Services\Create.cs" />
-    <Compile Include="Region\Entities\Match\Services\Destroy.cs" />
-    <Compile Include="Region\Entities\Match\Services\Index.cs" />
-    <Compile Include="Region\Responses\Index.cs" />
-    <Compile Include="Region\Services\ChangeDescription.cs" />
-    <Compile Include="Region\Services\ChangeName.cs" />
-    <Compile Include="Region\Services\Create.cs" />
-    <Compile Include="Region\Services\Destroy.cs" />
-    <Compile Include="Region\Services\Index.cs" />
-    <Compile Include="TaxType\Responses\Index.cs" />
-    <Compile Include="TaxType\Services\ChangeName.cs" />
-    <Compile Include="TaxType\Services\Create.cs" />
-    <Compile Include="TaxType\Services\Destroy.cs" />
-    <Compile Include="TaxType\Services\Index.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Domain\Domain.Configuration.Messages\Domain.Configuration.Messages.csproj">
