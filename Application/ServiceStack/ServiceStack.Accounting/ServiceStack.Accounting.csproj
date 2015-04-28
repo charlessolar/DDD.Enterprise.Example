@@ -158,93 +158,8 @@
     <Compile Include="Currency\Validators\Index.cs" />
     <Compile Include="Currency\Validators\Select.cs" />
     <Compile Include="Currency\Validators\SymbolBefore.cs" />
-    <Compile Include="FiscalYear\Entities\Period\Handlers\Get.cs" />
-    <Compile Include="FiscalYear\Entities\Period\Queries\Get.cs" />
-    <Compile Include="FiscalYear\Entities\Period\Service.cs" />
-    <Compile Include="FiscalYear\Entities\Period\Validators\ChangeName.cs" />
-    <Compile Include="FiscalYear\Entities\Period\Validators\Create.cs" />
-    <Compile Include="FiscalYear\Entities\Period\Validators\Destroy.cs" />
-    <Compile Include="FiscalYear\Entities\Period\Validators\End.cs" />
-    <Compile Include="FiscalYear\Entities\Period\Validators\Get.cs" />
-    <Compile Include="FiscalYear\Entities\Period\Validators\Start.cs" />
-    <Compile Include="FiscalYear\Handlers\Get.cs" />
-    <Compile Include="FiscalYear\Queries\Get.cs" />
-    <Compile Include="FiscalYear\Service.cs" />
-    <Compile Include="FiscalYear\Validators\ChangeName.cs" />
-    <Compile Include="FiscalYear\Validators\Create.cs" />
-    <Compile Include="FiscalYear\Validators\Destroy.cs" />
-    <Compile Include="FiscalYear\Validators\End.cs" />
-    <Compile Include="FiscalYear\Validators\Get.cs" />
-    <Compile Include="FiscalYear\Validators\Start.cs" />
-    <Compile Include="Journal\Entities\Entry\Handlers\Index.cs" />
-    <Compile Include="Journal\Entities\Entry\Queries\Index.cs" />
-    <Compile Include="Journal\Entities\Entry\Service.cs" />
-    <Compile Include="Journal\Entities\Entry\Validators\Get.cs" />
-    <Compile Include="Journal\Entities\Entry\Validators\RequestReview.cs" />
-    <Compile Include="Journal\Entities\Entry\Validators\Reviewed.cs" />
-    <Compile Include="Journal\Entities\Item\Handlers\Get.cs" />
-    <Compile Include="Journal\Entities\Item\Handlers\Index.cs" />
-    <Compile Include="Journal\Entities\Item\Queries\Get.cs" />
-    <Compile Include="Journal\Entities\Item\Service.cs" />
-    <Compile Include="Journal\Entities\Item\Validators\ChangeEffective.cs" />
-    <Compile Include="Journal\Entities\Item\Validators\ChangeReference.cs" />
-    <Compile Include="Journal\Entities\Item\Validators\Create.cs" />
-    <Compile Include="Journal\Entities\Item\Validators\Destroy.cs" />
-    <Compile Include="Journal\Entities\Item\Validators\Get.cs" />
-    <Compile Include="Journal\Entities\Item\Validators\Reconcile.cs" />
-    <Compile Include="Journal\Handlers\Get.cs" />
-    <Compile Include="Journal\Queries\Get.cs" />
-    <Compile Include="Journal\Queries\Index.cs" />
-    <Compile Include="Journal\Validators\ChangeCheckDate.cs" />
-    <Compile Include="Journal\Validators\ChangeName.cs" />
-    <Compile Include="Journal\Validators\ChangeResponsible.cs" />
-    <Compile Include="Journal\Validators\ChangeSkipDraft.cs" />
-    <Compile Include="Journal\Validators\Create.cs" />
-    <Compile Include="Journal\Validators\Destroy.cs" />
-    <Compile Include="Journal\Validators\Get.cs" />
-    <Compile Include="Journal\Validators\SetCreditAccount.cs" />
-    <Compile Include="Journal\Validators\SetDebitAccount.cs" />
-    <Compile Include="PaymentOrder\Entities\Invoice\Handlers\Index.cs" />
-    <Compile Include="PaymentOrder\Entities\Invoice\Service.cs" />
-    <Compile Include="PaymentOrder\Handlers\Get.cs" />
-    <Compile Include="Journal\Handlers\Index.cs" />
-    <Compile Include="Journal\Service.cs" />
-    <Compile Include="PaymentOrder\Handlers\Index.cs" />
-    <Compile Include="PaymentOrder\Queries\Get.cs" />
-    <Compile Include="PaymentOrder\Queries\Index.cs" />
-    <Compile Include="PaymentOrder\Service.cs" />
-    <Compile Include="PaymentOrder\Validators\ChangeEffective.cs" />
-    <Compile Include="PaymentOrder\Validators\ChangeMethod.cs" />
-    <Compile Include="PaymentOrder\Validators\ChangeReference.cs" />
-    <Compile Include="PaymentOrder\Validators\Confirm.cs" />
-    <Compile Include="PaymentOrder\Validators\Discard.cs" />
-    <Compile Include="PaymentOrder\Validators\Dispurse.cs" />
-    <Compile Include="PaymentOrder\Validators\Get.cs" />
-    <Compile Include="PaymentOrder\Validators\Index.cs" />
-    <Compile Include="PaymentOrder\Validators\Start.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tax\Handlers\Get.cs" />
-    <Compile Include="Tax\Handlers\Index.cs" />
-    <Compile Include="Tax\Handlers\Region.cs" />
-    <Compile Include="Tax\Handlers\Store.cs" />
-    <Compile Include="Tax\Queries\Get.cs" />
-    <Compile Include="Tax\Queries\Index.cs" />
-    <Compile Include="Tax\Service.cs" />
-    <Compile Include="Tax\Validators\Activate.cs" />
-    <Compile Include="Tax\Validators\AddRegion.cs" />
-    <Compile Include="Tax\Validators\AddStore.cs" />
-    <Compile Include="Tax\Validators\ChangeAccount.cs" />
-    <Compile Include="Tax\Validators\ChangeDescription.cs" />
-    <Compile Include="Tax\Validators\ChangeName.cs" />
-    <Compile Include="Tax\Validators\ChangeRate.cs" />
-    <Compile Include="Tax\Validators\Create.cs" />
-    <Compile Include="Tax\Validators\Deactivate.cs" />
-    <Compile Include="Tax\Validators\Destroy.cs" />
-    <Compile Include="Tax\Validators\Get.cs" />
-    <Compile Include="Tax\Validators\Index.cs" />
-    <Compile Include="Tax\Validators\RemoveRegion.cs" />
-    <Compile Include="Tax\Validators\RemoveStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Domain\Domain.Accounting.Messages\Domain.Accounting.Messages.csproj">
@@ -258,10 +173,6 @@
     <ProjectReference Include="..\..\..\Domain\Domain.Configuration.Messages\Domain.Configuration.Messages.csproj">
       <Project>{3c61e443-d507-458a-8c0c-74f53e3c052d}</Project>
       <Name>Domain.Configuration.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Domain\Domain.HumanResources.Messages\Domain.HumanResources.Messages.csproj">
-      <Project>{17368655-197a-4367-bd5a-3fbd3bd00438}</Project>
-      <Name>Domain.HumanResources.Messages</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Infrastructure\Library.ServiceStack\Library.ServiceStack.csproj">
       <Project>{18822e29-9a73-4f81-815c-6289465f6df2}</Project>
@@ -282,14 +193,6 @@
     <ProjectReference Include="..\ServiceStack.Configuration.Models\ServiceStack.Configuration.Models.csproj">
       <Project>{bba54ab3-4092-457a-ae69-0d00162b4a8f}</Project>
       <Name>ServiceStack.Configuration.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceStack.HumanResources.Models\ServiceStack.HumanResources.Models.csproj">
-      <Project>{af097155-821e-40f5-8448-f59c819613b1}</Project>
-      <Name>ServiceStack.HumanResources.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceStack.Relations.Models\ServiceStack.Relations.Models.csproj">
-      <Project>{4a7250ad-e5ba-47f1-a497-c30f18e06f43}</Project>
-      <Name>ServiceStack.Relations.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -191,18 +191,6 @@
       <Project>{50afec15-ffa4-49db-a806-162cd6acd399}</Project>
       <Name>ServiceStack.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServiceStack.HumanResources\ServiceStack.HumanResources.csproj">
-      <Project>{d3c0322a-adc5-4447-963b-e4203242ef97}</Project>
-      <Name>ServiceStack.HumanResources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceStack.Relations\ServiceStack.Relations.csproj">
-      <Project>{2942fbed-ffcc-4b50-b217-d06798c7d468}</Project>
-      <Name>ServiceStack.Relations</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceStack.Warehouse\ServiceStack.Warehouse.csproj">
-      <Project>{99dbf695-8b54-407d-bafc-9ce40d1feecd}</Project>
-      <Name>ServiceStack.Warehouse</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

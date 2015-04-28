@@ -20,8 +20,7 @@ namespace Demo.Domain.Accounting.Account.Events
         Boolean AllowReconcile { get; set; }
 
         OPERATION Operation { get; set; }
-        
-        Guid StoreId { get; set; }
+
 
         Guid CurrencyId { get; set; }
     }

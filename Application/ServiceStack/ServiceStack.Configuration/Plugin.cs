@@ -8,12 +8,7 @@ namespace Demo.Application.ServiceStack.Configuration
         public void Register(IAppHost appHost)
         {
             appHost.RegisterService<AccountType.Service>();
-            appHost.RegisterService<TaxType.Service>();
-            appHost.RegisterService<Region.Service>();
-            appHost.RegisterService<Region.Entities.Match.Service>();
             appHost.RegisterService<Country.Service>();
-            appHost.RegisterService<PaymentMethod.Service>();
-            appHost.RegisterService<PaymentMethod.Entities.Detail.Service>();
 
             //appHost.GetContainer().RegisterAutoWiredType(typeof(Users.Service));
 

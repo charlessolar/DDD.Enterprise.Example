@@ -41,45 +41,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Accounting.Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Configuration", "Domain\Domain.Configuration\Domain.Configuration.csproj", "{B507B824-2734-40F5-B3D6-E68C93A66AA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.HumanResources", "Domain\Domain.HumanResources\Domain.HumanResources.csproj", "{69A9EBB6-E2BE-4A30-85D7-89BD7E5C9D17}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.HumanResources.Messages", "Domain\Domain.HumanResources.Messages\Domain.HumanResources.Messages.csproj", "{17368655-197A-4367-BD5A-3FBD3BD00438}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Relations", "Domain\Domain.Relations\Domain.Relations.csproj", "{C9DE470C-56D7-4080-8CAB-7D9E85060B11}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Relations.Messages", "Domain\Domain.Relations.Messages\Domain.Relations.Messages.csproj", "{EB6B8161-BF6F-492C-A9C9-99A37B0039B8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Accounting", "Domain\Domain.Accounting\Domain.Accounting.csproj", "{F4B51B6F-97BE-40D0-BCB8-4CECA244E8D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Authentication.Aggregates", "Domain\Domain.Authentication.Aggregates\Domain.Authentication.Aggregates.csproj", "{7726ADC2-103D-4249-BF62-9650DF467178}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Configuration.Aggregates", "Domain\Domain.Configuration.Aggregates\Domain.Configuration.Aggregates.csproj", "{63CAF241-5BFD-43A1-B25F-3EB49872C6C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.HumanResources.Aggregates", "Domain\Domain.HumanResources.Aggregates\Domain.HumanResources.Aggregates.csproj", "{03EFB23A-792A-4E81-9573-19D21783486D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Relations.Aggregates", "Domain\Domain.Relations.Aggregates\Domain.Relations.Aggregates.csproj", "{0EC3DAFD-3344-47B8-B5E4-768B9AF5F2C2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Configuration", "Application\ServiceStack\ServiceStack.Configuration\ServiceStack.Configuration.csproj", "{50AFEC15-FFA4-49DB-A806-162CD6ACD399}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Configuration.Models", "Application\ServiceStack\ServiceStack.Configuration.Models\ServiceStack.Configuration.Models.csproj", "{BBA54AB3-4092-457A-AE69-0D00162B4A8F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.HumanResources", "Application\ServiceStack\ServiceStack.HumanResources\ServiceStack.HumanResources.csproj", "{D3C0322A-ADC5-4447-963B-E4203242EF97}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.HumanResources.Models", "Application\ServiceStack\ServiceStack.HumanResources.Models\ServiceStack.HumanResources.Models.csproj", "{AF097155-821E-40F5-8448-F59C819613B1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Relations", "Application\ServiceStack\ServiceStack.Relations\ServiceStack.Relations.csproj", "{2942FBED-FFCC-4B50-B217-D06798C7D468}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Relations.Models", "Application\ServiceStack\ServiceStack.Relations.Models\ServiceStack.Relations.Models.csproj", "{4A7250AD-E5BA-47F1-A497-C30F18E06F43}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Warehouse", "Domain\Domain.Warehouse\Domain.Warehouse.csproj", "{F0684E81-D464-4872-87B5-75551408B6A8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Warehouse.Messages", "Domain\Domain.Warehouse.Messages\Domain.Warehouse.Messages.csproj", "{4B6C176A-C0AF-476C-A6F5-1E778340860D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Warehouse.Aggregates", "Domain\Domain.Warehouse.Aggregates\Domain.Warehouse.Aggregates.csproj", "{E7D5198C-F7EA-44B4-801D-C53B22BF7D00}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Warehouse", "Application\ServiceStack\ServiceStack.Warehouse\ServiceStack.Warehouse.csproj", "{99DBF695-8B54-407D-BAFC-9CE40D1FEECD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Warehouse.Models", "Application\ServiceStack\ServiceStack.Warehouse.Models\ServiceStack.Warehouse.Models.csproj", "{0017919B-ADB0-426F-A3E6-241E3CDD3E1F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seed", "Infrastructure\Seed\Seed.csproj", "{C8690D31-9F78-47F1-8E0E-E5CA5DC84DAB}"
 EndProject
@@ -180,30 +150,6 @@ Global
 		{B507B824-2734-40F5-B3D6-E68C93A66AA5}.Production|Any CPU.Build.0 = Production|Any CPU
 		{B507B824-2734-40F5-B3D6-E68C93A66AA5}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
 		{B507B824-2734-40F5-B3D6-E68C93A66AA5}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{69A9EBB6-E2BE-4A30-85D7-89BD7E5C9D17}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{69A9EBB6-E2BE-4A30-85D7-89BD7E5C9D17}.Development|Any CPU.Build.0 = Development|Any CPU
-		{69A9EBB6-E2BE-4A30-85D7-89BD7E5C9D17}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{69A9EBB6-E2BE-4A30-85D7-89BD7E5C9D17}.Production|Any CPU.Build.0 = Production|Any CPU
-		{69A9EBB6-E2BE-4A30-85D7-89BD7E5C9D17}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{69A9EBB6-E2BE-4A30-85D7-89BD7E5C9D17}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{17368655-197A-4367-BD5A-3FBD3BD00438}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{17368655-197A-4367-BD5A-3FBD3BD00438}.Development|Any CPU.Build.0 = Development|Any CPU
-		{17368655-197A-4367-BD5A-3FBD3BD00438}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{17368655-197A-4367-BD5A-3FBD3BD00438}.Production|Any CPU.Build.0 = Production|Any CPU
-		{17368655-197A-4367-BD5A-3FBD3BD00438}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{17368655-197A-4367-BD5A-3FBD3BD00438}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{C9DE470C-56D7-4080-8CAB-7D9E85060B11}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{C9DE470C-56D7-4080-8CAB-7D9E85060B11}.Development|Any CPU.Build.0 = Development|Any CPU
-		{C9DE470C-56D7-4080-8CAB-7D9E85060B11}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{C9DE470C-56D7-4080-8CAB-7D9E85060B11}.Production|Any CPU.Build.0 = Production|Any CPU
-		{C9DE470C-56D7-4080-8CAB-7D9E85060B11}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{C9DE470C-56D7-4080-8CAB-7D9E85060B11}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{EB6B8161-BF6F-492C-A9C9-99A37B0039B8}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{EB6B8161-BF6F-492C-A9C9-99A37B0039B8}.Development|Any CPU.Build.0 = Development|Any CPU
-		{EB6B8161-BF6F-492C-A9C9-99A37B0039B8}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{EB6B8161-BF6F-492C-A9C9-99A37B0039B8}.Production|Any CPU.Build.0 = Production|Any CPU
-		{EB6B8161-BF6F-492C-A9C9-99A37B0039B8}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{EB6B8161-BF6F-492C-A9C9-99A37B0039B8}.Staging|Any CPU.Build.0 = Staging|Any CPU
 		{F4B51B6F-97BE-40D0-BCB8-4CECA244E8D0}.Development|Any CPU.ActiveCfg = Development|Any CPU
 		{F4B51B6F-97BE-40D0-BCB8-4CECA244E8D0}.Development|Any CPU.Build.0 = Development|Any CPU
 		{F4B51B6F-97BE-40D0-BCB8-4CECA244E8D0}.Production|Any CPU.ActiveCfg = Production|Any CPU
@@ -222,18 +168,6 @@ Global
 		{63CAF241-5BFD-43A1-B25F-3EB49872C6C5}.Production|Any CPU.Build.0 = Production|Any CPU
 		{63CAF241-5BFD-43A1-B25F-3EB49872C6C5}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
 		{63CAF241-5BFD-43A1-B25F-3EB49872C6C5}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{03EFB23A-792A-4E81-9573-19D21783486D}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{03EFB23A-792A-4E81-9573-19D21783486D}.Development|Any CPU.Build.0 = Development|Any CPU
-		{03EFB23A-792A-4E81-9573-19D21783486D}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{03EFB23A-792A-4E81-9573-19D21783486D}.Production|Any CPU.Build.0 = Production|Any CPU
-		{03EFB23A-792A-4E81-9573-19D21783486D}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{03EFB23A-792A-4E81-9573-19D21783486D}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{0EC3DAFD-3344-47B8-B5E4-768B9AF5F2C2}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{0EC3DAFD-3344-47B8-B5E4-768B9AF5F2C2}.Development|Any CPU.Build.0 = Development|Any CPU
-		{0EC3DAFD-3344-47B8-B5E4-768B9AF5F2C2}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{0EC3DAFD-3344-47B8-B5E4-768B9AF5F2C2}.Production|Any CPU.Build.0 = Production|Any CPU
-		{0EC3DAFD-3344-47B8-B5E4-768B9AF5F2C2}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{0EC3DAFD-3344-47B8-B5E4-768B9AF5F2C2}.Staging|Any CPU.Build.0 = Staging|Any CPU
 		{50AFEC15-FFA4-49DB-A806-162CD6ACD399}.Development|Any CPU.ActiveCfg = Development|Any CPU
 		{50AFEC15-FFA4-49DB-A806-162CD6ACD399}.Development|Any CPU.Build.0 = Development|Any CPU
 		{50AFEC15-FFA4-49DB-A806-162CD6ACD399}.Production|Any CPU.ActiveCfg = Production|Any CPU
@@ -246,60 +180,6 @@ Global
 		{BBA54AB3-4092-457A-AE69-0D00162B4A8F}.Production|Any CPU.Build.0 = Production|Any CPU
 		{BBA54AB3-4092-457A-AE69-0D00162B4A8F}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
 		{BBA54AB3-4092-457A-AE69-0D00162B4A8F}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{D3C0322A-ADC5-4447-963B-E4203242EF97}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{D3C0322A-ADC5-4447-963B-E4203242EF97}.Development|Any CPU.Build.0 = Development|Any CPU
-		{D3C0322A-ADC5-4447-963B-E4203242EF97}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{D3C0322A-ADC5-4447-963B-E4203242EF97}.Production|Any CPU.Build.0 = Production|Any CPU
-		{D3C0322A-ADC5-4447-963B-E4203242EF97}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{D3C0322A-ADC5-4447-963B-E4203242EF97}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{AF097155-821E-40F5-8448-F59C819613B1}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{AF097155-821E-40F5-8448-F59C819613B1}.Development|Any CPU.Build.0 = Development|Any CPU
-		{AF097155-821E-40F5-8448-F59C819613B1}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{AF097155-821E-40F5-8448-F59C819613B1}.Production|Any CPU.Build.0 = Production|Any CPU
-		{AF097155-821E-40F5-8448-F59C819613B1}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{AF097155-821E-40F5-8448-F59C819613B1}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{2942FBED-FFCC-4B50-B217-D06798C7D468}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{2942FBED-FFCC-4B50-B217-D06798C7D468}.Development|Any CPU.Build.0 = Development|Any CPU
-		{2942FBED-FFCC-4B50-B217-D06798C7D468}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{2942FBED-FFCC-4B50-B217-D06798C7D468}.Production|Any CPU.Build.0 = Production|Any CPU
-		{2942FBED-FFCC-4B50-B217-D06798C7D468}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{2942FBED-FFCC-4B50-B217-D06798C7D468}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{4A7250AD-E5BA-47F1-A497-C30F18E06F43}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{4A7250AD-E5BA-47F1-A497-C30F18E06F43}.Development|Any CPU.Build.0 = Development|Any CPU
-		{4A7250AD-E5BA-47F1-A497-C30F18E06F43}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{4A7250AD-E5BA-47F1-A497-C30F18E06F43}.Production|Any CPU.Build.0 = Production|Any CPU
-		{4A7250AD-E5BA-47F1-A497-C30F18E06F43}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{4A7250AD-E5BA-47F1-A497-C30F18E06F43}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{F0684E81-D464-4872-87B5-75551408B6A8}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{F0684E81-D464-4872-87B5-75551408B6A8}.Development|Any CPU.Build.0 = Development|Any CPU
-		{F0684E81-D464-4872-87B5-75551408B6A8}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{F0684E81-D464-4872-87B5-75551408B6A8}.Production|Any CPU.Build.0 = Production|Any CPU
-		{F0684E81-D464-4872-87B5-75551408B6A8}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{F0684E81-D464-4872-87B5-75551408B6A8}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{4B6C176A-C0AF-476C-A6F5-1E778340860D}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{4B6C176A-C0AF-476C-A6F5-1E778340860D}.Development|Any CPU.Build.0 = Development|Any CPU
-		{4B6C176A-C0AF-476C-A6F5-1E778340860D}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{4B6C176A-C0AF-476C-A6F5-1E778340860D}.Production|Any CPU.Build.0 = Production|Any CPU
-		{4B6C176A-C0AF-476C-A6F5-1E778340860D}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{4B6C176A-C0AF-476C-A6F5-1E778340860D}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{E7D5198C-F7EA-44B4-801D-C53B22BF7D00}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{E7D5198C-F7EA-44B4-801D-C53B22BF7D00}.Development|Any CPU.Build.0 = Development|Any CPU
-		{E7D5198C-F7EA-44B4-801D-C53B22BF7D00}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{E7D5198C-F7EA-44B4-801D-C53B22BF7D00}.Production|Any CPU.Build.0 = Production|Any CPU
-		{E7D5198C-F7EA-44B4-801D-C53B22BF7D00}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{E7D5198C-F7EA-44B4-801D-C53B22BF7D00}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{99DBF695-8B54-407D-BAFC-9CE40D1FEECD}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{99DBF695-8B54-407D-BAFC-9CE40D1FEECD}.Development|Any CPU.Build.0 = Development|Any CPU
-		{99DBF695-8B54-407D-BAFC-9CE40D1FEECD}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{99DBF695-8B54-407D-BAFC-9CE40D1FEECD}.Production|Any CPU.Build.0 = Production|Any CPU
-		{99DBF695-8B54-407D-BAFC-9CE40D1FEECD}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{99DBF695-8B54-407D-BAFC-9CE40D1FEECD}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{0017919B-ADB0-426F-A3E6-241E3CDD3E1F}.Development|Any CPU.ActiveCfg = Development|Any CPU
-		{0017919B-ADB0-426F-A3E6-241E3CDD3E1F}.Development|Any CPU.Build.0 = Development|Any CPU
-		{0017919B-ADB0-426F-A3E6-241E3CDD3E1F}.Production|Any CPU.ActiveCfg = Production|Any CPU
-		{0017919B-ADB0-426F-A3E6-241E3CDD3E1F}.Production|Any CPU.Build.0 = Production|Any CPU
-		{0017919B-ADB0-426F-A3E6-241E3CDD3E1F}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{0017919B-ADB0-426F-A3E6-241E3CDD3E1F}.Staging|Any CPU.Build.0 = Staging|Any CPU
 		{C8690D31-9F78-47F1-8E0E-E5CA5DC84DAB}.Development|Any CPU.ActiveCfg = Development|Any CPU
 		{C8690D31-9F78-47F1-8E0E-E5CA5DC84DAB}.Development|Any CPU.Build.0 = Development|Any CPU
 		{C8690D31-9F78-47F1-8E0E-E5CA5DC84DAB}.Production|Any CPU.ActiveCfg = Production|Any CPU
@@ -327,26 +207,11 @@ Global
 		{792E83BE-BF62-445F-A930-27AA61C57582} = {D116A220-7108-43D4-A99C-6D4E27DB2D9B}
 		{84DB2924-1BB4-43FB-B533-631228492032} = {D116A220-7108-43D4-A99C-6D4E27DB2D9B}
 		{B507B824-2734-40F5-B3D6-E68C93A66AA5} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
-		{69A9EBB6-E2BE-4A30-85D7-89BD7E5C9D17} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
-		{17368655-197A-4367-BD5A-3FBD3BD00438} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
-		{C9DE470C-56D7-4080-8CAB-7D9E85060B11} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
-		{EB6B8161-BF6F-492C-A9C9-99A37B0039B8} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
 		{F4B51B6F-97BE-40D0-BCB8-4CECA244E8D0} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
 		{7726ADC2-103D-4249-BF62-9650DF467178} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
 		{63CAF241-5BFD-43A1-B25F-3EB49872C6C5} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
-		{03EFB23A-792A-4E81-9573-19D21783486D} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
-		{0EC3DAFD-3344-47B8-B5E4-768B9AF5F2C2} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
 		{50AFEC15-FFA4-49DB-A806-162CD6ACD399} = {D116A220-7108-43D4-A99C-6D4E27DB2D9B}
 		{BBA54AB3-4092-457A-AE69-0D00162B4A8F} = {D116A220-7108-43D4-A99C-6D4E27DB2D9B}
-		{D3C0322A-ADC5-4447-963B-E4203242EF97} = {D116A220-7108-43D4-A99C-6D4E27DB2D9B}
-		{AF097155-821E-40F5-8448-F59C819613B1} = {D116A220-7108-43D4-A99C-6D4E27DB2D9B}
-		{2942FBED-FFCC-4B50-B217-D06798C7D468} = {D116A220-7108-43D4-A99C-6D4E27DB2D9B}
-		{4A7250AD-E5BA-47F1-A497-C30F18E06F43} = {D116A220-7108-43D4-A99C-6D4E27DB2D9B}
-		{F0684E81-D464-4872-87B5-75551408B6A8} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
-		{4B6C176A-C0AF-476C-A6F5-1E778340860D} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
-		{E7D5198C-F7EA-44B4-801D-C53B22BF7D00} = {B6057F05-BB87-4B26-A720-2E2EF6436C6C}
-		{99DBF695-8B54-407D-BAFC-9CE40D1FEECD} = {D116A220-7108-43D4-A99C-6D4E27DB2D9B}
-		{0017919B-ADB0-426F-A3E6-241E3CDD3E1F} = {D116A220-7108-43D4-A99C-6D4E27DB2D9B}
 		{C8690D31-9F78-47F1-8E0E-E5CA5DC84DAB} = {73EB4DB8-90E8-4515-A3D4-CF1CC296085E}
 	EndGlobalSection
 EndGlobal

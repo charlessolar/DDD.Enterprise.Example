@@ -16,7 +16,6 @@ namespace Demo.Domain.Accounting.Account.Validators
             RuleFor(x => x.Name).NotEmpty().Length(2);
             RuleFor(x => x.CurrencyId).NotEmpty();
             RuleFor(x => x.Operation).NotNull();
-            RuleFor(x => x.StoreId).NotEmpty();
         }
     }
 }

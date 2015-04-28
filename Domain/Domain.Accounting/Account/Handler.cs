@@ -30,10 +30,9 @@ namespace Demo.Domain.Accounting.Account
         public void Handle(Commands.Create command)
         {
             var account = _uow.R<Account>().New(command.AccountId);
-            var store = _uow.R<Relations.Store.Store>().Get(command.StoreId);
             var currency = _uow.R<Currency.Currency>().Get(command.CurrencyId);
 
-            account.Create(command.Code, command.Name, command.AcceptPayments, command.AllowReconcile, command.Operation, store, currency);
+            account.Create(command.Code, command.Name, command.AcceptPayments, command.AllowReconcile, command.Operation, currency);
         }
 
         public void Handle(Commands.ChangeDescription command)

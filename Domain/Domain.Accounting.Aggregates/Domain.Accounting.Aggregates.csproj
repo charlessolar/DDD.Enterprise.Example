@@ -69,15 +69,7 @@
   <ItemGroup>
     <Compile Include="Account\Account.cs" />
     <Compile Include="Currency\Currency.cs" />
-    <Compile Include="FiscalYear\Entities\Period\Period.cs" />
-    <Compile Include="FiscalYear\FiscalYear.cs" />
-    <Compile Include="Journal\Entities\Entry\Entry.cs" />
-    <Compile Include="Journal\Entities\Item\Item.cs" />
-    <Compile Include="Journal\Journal.cs" />
-    <Compile Include="PaymentOrder\Entities\Invoice\Invoice.cs" />
-    <Compile Include="PaymentOrder\PaymentOrder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tax\Tax.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
@@ -99,14 +91,6 @@
     <ProjectReference Include="..\Domain.Configuration.Messages\Domain.Configuration.Messages.csproj">
       <Project>{3c61e443-d507-458a-8c0c-74f53e3c052d}</Project>
       <Name>Domain.Configuration.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Domain.HumanResources.Messages\Domain.HumanResources.Messages.csproj">
-      <Project>{17368655-197a-4367-bd5a-3fbd3bd00438}</Project>
-      <Name>Domain.HumanResources.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Domain.Relations.Messages\Domain.Relations.Messages.csproj">
-      <Project>{eb6b8161-bf6f-492c-a9c9-99a37b0039b8}</Project>
-      <Name>Domain.Relations.Messages</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

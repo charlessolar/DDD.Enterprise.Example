@@ -140,14 +140,6 @@
       <Project>{b507b824-2734-40f5-b3d6-e68c93a66aa5}</Project>
       <Name>Domain.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain.HumanResources\Domain.HumanResources.csproj">
-      <Project>{69a9ebb6-e2be-4a30-85d7-89bd7e5c9d17}</Project>
-      <Name>Domain.HumanResources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Domain.Relations\Domain.Relations.csproj">
-      <Project>{c9de470c-56d7-4080-8cab-7d9e85060b11}</Project>
-      <Name>Domain.Relations</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

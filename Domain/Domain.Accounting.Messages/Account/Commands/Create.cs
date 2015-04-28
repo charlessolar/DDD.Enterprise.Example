@@ -23,7 +23,5 @@ namespace Demo.Domain.Accounting.Account.Commands
         public Guid CurrencyId { get; set; }
 
         public OPERATION Operation { get; set; }
-
-        public Guid StoreId { get; set; }
     }
 }

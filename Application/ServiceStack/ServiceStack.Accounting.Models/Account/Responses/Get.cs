@@ -30,10 +30,6 @@ namespace Demo.Application.ServiceStack.Accounting.Account.Responses
 
         public Guid? ParentId { get; set; }
 
-        public Guid StoreId { get; set; }
-
-        public String Store { get; set; }
-
         public Guid CurrencyId { get; set; }
 
         public String Currency { get; set; }

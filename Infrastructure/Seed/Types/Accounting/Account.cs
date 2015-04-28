@@ -27,7 +27,6 @@ namespace Seed.Types.Accounting
 
         public OPERATION Operation { get; set; }
 
-        public Store Store { get; set; }
 
         public Currency Currency { get; set; }
 

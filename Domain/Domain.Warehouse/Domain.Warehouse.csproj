@@ -76,14 +76,6 @@
       <Project>{3c61e443-d507-458a-8c0c-74f53e3c052d}</Project>
       <Name>Domain.Configuration.Messages</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain.HumanResources.Aggregates\Domain.HumanResources.Aggregates.csproj">
-      <Project>{03efb23a-792a-4e81-9573-19d21783486d}</Project>
-      <Name>Domain.HumanResources.Aggregates</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Domain.HumanResources.Messages\Domain.HumanResources.Messages.csproj">
-      <Project>{17368655-197a-4367-bd5a-3fbd3bd00438}</Project>
-      <Name>Domain.HumanResources.Messages</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Domain.Warehouse.Aggregates\Domain.Warehouse.Aggregates.csproj">
       <Project>{e7d5198c-f7ea-44b4-801d-c53b22bf7d00}</Project>
       <Name>Domain.Warehouse.Aggregates</Name>

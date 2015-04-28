@@ -55,7 +55,6 @@ namespace Seed
             {
                 x.For<IOperation>().Add<Operations.AccountType>();
                 x.For<IOperation>().Add<Operations.Currency>();
-                x.For<IOperation>().Add<Operations.Store>();
                 x.For<IOperation>().Add<Operations.Country>();
                 x.For<IOperation>().Add<Operations.Account>();
 

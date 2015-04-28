@@ -17,7 +17,7 @@ namespace Demo.Domain.Accounting.Account
             this.Frozen = new Aggregates.SingleValueObject<bool>(false);
         }
 
-        public void Create(String Code, String Name, Boolean AcceptPayments, Boolean AllowReconcile, OPERATION Operation, Relations.Store.IStore Store, Currency.ICurrency Currency)
+        public void Create(String Code, String Name, Boolean AcceptPayments, Boolean AllowReconcile, OPERATION Operation, Currency.ICurrency Currency)
         {
             Apply<Events.Created>(e =>
             {
@@ -27,7 +27,6 @@ namespace Demo.Domain.Accounting.Account
                 e.AcceptPayments = AcceptPayments;
                 e.AllowReconcile = AllowReconcile;
                 e.Operation = Operation;
-                e.StoreId = Store.Id;
                 e.CurrencyId = Currency.Id;
             });
         }

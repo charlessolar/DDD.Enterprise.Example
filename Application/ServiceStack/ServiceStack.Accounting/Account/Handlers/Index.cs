@@ -30,11 +30,9 @@ namespace Demo.Application.ServiceStack.Accounting.Account.Handlers
         public void Handle(Created e)
         {
             var results = _elastic.MultiGet(m => m
-                    .Get<Relations.Store.Responses.Index>(x => x.Id(e.StoreId))
                     .Get<Currency.Responses.Index>(x => x.Id(e.CurrencyId))
                     );
 
-            var store = results.Get<Relations.Store.Responses.Index>(e.StoreId);
             var currency = results.Get<Currency.Responses.Index>(e.CurrencyId);
 
             var index = new Responses.Index
@@ -43,8 +41,6 @@ namespace Demo.Application.ServiceStack.Accounting.Account.Handlers
                 Code = e.Code,
                 Name = e.Name,
                 Operation = e.Operation.Value,
-                Store = store.Source.Identity,
-                StoreId = store.Source.Id,
                 Currency = currency.Source.Code,
                 CurrencyId = currency.Source.Id
             };

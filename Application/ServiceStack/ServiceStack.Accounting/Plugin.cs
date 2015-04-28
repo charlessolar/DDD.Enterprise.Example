@@ -13,13 +13,6 @@ namespace Demo.Application.ServiceStack.Accounting
         {
             appHost.RegisterService<Account.Service>();
             appHost.RegisterService<Currency.Service>();
-            appHost.RegisterService<FiscalYear.Service>();
-            appHost.RegisterService<FiscalYear.Entities.Period.Service>();
-            appHost.RegisterService<Journal.Service>();
-            appHost.RegisterService<Journal.Entities.Entry.Service>();
-            appHost.RegisterService<Journal.Entities.Item.Service>();
-            appHost.RegisterService<PaymentOrder.Service>();
-            appHost.RegisterService<Tax.Service>();
 
             //appHost.GetContainer().RegisterAutoWiredType(typeof(Users.Service));
 

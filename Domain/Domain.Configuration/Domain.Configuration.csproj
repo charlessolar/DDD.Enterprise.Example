@@ -63,12 +63,7 @@
   <ItemGroup>
     <Compile Include="AccountType\Handler.cs" />
     <Compile Include="Country\Handler.cs" />
-    <Compile Include="PaymentMethod\Entities\Detail\Handler.cs" />
-    <Compile Include="PaymentMethod\Handler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Region\Entities\Match\Handler.cs" />
-    <Compile Include="Region\Handler.cs" />
-    <Compile Include="TaxType\Handler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

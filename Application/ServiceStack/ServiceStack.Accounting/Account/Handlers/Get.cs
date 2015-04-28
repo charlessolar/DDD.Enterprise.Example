@@ -34,7 +34,6 @@ namespace Demo.Application.ServiceStack.Accounting.Account.Handlers
         {
             using (var session = _store.OpenSession())
             {
-                var store = _elastic.Get<Relations.Store.Responses.Index>(e.StoreId);
                 var currency = _elastic.Get<Currency.Responses.Index>(e.CurrencyId);
 
                 var get = new Responses.Get
@@ -45,8 +44,6 @@ namespace Demo.Application.ServiceStack.Accounting.Account.Handlers
                     Operation = e.Operation.Value,
                     AcceptPayments = e.AcceptPayments,
                     AllowReconcile = e.AllowReconcile,
-                    StoreId = store.Source.Id,
-                    Store = store.Source.Identity,
                     CurrencyId = currency.Source.Id,
                     Currency = currency.Source.Code
                 };

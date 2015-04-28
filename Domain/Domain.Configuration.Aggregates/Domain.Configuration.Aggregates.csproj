@@ -62,12 +62,7 @@
   <ItemGroup>
     <Compile Include="AccountType\AccountType.cs" />
     <Compile Include="Country\Country.cs" />
-    <Compile Include="PaymentMethod\Entities\Detail\Detail.cs" />
-    <Compile Include="PaymentMethod\PaymentMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Region\Entities\Match\Match.cs" />
-    <Compile Include="Region\Region.cs" />
-    <Compile Include="TaxType\TaxType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain.Configuration.Messages\Domain.Configuration.Messages.csproj">

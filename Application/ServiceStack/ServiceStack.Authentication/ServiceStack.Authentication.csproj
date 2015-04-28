@@ -109,10 +109,6 @@
       <Project>{3c293825-daa0-4523-9109-cf717b0d9a00}</Project>
       <Name>Domain.Authentication.Messages</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Domain\Domain.HumanResources.Messages\Domain.HumanResources.Messages.csproj">
-      <Project>{17368655-197a-4367-bd5a-3fbd3bd00438}</Project>
-      <Name>Domain.HumanResources.Messages</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Infrastructure\Library.ServiceStack\Library.ServiceStack.csproj">
       <Project>{18822e29-9a73-4f81-815c-6289465f6df2}</Project>
       <Name>Library.ServiceStack</Name>

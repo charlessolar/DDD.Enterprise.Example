@@ -18,9 +18,7 @@ namespace Demo.Application.ServiceStack.Authentication.Users.Handlers
         IHandleMessages<EmailChanged>,
         IHandleMessages<AvatarChanged>,
         IHandleMessages<NameChanged>,
-        IHandleMessages<TimezoneChanged>,
-        IHandleMessages<Demo.Domain.HumanResources.Employee.Events.UserLinked>,
-        IHandleMessages<Demo.Domain.HumanResources.Employee.Events.UserUnlinked>
+        IHandleMessages<TimezoneChanged>
     {
         private readonly IDocumentStore _store;
         private readonly ISubscriptionManager _manager;
@@ -107,33 +105,6 @@ namespace Demo.Application.ServiceStack.Authentication.Users.Handlers
                 var get = session.Load<Responses.Get>(e.UserId);
 
                 get.Timezone = e.Timezone;
-
-                session.SaveChanges();
-
-                _manager.Publish(get);
-            }
-        }
-
-        public void Handle(Demo.Domain.HumanResources.Employee.Events.UserLinked e)
-        {
-            using (var session = _store.OpenSession())
-            {
-                var get = session.Load<Responses.Get>(e.UserId);
-                get.EmployeeId = e.EmployeeId;
-
-                session.SaveChanges();
-
-                _manager.Publish(get);
-            }
-        }
-
-        public void Handle(Demo.Domain.HumanResources.Employee.Events.UserUnlinked e)
-        {
-            using (var session = _store.OpenSession())
-            {
-                var get = session.Query<Responses.Get>().Single(x => x.EmployeeId == e.EmployeeId);
-
-                get.EmployeeId = null;
 
                 session.SaveChanges();
 

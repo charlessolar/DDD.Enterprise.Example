@@ -201,8 +201,6 @@ namespace Demo.Application.ServiceStack
             Plugins.Add(new ServiceStack.Authentication.Plugin());
             Plugins.Add(new ServiceStack.Accounting.Plugin());
             Plugins.Add(new ServiceStack.Configuration.Plugin());
-            Plugins.Add(new ServiceStack.HumanResources.Plugin());
-            Plugins.Add(new ServiceStack.Relations.Plugin());
 
             //container.Register<IRedisClientsManager>(c =>
             //    new PooledRedisClientManager("localhost:6379"));
