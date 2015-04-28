@@ -283,7 +283,7 @@ namespace Seed.Operations
                 Code = x.Code,
                 Name = x.Name,
                 Timestamp = DateTime.UtcNow,
-                UserId = "IMPORT"
+                UserId = User.Data.ElementAt(0).Id
             });
             await commands.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
 

@@ -184,10 +184,7 @@ namespace Demo.Application.ServiceStack
             });
             Plugins.Add(new CorsFeature(
                 allowOriginWhitelist: new[] {
-                    "http://localhost:9000",
-                    "http://fortissimo.development.syndeonetwork.com",
-                    "http://fortissimo.staging.syndeonetwork.com",
-                    "http://fortissimo.syndeonetwork.com",
+                    "http://localhost:9000"
                 },
                 allowCredentials: true,
                 allowedHeaders: "Content-Type, Authorization",

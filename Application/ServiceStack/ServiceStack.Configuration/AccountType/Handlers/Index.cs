@@ -28,7 +28,7 @@ namespace Demo.Application.ServiceStack.Configuration.AccountType.Handlers
             {
                 Id = e.AccountTypeId,
                 Name = e.Name,
-                DeferralMethod = e.DeferralMethod.Value,
+                DeferralMethod = e.DeferralMethod,
                 ParentId = e.ParentId,
             };
             var status = _elastic.Index(index);
@@ -53,7 +53,7 @@ namespace Demo.Application.ServiceStack.Configuration.AccountType.Handlers
         {
             _elastic.Update<Responses.Index, Object>(x => x
                 .Id(e.AccountTypeId)
-                .Doc(new { DeferralMethod = e.DeferralMethod.Value })
+                .Doc(new { DeferralMethod = e.DeferralMethod })
                 .RetryOnConflict(3)
                 .Refresh()
                 );

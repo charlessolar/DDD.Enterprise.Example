@@ -40,6 +40,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aggregates.NET">
+      <HintPath>..\..\depends\Aggregates.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Aggregates.NET.Domain">
+      <HintPath>..\..\depends\Aggregates.NET.Domain.dll</HintPath>
+    </Reference>
     <Reference Include="FluentValidation">
       <HintPath>..\..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
     </Reference>

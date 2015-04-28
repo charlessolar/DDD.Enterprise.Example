@@ -41,7 +41,7 @@ namespace Demo.Application.ServiceStack.Accounting.Account.Handlers
                     Id = e.AccountId,
                     Code = e.Code,
                     Name = e.Name,
-                    Operation = e.Operation.Value,
+                    Operation = e.Operation,
                     AcceptPayments = e.AcceptPayments,
                     AllowReconcile = e.AllowReconcile,
                     CurrencyId = currency.Source.Id,

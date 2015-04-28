@@ -14,7 +14,7 @@ using Type = Seed.Types.Accounting;
 namespace Seed.Operations
 {
     [Operation("Account")]
-    [Depends("Account Type", "Currency")]
+    [Depends("User", "Account Type", "Currency")]
     [Category("Accounting")]
     public class Account : IOperation
     {
@@ -148,21 +148,21 @@ namespace Seed.Operations
                             AllowReconcile = x.AllowReconcile,
                             CurrencyId = x.Currency.Id,
                             Timestamp = DateTime.UtcNow,
-                            UserId = "IMPORT",
+                            UserId = User.Data.ElementAt(0).Id
                         },
                         Type = x.Type == null ? null : new Commands.ChangeType
                         {
                             AccountId = x.Id,
                             TypeId = x.Type.Id,
                             Timestamp = DateTime.UtcNow,
-                            UserId = "IMPORT",
+                            UserId = User.Data.ElementAt(0).Id
                         },
                         Parent = Parent == null ? null : new Commands.ChangeParent
                         {
                             AccountId = x.Id,
                             ParentId = Parent.Id,
                             Timestamp = DateTime.UtcNow,
-                            UserId = "IMPORT",
+                            UserId = User.Data.ElementAt(0).Id
                         },
                     });
                 if (x.Children != null && x.Children.Count > 0)

@@ -5,11 +5,17 @@ namespace Demo.Domain
     using Demo.Library.Command;
     using Demo.Library.Security;
     using Demo.Library.Validation;
-    using NEventStore;
+    using EventStore.ClientAPI;
+    using EventStore.ClientAPI.SystemData;
     using NServiceBus;
     using NServiceBus.Log4Net;
     using StructureMap;
+    using System;
     using System.Configuration;
+    using System.Linq;
+    using System.Net;
+
+
 
 
     /*
@@ -21,6 +27,22 @@ namespace Demo.Domain
     {
         private IContainer _container;
 
+        public IEventStoreConnection ConfigureStore()
+        {
+            var endpoint = new IPEndPoint(IPAddress.Loopback, 3111);
+            var cred = new UserCredentials("admin", "changeit");
+
+            var settings = ConnectionSettings.Create()
+                .UseConsoleLogger()
+                .KeepReconnecting()
+                .SetDefaultUserCredentials(cred);
+
+            var client = EventStoreConnection.Create(settings, endpoint);
+
+            client.ConnectAsync().Wait();
+
+            return client;
+        }
         public void Customize(BusConfiguration config)
         {
             log4net.Config.XmlConfigurator.Configure();
@@ -53,18 +75,13 @@ namespace Demo.Domain
 
             config.EnableInstallers();
 
-            config.UseAggregates(y =>
-            {
-                return Wireup.Init()
-                        .UseAggregates(y)
-                        //.UsingRavenPersistence("Demo")
-                        .UsingInMemoryPersistence()
-                        .InitializeStorageEngine()
-                        .Build();
-            },
-            () => new Accept(),
-            (message) => new Reject { Message = message }
+            var client = ConfigureStore();
+
+            config.UseAggregates(
+                () => new Accept(),
+                (message) => new Reject { Message = message }
             );
+            config.UseGetEventStore(client);
         }
 
         public void SpecifyOrder(Order order)

@@ -40,7 +40,7 @@ namespace Demo.Application.ServiceStack.Accounting.Account.Handlers
                 Id = e.AccountId,
                 Code = e.Code,
                 Name = e.Name,
-                Operation = e.Operation.Value,
+                Operation = e.Operation,
                 Currency = currency.Source.Code,
                 CurrencyId = currency.Source.Id
             };

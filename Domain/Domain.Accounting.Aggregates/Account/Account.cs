@@ -26,7 +26,7 @@ namespace Demo.Domain.Accounting.Account
                 e.Name = Name;
                 e.AcceptPayments = AcceptPayments;
                 e.AllowReconcile = AllowReconcile;
-                e.Operation = Operation;
+                e.Operation = Operation.Value;
                 e.CurrencyId = Currency.Id;
             });
         }

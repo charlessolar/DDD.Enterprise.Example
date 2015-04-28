@@ -13,7 +13,7 @@ namespace Demo.Domain.Configuration.AccountType.Events
 
         String Name { get; set; }
 
-        DEFERRAL_METHOD DeferralMethod { get; set; }
+        String DeferralMethod { get; set; }
 
         Guid? ParentId { get; set; }
     }

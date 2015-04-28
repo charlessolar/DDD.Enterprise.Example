@@ -57,6 +57,7 @@ namespace Seed
                 x.For<IOperation>().Add<Operations.Currency>();
                 x.For<IOperation>().Add<Operations.Country>();
                 x.For<IOperation>().Add<Operations.Account>();
+                x.For<IOperation>().Add<Operations.User>();
 
                 x.For<IManager>().Use<Manager>();
             });

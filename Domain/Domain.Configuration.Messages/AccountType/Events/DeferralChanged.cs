@@ -11,6 +11,6 @@ namespace Demo.Domain.Configuration.AccountType.Events
     {
         Guid AccountTypeId { get; set; }
 
-        DEFERRAL_METHOD DeferralMethod { get; set; }
+        String DeferralMethod { get; set; }
     }
 }

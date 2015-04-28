@@ -14,6 +14,7 @@ using Type = Seed.Types.Configuration;
 namespace Seed.Operations
 {
     [Operation("Account Type")]
+    [Depends("User")]
     [Category("Configuration")]
     public class AccountType : IOperation
     {

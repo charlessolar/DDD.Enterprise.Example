@@ -8,7 +8,7 @@ The architecture is designed for high-read low-write operations and follows DDD 
 Projects used in this example:
 
 - [NServiceBus](https://github.com/Particular/NServiceBus)
-- [NEventStore](https://github.com/NEventStore/NEventStore)
+- [GetEventStore](https://github.com/EventStore/EventStore)
 - [Aggregates.NET](https://github.com/volak/Aggregates.NET)
 - [ServiceStack](https://github.com/ServiceStack/ServiceStack)
 - [RavenDB](https://github.com/ravendb/ravendb)
@@ -16,38 +16,31 @@ Projects used in this example:
 
 **Architecture Overview**
 
-There are currently 4 nservicebus endpoints.  One to send demo commands in DemoMessages, one to receive commands in Domain, an event handler in Application, and one for the presentation layer.
+Projects are organized according to the normal DDD layers.  You will find a Infrastructure, Domain, and Application folders containing related projects.  The presentation layer is not implemented at this time, queries and commands can be run against the Servicestack endpoint using Postman for now.
 
-The Domain endpoint is configured to be a distributor to event listeners and Application is configured to subscribe.
+Currently the Servicestack endpoint runs most of the show.  It sends commands out via NServicebus and connects to both RavenDB and ElasticSearch to run queries.  At the moment it also inserts data into both DBs via events received from NSB.  This process will be migrated to Aggregates.Net consumers in the GetEventStore fashion.
 
-In a production system you would configure a seperate distributor to distribute commands to your command handlers (domain projects), and another distributor to send events to event handlers (application projects).
+Commands sent from Servicestack will be received to the domain project, which writes events to GetEventStore.  Subscribers to the event store will receive these event updates as intended.
 
-You could even make seperate queues for different bounded contexts.
+**Features**
 
-In theory you can have multiple different Domains and multiple Application handlers (and I would suggest you do)
+- An example of a query processor from various examples online
+- A caching application layer
+- Sending SSE events when data models are updated
+- Various data models to help bootstrap (base query, paging query, etc)
+- Seeding application with a well thoughtout design
+- Automatic Development / Staging / Production solution app configs
 
-**Presentation**
+**How to Use**
 
-The presentation layer is currently a WIP.  In order to run it you will need redis running and use a REST client like POSTMAN to run commands against ServiceStack.
+You will need a NServicebus license, install it to C:\License.xml  (demo licenses work)
 
-**Roadmap**
+Configure visual studio to launch 3 projects, Domain, Application, and Seed by right clicking the solution and going to Properties->Startup project
+You may need to run as administrator so NServicebus can create MSMQ queues
 
-- Unit tests
-- Simple HTML site
-- Receiving events to the client
+Once started, select the seed project and press any key to start seeding data
 
-**Project References**
-
-Its important to note that the Domain project is referencing all Domain.* projects, similarly the Application project is referencing all Application.* projects.
-Each Domain.* and each Application.* project represents a bounded context.
-
-**Notes**
-
-Start visual studio as admin because NServicebus likes it that way
-
-Configure the debugger to launch 3 projects, Domain, Application, and DemoMessages
-
-Make sure NServiceBus creates all the MSMQ queues it needs
+You can then use Postman to query servicestack urls
 
 
 **Structure**
@@ -61,8 +54,9 @@ The project mimics the standard DDD layers
 - Domain
 - Data Access
 - Persistence
+- Infrastructure
 
-We are modeling the top 3 layers in this solution.  NEventStore and RavenDB handle Data Access and Persistence.
+We are modeling just the application and domain layers in this solution.  GetEventStore handles Data Access and Persistence.
 In each folder you will find 1 'master' project and a child.  IE
 
 > Domain/

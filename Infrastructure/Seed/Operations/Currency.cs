@@ -13,6 +13,7 @@ using Type = Seed.Types.Accounting;
 namespace Seed.Operations
 {
     [Operation("Currency")]
+    [Depends("User")]
     [Category("Accounting")]
     public class Currency : IOperation
     {
@@ -41,7 +42,7 @@ namespace Seed.Operations
                 Format = x.Format,
                 Fraction = x.Fraction,
                 Timestamp = DateTime.UtcNow,
-                UserId = "IMPORT"
+                UserId = User.Data.ElementAt(0).Id
             });
             await commands.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
 
