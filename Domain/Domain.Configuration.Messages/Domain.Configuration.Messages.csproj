@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3C61E443-D507-458A-8C0C-74F53E3C052D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Demo.Domain.Configuration</RootNamespace>
+    <AssemblyName>Domain.Configuration.Messages</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Development\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
+    <OutputPath>bin\Staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aggregates.NET, Version=0.0.4.13, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Aggregates.NET.0.0.4.13\lib\net45\Aggregates.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation">
+      <HintPath>..\..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="NEventStore, Version=5.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NEventStore.5.1.1\lib\net40\NEventStore.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NServiceBus.5.2.0\lib\net45\NServiceBus.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountType\Commands\ChangeDeferral.cs" />
+    <Compile Include="AccountType\Commands\ChangeDescription.cs" />
+    <Compile Include="AccountType\Commands\ChangeName.cs" />
+    <Compile Include="AccountType\Commands\Create.cs" />
+    <Compile Include="AccountType\Commands\Destroy.cs" />
+    <Compile Include="AccountType\DEFERRAL_METHOD.cs" />
+    <Compile Include="AccountType\Events\Created.cs" />
+    <Compile Include="AccountType\Events\DeferralChanged.cs" />
+    <Compile Include="AccountType\Events\DescriptionChanged.cs" />
+    <Compile Include="AccountType\Events\Destroyed.cs" />
+    <Compile Include="AccountType\Events\NameChanged.cs" />
+    <Compile Include="AccountType\IAccountType.cs" />
+    <Compile Include="AccountType\Validators\ChangeDeferral.cs" />
+    <Compile Include="AccountType\Validators\ChangeDescription.cs" />
+    <Compile Include="AccountType\Validators\ChangeName.cs" />
+    <Compile Include="AccountType\Validators\Create.cs" />
+    <Compile Include="AccountType\Validators\Destroy.cs" />
+    <Compile Include="AccountType\ValueObjects\Description.cs" />
+    <Compile Include="AccountType\ValueObjects\Name.cs" />
+    <Compile Include="Country\Commands\Create.cs" />
+    <Compile Include="Country\Commands\Destroy.cs" />
+    <Compile Include="Country\Commands\UpdateName.cs" />
+    <Compile Include="Country\Events\Created.cs" />
+    <Compile Include="Country\Events\Destroyed.cs" />
+    <Compile Include="Country\Events\NameUpdated.cs" />
+    <Compile Include="Country\ICountry.cs" />
+    <Compile Include="Country\Validators\Create.cs" />
+    <Compile Include="Country\Validators\Destroy.cs" />
+    <Compile Include="Country\Validators\UpdateName.cs" />
+    <Compile Include="PaymentMethod\Commands\Create.cs" />
+    <Compile Include="PaymentMethod\Commands\Destroy.cs" />
+    <Compile Include="PaymentMethod\Entities\Detail\Commands\Create.cs" />
+    <Compile Include="PaymentMethod\Entities\Detail\Commands\Destroy.cs" />
+    <Compile Include="PaymentMethod\Entities\Detail\Events\Created.cs" />
+    <Compile Include="PaymentMethod\Entities\Detail\Events\Destroyed.cs" />
+    <Compile Include="PaymentMethod\Entities\Detail\IDetail.cs" />
+    <Compile Include="PaymentMethod\Entities\Detail\Validators\Create.cs" />
+    <Compile Include="PaymentMethod\Entities\Detail\Validators\Destroy.cs" />
+    <Compile Include="PaymentMethod\Events\Created.cs" />
+    <Compile Include="PaymentMethod\Events\Destroyed.cs" />
+    <Compile Include="PaymentMethod\IPaymentMethod.cs" />
+    <Compile Include="PaymentMethod\Validators\Create.cs" />
+    <Compile Include="PaymentMethod\Validators\Destroy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Region\Commands\ChangeDescription.cs" />
+    <Compile Include="Region\Commands\ChangeName.cs" />
+    <Compile Include="Region\Commands\Create.cs" />
+    <Compile Include="Region\Commands\Destroy.cs" />
+    <Compile Include="Region\Entities\Match\Commands\ChangeOperation.cs" />
+    <Compile Include="Region\Entities\Match\Commands\ChangeType.cs" />
+    <Compile Include="Region\Entities\Match\Commands\ChangeValue.cs" />
+    <Compile Include="Region\Entities\Match\Commands\Create.cs" />
+    <Compile Include="Region\Entities\Match\Commands\Destroy.cs" />
+    <Compile Include="Region\Entities\Match\Events\Created.cs" />
+    <Compile Include="Region\Entities\Match\Events\Destroyed.cs" />
+    <Compile Include="Region\Entities\Match\Events\OperationChanged.cs" />
+    <Compile Include="Region\Entities\Match\Events\TypeChanged.cs" />
+    <Compile Include="Region\Entities\Match\Events\ValueChanged.cs" />
+    <Compile Include="Region\Entities\Match\IMatch.cs" />
+    <Compile Include="Region\Entities\Match\MATCH_OPERATION.cs" />
+    <Compile Include="Region\Entities\Match\MATCH_TYPE.cs" />
+    <Compile Include="Region\Entities\Match\Validators\ChangeOperation.cs" />
+    <Compile Include="Region\Entities\Match\Validators\ChangeType.cs" />
+    <Compile Include="Region\Entities\Match\Validators\ChangeValue.cs" />
+    <Compile Include="Region\Entities\Match\Validators\Create.cs" />
+    <Compile Include="Region\Entities\Match\Validators\Destroy.cs" />
+    <Compile Include="Region\Events\Created.cs" />
+    <Compile Include="Region\Events\DescriptionChanged.cs" />
+    <Compile Include="Region\Events\Destroyed.cs" />
+    <Compile Include="Region\Events\NameChanged.cs" />
+    <Compile Include="Region\IRegion.cs" />
+    <Compile Include="Region\Validators\ChangeDescription.cs" />
+    <Compile Include="Region\Validators\ChangeName.cs" />
+    <Compile Include="Region\Validators\Create.cs" />
+    <Compile Include="Region\Validators\Destroy.cs" />
+    <Compile Include="TaxType\Commands\ChangeName.cs" />
+    <Compile Include="TaxType\Commands\Create.cs" />
+    <Compile Include="TaxType\Commands\Destroy.cs" />
+    <Compile Include="TaxType\Events\Created.cs" />
+    <Compile Include="TaxType\Events\Destroyed.cs" />
+    <Compile Include="TaxType\Events\NameChanged.cs" />
+    <Compile Include="TaxType\ITaxType.cs" />
+    <Compile Include="TaxType\Validators\ChangeName.cs" />
+    <Compile Include="TaxType\Validators\Create.cs" />
+    <Compile Include="TaxType\Validators\Destroy.cs" />
+    <Compile Include="TaxType\ValueObjects\Name.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
+      <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

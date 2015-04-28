@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EB6B8161-BF6F-492C-A9C9-99A37B0039B8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Demo.Domain.Relations</RootNamespace>
+    <AssemblyName>Domain.Relations.Messages</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Development\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
+    <OutputPath>bin\Staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aggregates.NET">
+      <HintPath>..\..\packages\Aggregates.NET.0.0.4.13\lib\net45\Aggregates.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation">
+      <HintPath>..\..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="NEventStore, Version=5.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NEventStore.5.1.1\lib\net40\NEventStore.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NServiceBus.5.2.0\lib\net45\NServiceBus.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Store\Commands\AddWarehouse.cs" />
+    <Compile Include="Store\Commands\Create.cs" />
+    <Compile Include="Store\Commands\Destroy.cs" />
+    <Compile Include="Store\Commands\RemoveWarehouse.cs" />
+    <Compile Include="Store\Commands\UpdateAddress.cs" />
+    <Compile Include="Store\Commands\UpdateCurrency.cs" />
+    <Compile Include="Store\Commands\UpdateDescription.cs" />
+    <Compile Include="Store\Commands\UpdateEmail.cs" />
+    <Compile Include="Store\Commands\UpdateFax.cs" />
+    <Compile Include="Store\Commands\UpdateName.cs" />
+    <Compile Include="Store\Commands\UpdatePhone.cs" />
+    <Compile Include="Store\Commands\UpdateWebsite.cs" />
+    <Compile Include="Store\Events\AddressUpdated.cs" />
+    <Compile Include="Store\Events\Created.cs" />
+    <Compile Include="Store\Events\CurrencyUpdated.cs" />
+    <Compile Include="Store\Events\DescriptionUpdated.cs" />
+    <Compile Include="Store\Events\Destroyed.cs" />
+    <Compile Include="Store\Events\EmailUpdated.cs" />
+    <Compile Include="Store\Events\FaxUpdated.cs" />
+    <Compile Include="Store\Events\NameUpdated.cs" />
+    <Compile Include="Store\Events\PhoneUpdated.cs" />
+    <Compile Include="Store\Events\WarehouseAdded.cs" />
+    <Compile Include="Store\Events\WarehouseRemoved.cs" />
+    <Compile Include="Store\Events\WebsiteUpdated.cs" />
+    <Compile Include="Store\IStore.cs" />
+    <Compile Include="Store\Validators\AddWarehouse.cs" />
+    <Compile Include="Store\Validators\Create.cs" />
+    <Compile Include="Store\Validators\Destroy.cs" />
+    <Compile Include="Store\Validators\RemoveWarehouse.cs" />
+    <Compile Include="Store\Validators\UpdateAddress.cs" />
+    <Compile Include="Store\Validators\UpdateCurrency.cs" />
+    <Compile Include="Store\Validators\UpdateDescription.cs" />
+    <Compile Include="Store\Validators\UpdateEmail.cs" />
+    <Compile Include="Store\Validators\UpdateFax.cs" />
+    <Compile Include="Store\Validators\UpdateName.cs" />
+    <Compile Include="Store\Validators\UpdatePhone.cs" />
+    <Compile Include="Store\Validators\UpdateWebsite.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
+      <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

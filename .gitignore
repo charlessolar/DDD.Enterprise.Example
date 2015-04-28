@@ -162,3 +162,4 @@ Infrastructure/Library/Scripts/**/*.js
 Infrastructure/Library/Scripts/**/*.js.map
 Presentation/Presentation.Inventory/**/*.js
 Presentation/Presentation.Inventory/**/*.js.map
+DDD.Enterprise.Example.sln.ide/

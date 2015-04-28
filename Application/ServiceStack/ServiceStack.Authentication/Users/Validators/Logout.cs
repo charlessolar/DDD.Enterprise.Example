@@ -1,11 +1,10 @@
-﻿using Demo.Application.ServiceStack.Authentication.Models.Users;
-using ServiceStack.FluentValidation;
+﻿using ServiceStack.FluentValidation;
 
-namespace Demo.Presentation.Authentication.Users.Validators
+namespace Demo.Application.ServiceStack.Authentication.Users.Validators
 {
-    public class LogoutValidator : AbstractValidator<Logout>
+    public class Logout : AbstractValidator<Services.Logout>
     {
-        public LogoutValidator()
+        public Logout()
         {
         }
     }

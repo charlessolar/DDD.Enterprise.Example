@@ -1,14 +1,16 @@
 ﻿using ServiceStack;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Demo.Library.Responses
 {
-    public class Base : IHasResponseStatus
-    {
-        public ResponseStatus ResponseStatus { get; set; }
-    }
-
-    public class Envelope<T> : Base
+    public class Base<T> : IHasResponseStatus, IResponse
     {
         public T Payload { get; set; }
+
+        public ResponseStatus ResponseStatus { get; set; }
     }
 }

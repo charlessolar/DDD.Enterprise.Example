@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{84DB2924-1BB4-43FB-B533-631228492032}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Demo.Application.ServiceStack.Accounting</RootNamespace>
+    <AssemblyName>Application.ServiceStack.Accounting.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Development\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
+    <OutputPath>bin\Staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aggregates.NET, Version=0.0.4.13, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Aggregates.NET.0.0.4.13\lib\net45\Aggregates.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Elasticsearch.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Elasticsearch.Net.1.4.3\lib\net45\Elasticsearch.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Nest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\NEST.1.4.3\lib\net45\Nest.dll</HintPath>
+    </Reference>
+    <Reference Include="NEventStore, Version=5.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\NEventStore.5.1.1\lib\net40\NEventStore.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\NServiceBus.5.2.0\lib\net45\NServiceBus.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack">
+      <HintPath>..\..\..\packages\ServiceStack.4.0.40\lib\net40\ServiceStack.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Client">
+      <HintPath>..\..\..\packages\ServiceStack.Client.4.0.40\lib\net40\ServiceStack.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\..\..\packages\ServiceStack.Common.4.0.40\lib\net40\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\..\..\packages\ServiceStack.Interfaces.4.0.40\lib\portable-wp80+sl5+net40+win8+monotouch+monoandroid+xamarin.ios10\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\..\..\packages\ServiceStack.Text.4.0.40\lib\net40\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\Responses\Get.cs" />
+    <Compile Include="Account\Responses\Index.cs" />
+    <Compile Include="Account\Services\ChangeDescription.cs" />
+    <Compile Include="Account\Services\ChangeName.cs" />
+    <Compile Include="Account\Services\ChangeParent.cs" />
+    <Compile Include="Account\Services\ChangeType.cs" />
+    <Compile Include="Account\Services\Create.cs" />
+    <Compile Include="Account\Services\Destroy.cs" />
+    <Compile Include="Account\Services\Freeze.cs" />
+    <Compile Include="Account\Services\Get.cs" />
+    <Compile Include="Account\Services\Index.cs" />
+    <Compile Include="Account\Services\Select.cs" />
+    <Compile Include="Account\Services\Unfreeze.cs" />
+    <Compile Include="Currency\Responses\Get.cs" />
+    <Compile Include="Currency\Responses\Index.cs" />
+    <Compile Include="Currency\Responses\Rate.cs" />
+    <Compile Include="Currency\Services\Activate.cs" />
+    <Compile Include="Currency\Services\AddRate.cs" />
+    <Compile Include="Currency\Services\ChangeAccuracy.cs" />
+    <Compile Include="Currency\Services\ChangeFormat.cs" />
+    <Compile Include="Currency\Services\ChangeFraction.cs" />
+    <Compile Include="Currency\Services\ChangeName.cs" />
+    <Compile Include="Currency\Services\ChangeRateEffective.cs" />
+    <Compile Include="Currency\Services\ChangeRoundingFactor.cs" />
+    <Compile Include="Currency\Services\ChangeSymbol.cs" />
+    <Compile Include="Currency\Services\Create.cs" />
+    <Compile Include="Currency\Services\Deactivate.cs" />
+    <Compile Include="Currency\Services\Destroy.cs" />
+    <Compile Include="Currency\Services\Get.cs" />
+    <Compile Include="Currency\Services\GetRate.cs" />
+    <Compile Include="Currency\Services\Index.cs" />
+    <Compile Include="Currency\Services\Select.cs" />
+    <Compile Include="Currency\Services\SymbolBefore.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Responses\Get.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Services\ChangeName.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Services\Create.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Services\Destroy.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Services\End.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Services\Get.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Services\Start.cs" />
+    <Compile Include="FiscalYear\Responses\Get.cs" />
+    <Compile Include="FiscalYear\Services\ChangeName.cs" />
+    <Compile Include="FiscalYear\Services\Create.cs" />
+    <Compile Include="FiscalYear\Services\Destroy.cs" />
+    <Compile Include="FiscalYear\Services\End.cs" />
+    <Compile Include="FiscalYear\Services\Get.cs" />
+    <Compile Include="FiscalYear\Services\Start.cs" />
+    <Compile Include="Journal\Entities\Entry\Responses\Index.cs" />
+    <Compile Include="Journal\Entities\Entry\Responses\STATE.cs" />
+    <Compile Include="Journal\Entities\Entry\Services\Index.cs" />
+    <Compile Include="Journal\Entities\Entry\Services\RequestReview.cs" />
+    <Compile Include="Journal\Entities\Entry\Services\Reviewed.cs" />
+    <Compile Include="Journal\Entities\Item\Responses\Get.cs" />
+    <Compile Include="Journal\Entities\Item\Responses\Index.cs" />
+    <Compile Include="Journal\Entities\Item\Services\ChangeEffective.cs" />
+    <Compile Include="Journal\Entities\Item\Services\ChangeReference.cs" />
+    <Compile Include="Journal\Entities\Item\Services\Create.cs" />
+    <Compile Include="Journal\Entities\Item\Services\Destroy.cs" />
+    <Compile Include="Journal\Entities\Item\Services\Get.cs" />
+    <Compile Include="Journal\Entities\Item\Services\Reconcile.cs" />
+    <Compile Include="Journal\Responses\Get.cs" />
+    <Compile Include="Journal\Responses\Index.cs" />
+    <Compile Include="Journal\Services\ChangeCheckDate.cs" />
+    <Compile Include="Journal\Services\ChangeName.cs" />
+    <Compile Include="Journal\Services\ChangeResponsible.cs" />
+    <Compile Include="Journal\Services\ChangeSkipDraft.cs" />
+    <Compile Include="Journal\Services\Create.cs" />
+    <Compile Include="Journal\Services\Destroy.cs" />
+    <Compile Include="Journal\Services\Get.cs" />
+    <Compile Include="Journal\Services\Index.cs" />
+    <Compile Include="Journal\Services\SetCreditAccount.cs" />
+    <Compile Include="Journal\Services\SetDebitAccount.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Responses\Index.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Services\Add.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Services\ChangeAmount.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Services\ChangeDiscount.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Services\ChangeReference.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Services\Index.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Services\Remove.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Validators\Add.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Validators\ChangeAmount.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Validators\ChangeDiscount.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Validators\ChangeReference.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Validators\Index.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Validators\Remove.cs" />
+    <Compile Include="PaymentOrder\Responses\Get.cs" />
+    <Compile Include="PaymentOrder\Responses\Index.cs" />
+    <Compile Include="PaymentOrder\Responses\STATE.cs" />
+    <Compile Include="PaymentOrder\Services\ChangeEffective.cs" />
+    <Compile Include="PaymentOrder\Services\ChangeMethod.cs" />
+    <Compile Include="PaymentOrder\Services\ChangeReference.cs" />
+    <Compile Include="PaymentOrder\Services\Confirm.cs" />
+    <Compile Include="PaymentOrder\Services\Discard.cs" />
+    <Compile Include="PaymentOrder\Services\Dispurse.cs" />
+    <Compile Include="PaymentOrder\Services\Get.cs" />
+    <Compile Include="PaymentOrder\Services\Index.cs" />
+    <Compile Include="PaymentOrder\Services\Start.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tax\Responses\Get.cs" />
+    <Compile Include="Tax\Responses\Index.cs" />
+    <Compile Include="Tax\Responses\Region.cs" />
+    <Compile Include="Tax\Responses\Store.cs" />
+    <Compile Include="Tax\Services\Activate.cs" />
+    <Compile Include="Tax\Services\AddRegion.cs" />
+    <Compile Include="Tax\Services\AddStore.cs" />
+    <Compile Include="Tax\Services\ChangeAccount.cs" />
+    <Compile Include="Tax\Services\ChangeDescription.cs" />
+    <Compile Include="Tax\Services\ChangeName.cs" />
+    <Compile Include="Tax\Services\ChangeRate.cs" />
+    <Compile Include="Tax\Services\Create.cs" />
+    <Compile Include="Tax\Services\Deactivate.cs" />
+    <Compile Include="Tax\Services\Destroy.cs" />
+    <Compile Include="Tax\Services\Get.cs" />
+    <Compile Include="Tax\Services\Index.cs" />
+    <Compile Include="Tax\Services\Regions.cs" />
+    <Compile Include="Tax\Services\RemoveRegion.cs" />
+    <Compile Include="Tax\Services\RemoveStore.cs" />
+    <Compile Include="Tax\Services\Stores.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Domain\Domain.Accounting.Messages\Domain.Accounting.Messages.csproj">
+      <Project>{68b6427a-163e-41b9-a2b2-792a394c0814}</Project>
+      <Name>Domain.Accounting.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Infrastructure\Library.ServiceStack\Library.ServiceStack.csproj">
+      <Project>{18822e29-9a73-4f81-815c-6289465f6df2}</Project>
+      <Name>Library.ServiceStack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Infrastructure\Library\Library.csproj">
+      <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

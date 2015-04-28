@@ -1,12 +1,11 @@
-﻿using NServiceBus;
+﻿using Demo.Library.Command;
+using NServiceBus;
 using System;
 
 namespace Demo.Domain.Authentication.Users.Commands
 {
-    public class ChangeName : ICommand
+    public class ChangeName : DemoCommand
     {
-        public String UserId { get; set; }
-
         public String Name { get; set; }
     }
 }

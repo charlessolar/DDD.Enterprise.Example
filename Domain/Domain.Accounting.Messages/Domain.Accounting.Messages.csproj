@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{68B6427A-163E-41B9-A2B2-792A394C0814}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Demo.Domain.Accounting</RootNamespace>
+    <AssemblyName>Domain.Accounting.Messages</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Development\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
+    <OutputPath>bin\Staging\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aggregates.NET, Version=0.0.4.13, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Aggregates.NET.0.0.4.13\lib\net45\Aggregates.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation">
+      <HintPath>..\..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="NEventStore, Version=5.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NEventStore.5.1.1\lib\net40\NEventStore.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NServiceBus.5.2.0\lib\net45\NServiceBus.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\Commands\ChangeDescription.cs" />
+    <Compile Include="Account\Commands\ChangeName.cs" />
+    <Compile Include="Account\Commands\ChangeParent.cs" />
+    <Compile Include="Account\Commands\ChangeType.cs" />
+    <Compile Include="Account\Commands\Create.cs" />
+    <Compile Include="Account\Commands\Destroy.cs" />
+    <Compile Include="Account\Commands\Freeze.cs" />
+    <Compile Include="Account\Commands\Unfreeze.cs" />
+    <Compile Include="Account\Events\Created.cs" />
+    <Compile Include="Account\Events\DescriptionChanged.cs" />
+    <Compile Include="Account\Events\Destroyed.cs" />
+    <Compile Include="Account\Events\Frozen.cs" />
+    <Compile Include="Account\Events\NameChanged.cs" />
+    <Compile Include="Account\Events\ParentChanged.cs" />
+    <Compile Include="Account\Events\TypeChanged.cs" />
+    <Compile Include="Account\Events\Unfrozen.cs" />
+    <Compile Include="Account\IAccount.cs" />
+    <Compile Include="Account\OPERATION.cs" />
+    <Compile Include="Account\Validators\ChangeDescription.cs" />
+    <Compile Include="Account\Validators\ChangeName.cs" />
+    <Compile Include="Account\Validators\ChangeParent.cs" />
+    <Compile Include="Account\Validators\ChangeType.cs" />
+    <Compile Include="Account\Validators\Create.cs" />
+    <Compile Include="Account\Validators\Destroy.cs" />
+    <Compile Include="Account\Validators\Freeze.cs" />
+    <Compile Include="Account\Validators\Unfreeze.cs" />
+    <Compile Include="Currency\Commands\Activate.cs" />
+    <Compile Include="Currency\Commands\AddRate.cs" />
+    <Compile Include="Currency\Commands\ChangeAccuracy.cs" />
+    <Compile Include="Currency\Commands\ChangeFormat.cs" />
+    <Compile Include="Currency\Commands\ChangeFraction.cs" />
+    <Compile Include="Currency\Commands\ChangeName.cs" />
+    <Compile Include="Currency\Commands\ChangeRateEffective.cs" />
+    <Compile Include="Currency\Commands\ChangeRoundingFactor.cs" />
+    <Compile Include="Currency\Commands\ChangeSymbol.cs" />
+    <Compile Include="Currency\Commands\Create.cs" />
+    <Compile Include="Currency\Commands\Deactivate.cs" />
+    <Compile Include="Currency\Commands\Destroy.cs" />
+    <Compile Include="Currency\Commands\SymbolBefore.cs" />
+    <Compile Include="Currency\Events\AccuracyChanged.cs" />
+    <Compile Include="Currency\Events\Activated.cs" />
+    <Compile Include="Currency\Events\Created.cs" />
+    <Compile Include="Currency\Events\Deactivated.cs" />
+    <Compile Include="Currency\Events\Destroyed.cs" />
+    <Compile Include="Currency\Events\FormatChanged.cs" />
+    <Compile Include="Currency\Events\FractionChanged.cs" />
+    <Compile Include="Currency\Events\NameChanged.cs" />
+    <Compile Include="Currency\Events\RateAdded.cs" />
+    <Compile Include="Currency\Events\RateEffectiveChanged.cs" />
+    <Compile Include="Currency\Events\RoundingFactorChanged.cs" />
+    <Compile Include="Currency\Events\SymbolBefore.cs" />
+    <Compile Include="Currency\Events\SymbolChanged.cs" />
+    <Compile Include="Currency\ICurrency.cs" />
+    <Compile Include="Currency\Validators\Activate.cs" />
+    <Compile Include="Currency\Validators\AddRate.cs" />
+    <Compile Include="Currency\Validators\ChangeAccuracy.cs" />
+    <Compile Include="Currency\Validators\ChangeName.cs" />
+    <Compile Include="Currency\Validators\ChangeRateEffective.cs" />
+    <Compile Include="Currency\Validators\ChangeRoundingFactor.cs" />
+    <Compile Include="Currency\Validators\ChangeSymbol.cs" />
+    <Compile Include="Currency\Validators\Create.cs" />
+    <Compile Include="Currency\Validators\Deactivate.cs" />
+    <Compile Include="Currency\Validators\Destroy.cs" />
+    <Compile Include="Currency\Validators\FormatChanged.cs" />
+    <Compile Include="Currency\Validators\FractionChanged.cs" />
+    <Compile Include="Currency\Validators\SymbolBefore.cs" />
+    <Compile Include="FiscalYear\Commands\ChangeName.cs" />
+    <Compile Include="FiscalYear\Commands\Create.cs" />
+    <Compile Include="FiscalYear\Commands\Destroy.cs" />
+    <Compile Include="FiscalYear\Commands\End.cs" />
+    <Compile Include="FiscalYear\Commands\Start.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Commands\ChangeName.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Commands\Create.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Commands\Destroy.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Commands\End.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Commands\Start.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Events\Created.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Events\Destroyed.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Events\Ended.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Events\NameChanged.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Events\Started.cs" />
+    <Compile Include="FiscalYear\Entities\Period\IPeriod.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Validators\ChangeName.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Validators\Create.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Validators\Destroy.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Validators\End.cs" />
+    <Compile Include="FiscalYear\Entities\Period\Validators\Start.cs" />
+    <Compile Include="FiscalYear\Entities\Period\ValueObjects\End.cs" />
+    <Compile Include="FiscalYear\Entities\Period\ValueObjects\Start.cs" />
+    <Compile Include="FiscalYear\Events\Created.cs" />
+    <Compile Include="FiscalYear\Events\Destroyed.cs" />
+    <Compile Include="FiscalYear\Events\Ended.cs" />
+    <Compile Include="FiscalYear\Events\NameChanged.cs" />
+    <Compile Include="FiscalYear\Events\Started.cs" />
+    <Compile Include="FiscalYear\IFiscalYear.cs" />
+    <Compile Include="FiscalYear\Validators\ChangeName.cs" />
+    <Compile Include="FiscalYear\Validators\Create.cs" />
+    <Compile Include="FiscalYear\Validators\Destroy.cs" />
+    <Compile Include="FiscalYear\Validators\End.cs" />
+    <Compile Include="FiscalYear\Validators\Start.cs" />
+    <Compile Include="FiscalYear\ValueObjects\End.cs" />
+    <Compile Include="FiscalYear\ValueObjects\Start.cs" />
+    <Compile Include="Journal\Commands\ChangeCheckDate.cs" />
+    <Compile Include="Journal\Commands\ChangeName.cs" />
+    <Compile Include="Journal\Commands\ChangeResponsible.cs" />
+    <Compile Include="Journal\Commands\ChangeSkipDraft.cs" />
+    <Compile Include="Journal\Commands\Create.cs" />
+    <Compile Include="Journal\Commands\Destroy.cs" />
+    <Compile Include="Journal\Commands\SetCreditAccount.cs" />
+    <Compile Include="Journal\Commands\SetDebitAccount.cs" />
+    <Compile Include="Journal\Entities\Entry\Commands\RequestReview.cs" />
+    <Compile Include="Journal\Entities\Entry\Commands\Reviewed.cs" />
+    <Compile Include="Journal\Entities\Entry\Events\Aborted.cs" />
+    <Compile Include="Journal\Entities\Entry\Events\Closed.cs" />
+    <Compile Include="Journal\Entities\Entry\Events\Exception.cs" />
+    <Compile Include="Journal\Entities\Entry\Events\ItemAdded.cs" />
+    <Compile Include="Journal\Entities\Entry\Events\ItemRemoved.cs" />
+    <Compile Include="Journal\Entities\Entry\Events\Opened.cs" />
+    <Compile Include="Journal\Entities\Entry\Events\Reviewed.cs" />
+    <Compile Include="Journal\Entities\Entry\Events\ReviewRequested.cs" />
+    <Compile Include="Journal\Entities\Entry\IEntry.cs" />
+    <Compile Include="Journal\Entities\Entry\Validators\RequestReview.cs" />
+    <Compile Include="Journal\Entities\Entry\Validators\Reviewed.cs" />
+    <Compile Include="Journal\Entities\Item\Commands\ChangeReference.cs" />
+    <Compile Include="Journal\Entities\Item\Commands\Create.cs" />
+    <Compile Include="Journal\Entities\Item\Commands\Destroy.cs" />
+    <Compile Include="Journal\Entities\Item\Commands\ChangeEffective.cs" />
+    <Compile Include="Journal\Entities\Item\Commands\Reconcile.cs" />
+    <Compile Include="Journal\Entities\Item\Events\Created.cs" />
+    <Compile Include="Journal\Entities\Item\Events\Destroyed.cs" />
+    <Compile Include="Journal\Entities\Item\Events\EffectiveChanged.cs" />
+    <Compile Include="Journal\Entities\Item\Events\Reconciled.cs" />
+    <Compile Include="Journal\Entities\Item\Events\ReferenceChanged.cs" />
+    <Compile Include="Journal\Entities\Item\IItem.cs" />
+    <Compile Include="Journal\Entities\Item\Specifications\ReconciledAmount.cs" />
+    <Compile Include="Journal\Entities\Item\Validators\ChangeEffective.cs" />
+    <Compile Include="Journal\Entities\Item\Validators\ChangeReference.cs" />
+    <Compile Include="Journal\Entities\Item\Validators\Create.cs" />
+    <Compile Include="Journal\Entities\Item\Validators\Destroy.cs" />
+    <Compile Include="Journal\Entities\Item\Validators\Reconcile.cs" />
+    <Compile Include="Journal\Entities\Item\ValueObjects\Amount.cs" />
+    <Compile Include="Journal\Entities\Item\ValueObjects\ReconciledAmount.cs" />
+    <Compile Include="Journal\Events\CheckDateChanged.cs" />
+    <Compile Include="Journal\Events\Closed.cs" />
+    <Compile Include="Journal\Events\Created.cs" />
+    <Compile Include="Journal\Events\CreditAccountSet.cs" />
+    <Compile Include="Journal\Events\DebitAccountSet.cs" />
+    <Compile Include="Journal\Events\Destroyed.cs" />
+    <Compile Include="Journal\Events\NameChanged.cs" />
+    <Compile Include="Journal\Events\Opened.cs" />
+    <Compile Include="Journal\Events\ResponsibleChanged.cs" />
+    <Compile Include="Journal\Events\SkipDraftChanged.cs" />
+    <Compile Include="Journal\IJournal.cs" />
+    <Compile Include="Journal\Validators\ChangeCheckDate.cs" />
+    <Compile Include="Journal\Validators\ChangeName.cs" />
+    <Compile Include="Journal\Validators\ChangeResponsible.cs" />
+    <Compile Include="Journal\Validators\ChangeSkipDraft.cs" />
+    <Compile Include="Journal\Validators\Create.cs" />
+    <Compile Include="Journal\Validators\Destroy.cs" />
+    <Compile Include="Journal\Validators\SetCreditAccount.cs" />
+    <Compile Include="Journal\Validators\SetDebitAccount.cs" />
+    <Compile Include="Journal\ValueObjects\CheckDate.cs" />
+    <Compile Include="Journal\ValueObjects\SkipDraft.cs" />
+    <Compile Include="PaymentOrder\Commands\ChangeEffective.cs" />
+    <Compile Include="PaymentOrder\Commands\ChangeMethod.cs" />
+    <Compile Include="PaymentOrder\Commands\ChangeReference.cs" />
+    <Compile Include="PaymentOrder\Commands\Confirm.cs" />
+    <Compile Include="PaymentOrder\Commands\Discard.cs" />
+    <Compile Include="PaymentOrder\Commands\Dispurse.cs" />
+    <Compile Include="PaymentOrder\Commands\Start.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Commands\Add.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Commands\ChangeAmount.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Commands\ChangeDiscount.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Commands\ChangeReference.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Commands\Remove.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Events\Added.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Events\AmountChanged.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Events\DiscountChanged.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Events\PaymentCreated.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Events\ReferenceChanged.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Events\Removed.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\IInvoice.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Validators\Add.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Validators\ChangeAmount.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Validators\ChangeDiscount.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Validators\ChangeReference.cs" />
+    <Compile Include="PaymentOrder\Entities\Invoice\Validators\Remove.cs" />
+    <Compile Include="PaymentOrder\Events\Confirmed.cs" />
+    <Compile Include="PaymentOrder\Events\Discarded.cs" />
+    <Compile Include="PaymentOrder\Events\Dispursed.cs" />
+    <Compile Include="PaymentOrder\Events\EffectiveChanged.cs" />
+    <Compile Include="PaymentOrder\Events\Invalidated.cs" />
+    <Compile Include="PaymentOrder\Events\MethodChanged.cs" />
+    <Compile Include="PaymentOrder\Events\ReferenceChanged.cs" />
+    <Compile Include="PaymentOrder\Events\Started.cs" />
+    <Compile Include="PaymentOrder\IPaymentOrder.cs" />
+    <Compile Include="PaymentOrder\Validators\ChangeEffective.cs" />
+    <Compile Include="PaymentOrder\Validators\ChangeMethod.cs" />
+    <Compile Include="PaymentOrder\Validators\ChangeReference.cs" />
+    <Compile Include="PaymentOrder\Validators\Confirm.cs" />
+    <Compile Include="PaymentOrder\Validators\Discard.cs" />
+    <Compile Include="PaymentOrder\Validators\Dispurse.cs" />
+    <Compile Include="PaymentOrder\Validators\Start.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tax\Commands\Activate.cs" />
+    <Compile Include="Tax\Commands\AddRegion.cs" />
+    <Compile Include="Tax\Commands\AddStore.cs" />
+    <Compile Include="Tax\Commands\ChangeAccount.cs" />
+    <Compile Include="Tax\Commands\ChangeDescription.cs" />
+    <Compile Include="Tax\Commands\ChangeName.cs" />
+    <Compile Include="Tax\Commands\ChangeRate.cs" />
+    <Compile Include="Tax\Commands\Create.cs" />
+    <Compile Include="Tax\Commands\Deactivate.cs" />
+    <Compile Include="Tax\Commands\Destroy.cs" />
+    <Compile Include="Tax\Commands\RemoveRegion.cs" />
+    <Compile Include="Tax\Commands\RemoveStore.cs" />
+    <Compile Include="Tax\Events\AccountChanged.cs" />
+    <Compile Include="Tax\Events\Activated.cs" />
+    <Compile Include="Tax\Events\Created.cs" />
+    <Compile Include="Tax\Events\Deactivated.cs" />
+    <Compile Include="Tax\Events\DescriptionChanged.cs" />
+    <Compile Include="Tax\Events\Destroyed.cs" />
+    <Compile Include="Tax\Events\NameChanged.cs" />
+    <Compile Include="Tax\Events\RateChanged.cs" />
+    <Compile Include="Tax\Events\RegionAdded.cs" />
+    <Compile Include="Tax\Events\RegionRemoved.cs" />
+    <Compile Include="Tax\Events\StoreAdded.cs" />
+    <Compile Include="Tax\Events\StoreRemoved.cs" />
+    <Compile Include="Tax\ITax.cs" />
+    <Compile Include="Tax\Validators\Activate.cs" />
+    <Compile Include="Tax\Validators\AddRegion.cs" />
+    <Compile Include="Tax\Validators\AddStore.cs" />
+    <Compile Include="Tax\Validators\ChangeAccount.cs" />
+    <Compile Include="Tax\Validators\ChangeDescription.cs" />
+    <Compile Include="Tax\Validators\ChangeName.cs" />
+    <Compile Include="Tax\Validators\ChangeRate.cs" />
+    <Compile Include="Tax\Validators\Create.cs" />
+    <Compile Include="Tax\Validators\Deactivate.cs" />
+    <Compile Include="Tax\Validators\Destroy.cs" />
+    <Compile Include="Tax\Validators\RemoveRegion.cs" />
+    <Compile Include="Tax\Validators\RemoveStore.cs" />
+    <Compile Include="Tax\ValueObjects\Rate.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
+      <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Authentication.Messages\Domain.Authentication.Messages.csproj">
+      <Project>{3c293825-daa0-4523-9109-cf717b0d9a00}</Project>
+      <Name>Domain.Authentication.Messages</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,12 +1,10 @@
-﻿
-using Demo.Application.ServiceStack.Authentication.Models.Users;
-using ServiceStack.FluentValidation;
+﻿using ServiceStack.FluentValidation;
 
-namespace Demo.Presentation.Authentication.Users.Validators
+namespace Demo.Application.ServiceStack.Authentication.Users.Validators
 {
-    public class ChangeEmailValidator : AbstractValidator<ChangeEmail>
+    public class ChangeEmail : AbstractValidator<Services.ChangeEmail>
     {
-        public ChangeEmailValidator()
+        public ChangeEmail()
         {
             RuleFor(x => x.Email).EmailAddress().NotEmpty();
         }

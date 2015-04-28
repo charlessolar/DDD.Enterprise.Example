@@ -1,12 +1,10 @@
-﻿
-using Demo.Application.ServiceStack.Authentication.Models.Users;
-using ServiceStack.FluentValidation;
+﻿using ServiceStack.FluentValidation;
 
-namespace Demo.Presentation.Authentication.Users.Validators
+namespace Demo.Application.ServiceStack.Authentication.Users.Validators
 {
-    public class GetValidator : AbstractValidator<Get>
+    public class Get : AbstractValidator<Services.Get>
     {
-        public GetValidator()
+        public Get()
         {
         }
     }

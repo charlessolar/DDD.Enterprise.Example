@@ -1,12 +1,11 @@
-﻿using NServiceBus;
+﻿using Demo.Library.Command;
+using NServiceBus;
 using System;
 
 namespace Demo.Domain.Authentication.Users.Commands
 {
-    public class ChangeEmail : ICommand
+    public class ChangeEmail : DemoCommand
     {
-        public String UserId { get; set; }
-
         public String Email { get; set; }
     }
 }

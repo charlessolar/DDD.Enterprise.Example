@@ -1,6 +1,7 @@
 namespace Demo.Domain
 {
     using Aggregates;
+    using Demo.Domain.Security;
     using Demo.Library.Command;
     using Demo.Library.Security;
     using Demo.Library.Validation;
@@ -8,6 +9,8 @@ namespace Demo.Domain
     using NServiceBus;
     using NServiceBus.Log4Net;
     using StructureMap;
+    using System.Configuration;
+
 
     /*
         This class configures this endpoint as a Server. More information about how to configure the NServiceBus host
@@ -36,19 +39,25 @@ namespace Demo.Domain
 
             config.LicensePath(@"C:\License.xml");
 
-            config.EndpointName("Domain");
-            config.EndpointVersion("0.0.0");
+            var endpoint = ConfigurationManager.AppSettings["endpoint"];
+            if (string.IsNullOrEmpty(endpoint))
+                endpoint = "domain";
+
+            config.EndpointName(endpoint);
+
             //config.AssembliesToScan(AllAssemblies.Matching("Domain").And("Library"));
 
             config.UsePersistence<InMemoryPersistence>();
             config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
             config.UseSerialization<NServiceBus.JsonSerializer>();
 
+            config.EnableInstallers();
+
             config.UseAggregates(y =>
             {
                 return Wireup.Init()
                         .UseAggregates(y)
-                    //.UsingRavenPersistence("Demo")
+                        //.UsingRavenPersistence("Demo")
                         .UsingInMemoryPersistence()
                         .InitializeStorageEngine()
                         .Build();

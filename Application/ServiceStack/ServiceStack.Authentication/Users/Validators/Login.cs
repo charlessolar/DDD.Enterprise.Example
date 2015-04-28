@@ -1,11 +1,10 @@
-﻿using Demo.Application.ServiceStack.Authentication.Models.Users;
-using ServiceStack.FluentValidation;
+﻿using ServiceStack.FluentValidation;
 
-namespace Demo.Presentation.Authentication.Users.Validators
+namespace Demo.Application.ServiceStack.Authentication.Users.Validators
 {
-    public class LoginValidator : AbstractValidator<Login>
+    public class Login : AbstractValidator<Services.Login>
     {
-        public LoginValidator()
+        public Login()
         {
             RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.Name).NotEmpty();

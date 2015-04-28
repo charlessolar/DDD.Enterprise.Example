@@ -7,7 +7,7 @@ namespace Demo.Application.ServiceStack.Authentication
     {
         public void Register(IAppHost appHost)
         {
-            appHost.RegisterService<Users.Service>("/user");
+            appHost.RegisterService<Users.Service>();
             appHost.GetContainer().RegisterAutoWiredType(typeof(Users.Service));
 
             //appHost.GetContainer().Register<Users.Service>((c) => new Users.Service(c.Resolve<IBus>()));

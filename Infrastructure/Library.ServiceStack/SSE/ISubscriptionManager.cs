@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Demo.Library.Responses;
+using Raven.Abstractions.Data;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Demo.Infrastructure.Library.SSE
+namespace Demo.Library.SSE
 {
     public interface ISubscriptionManager
     {
-        void AddTracked(String Session, String Receiver, Guid QueryId, Int32? Timeout);
-        void RemoveTracked(String Session, Guid QueryId);
-
-        void Publish(Guid QueryId, Int32 Version, Object Payload);
+        void Manage<T>(String CacheKey, String DocumentId, String SubscriptionId = "", String Session = "");
+        void Publish<T>(String DocumentId, T Payload, ChangeType Type = ChangeType.CHANGE);
     }
 }

@@ -1,9 +1,11 @@
-﻿using Demo.Infrastructure.Library.SSE;
-using Demo.Library.Authentication;
-using Demo.Library.Extensions;
-using Demo.Library.IoC;
+﻿using Demo.Library.IoC;
+using Demo.Library.Queries.Processor;
 using Demo.Library.Security;
+using Demo.Library.SSE;
+using Nest;
 using NServiceBus;
+using Raven.Client;
+using Raven.Client.Document;
 using ServiceStack;
 using ServiceStack.Api.Swagger;
 using ServiceStack.Caching;
@@ -12,9 +14,13 @@ using ServiceStack.Logging;
 using ServiceStack.Logging.Log4Net;
 using ServiceStack.Text;
 using ServiceStack.Validation;
-using ServiceStack.Web;
 using StructureMap;
 using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using Q = Demo.Library.Queries;
+using R = Demo.Library.Responses;
 
 namespace Demo.Application.ServiceStack
 {
@@ -28,10 +34,77 @@ namespace Demo.Application.ServiceStack
         {
         }
 
+        public IDocumentStore ConfigureStore()
+        {
+            var store = new DocumentStore { ConnectionStringName = "Raven" }.Initialize();
+            //var store = new EmbeddableDocumentStore { ConnectionStringName = "Demo" }.Initialize();
+            //store.Listeners.RegisterListener(new Versioning());
+
+            store.Conventions.FindTypeTagName =
+                type => type.FullName.Replace("Demo.Application.ServiceStack.", "").Replace('.', '_');
+
+            return store;
+        }
+
+        public IElasticClient ConfigureElastic()
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["Elastic"];
+            if (connectionString == null)
+                throw new ArgumentException("No elastic connection string found");
+
+            var data = connectionString.ConnectionString.Split(';');
+
+            var url = data.FirstOrDefault(x => x.StartsWith("Url", StringComparison.CurrentCultureIgnoreCase));
+            if (url == null)
+                throw new ArgumentException("No URL parameter in elastic connection string");
+            var index = data.FirstOrDefault(x => x.StartsWith("DefaultIndex", StringComparison.CurrentCultureIgnoreCase));
+            if (index.IsNullOrEmpty())
+                throw new ArgumentException("No DefaultIndex parameter in elastic connection string");
+
+            index = index.Substring(13);
+
+            var node = new Uri(url.Substring(4));
+
+            var settings = new ConnectionSettings(node);
+            settings.SetDefaultIndex(index);
+
+            settings.SetDefaultTypeNameInferrer(type => type.FullName.Replace("Demo.Application.ServiceStack.", "").Replace('.', '_'));
+            // Disable camel case field names (need to match out POCO field names)
+            settings.SetDefaultPropertyNameInferrer(field => field);
+
+            var client = new ElasticClient(settings);
+            if (!client.IndexExists(index).Exists)
+                client.CreateIndex(index, i => i
+                        .Analysis(analysis => analysis
+                            .TokenFilters(f => f
+                                .Add("ngram", new Nest.NgramTokenFilter { MinGram = 2, MaxGram = 15 })
+                                )
+                            .Analyzers(a => a
+                                .Add(
+                                    "default_index",
+                                    new Nest.CustomAnalyzer
+                                    {
+                                        Tokenizer = "standard",
+                                        Filter = new[] { "standard", "lowercase", "asciifolding", "kstem", "ngram" }
+                                    }
+                                )
+                                .Add(
+                                    "suffix",
+                                    new Nest.CustomAnalyzer
+                                    {
+                                        Tokenizer = "keyword",
+                                        Filter = new[] { "standard", "lowercase", "asciifolding", "reverse" }
+                                    }
+                                )
+                            )
+                        ));
+
+            return client;
+        }
+
         public override ServiceStackHost Init()
         {
-            log4net.Config.XmlConfigurator.Configure();
-            LogManager.LogFactory = new Log4NetFactory();
+            LogManager.LogFactory = new Log4NetFactory(true);
             NServiceBus.Logging.LogManager.Use<NServiceBus.Log4Net.Log4NetFactory>();
 
             var serverEvents = new MemoryServerEvents
@@ -40,12 +113,27 @@ namespace Demo.Application.ServiceStack
                 NotifyChannelOfSubscriptions = false
             };
 
+            var store = ConfigureStore();
+            var elastic = ConfigureElastic();
+
             _container = new Container(x =>
             {
                 x.For<IManager>().Use<Manager>();
                 x.For<ICacheClient>().Use(new MemoryCacheClient());
                 x.For<IServerEvents>().Use(serverEvents);
                 x.For<ISubscriptionManager>().Use<MemorySubscriptionManager>();
+                x.For<IDocumentStore>().Use(store).Singleton();
+                x.For<IElasticClient>().Use(elastic).Singleton();
+                x.For<IQueryProcessor>().Use<QueryProcessor>();
+
+                x.Scan(y =>
+                {
+                    AllAssemblies.Matching("Application").ToList().ForEach(a => y.Assembly(a));
+
+                    y.WithDefaultConventions();
+                    y.ConnectImplementationsToTypesClosing(typeof(IQueryHandler<,>));
+                    y.ConnectImplementationsToTypesClosing(typeof(IPagingQueryHandler<,>));
+                });
             });
 
             var config = new BusConfiguration();
@@ -57,13 +145,17 @@ namespace Demo.Application.ServiceStack
 
             config.LicensePath(@"C:\License.xml");
 
-            config.EndpointName("Presentation");
-            config.EndpointVersion("0.0.0");
+            var endpoint = ConfigurationManager.AppSettings["endpoint"];
+            if (string.IsNullOrEmpty(endpoint))
+                endpoint = "application.servicestack";
+
+            config.EndpointName(endpoint);
             //config.AssembliesToScan(AllAssemblies.Matching("Presentation").And("Application").And("Domain").And("Library"));
 
             config.UsePersistence<InMemoryPersistence>();
             config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
             config.UseSerialization<NServiceBus.JsonSerializer>();
+            config.EnableInstallers();
 
             var bus = Bus.Create(config).Start();
 
@@ -76,6 +168,7 @@ namespace Demo.Application.ServiceStack
         {
             JsConfig.IncludeNullValues = true;
             JsConfig.AlwaysUseUtc = true;
+            JsConfig.TreatEnumAsInteger = true;
 
             SetConfig(new HostConfig { DebugMode = true });
 
@@ -85,15 +178,31 @@ namespace Demo.Application.ServiceStack
             Plugins.Add(new SwaggerFeature());
             Plugins.Add(new RequestLogsFeature());
 
-            Plugins.Add(new PostmanFeature());
-            Plugins.Add(new CorsFeature(allowedHeaders: "Content-Type, Authorization"));
+            Plugins.Add(new PostmanFeature
+            {
+                DefaultLabelFmt = new List<String> { "type: english", " ", "route" }
+            });
+            Plugins.Add(new CorsFeature(
+                allowOriginWhitelist: new[] {
+                    "http://localhost:9000",
+                    "http://fortissimo.development.syndeonetwork.com",
+                    "http://fortissimo.staging.syndeonetwork.com",
+                    "http://fortissimo.syndeonetwork.com",
+                },
+                allowCredentials: true,
+                allowedHeaders: "Content-Type, Authorization",
+                allowedMethods: "GET, POST, PUT, DELETE, OPTIONS"
+                ));
 
             var appSettings = new AppSettings();
 
             Plugins.Add(new ValidationFeature());
             Plugins.Add(new ServerEventsFeature());
-            Plugins.Add(new ServiceStack.Inventory.Plugin());
             Plugins.Add(new ServiceStack.Authentication.Plugin());
+            Plugins.Add(new ServiceStack.Accounting.Plugin());
+            Plugins.Add(new ServiceStack.Configuration.Plugin());
+            Plugins.Add(new ServiceStack.HumanResources.Plugin());
+            Plugins.Add(new ServiceStack.Relations.Plugin());
 
             //container.Register<IRedisClientsManager>(c =>
             //    new PooledRedisClientManager("localhost:6379"));

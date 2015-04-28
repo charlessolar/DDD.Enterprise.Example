@@ -1,9 +1,11 @@
-﻿using Demo.Application.ServiceStack.Authentication.Models.Users;
-using Demo.Library.Authentication;
+﻿using Demo.Library.Authentication;
 using Demo.Library.Extensions;
+using Demo.Library.Queries.Processor;
 using Demo.Library.Responses;
 using Demo.Library.Services;
+using Demo.Library.SSE;
 using NServiceBus;
+using Raven.Client;
 using ServiceStack;
 using System;
 using System.Net;
@@ -15,33 +17,29 @@ namespace Demo.Application.ServiceStack.Authentication.Users
     [RequireJWT]
     public class Service : DemoService
     {
-        private IBus _bus;
+        private readonly IBus _bus;
+        private readonly IQueryProcessor _processor;
+        private readonly ISubscriptionManager _manager;
+        private readonly IDocumentStore _store;
 
-        public Service(IBus bus)
+        public Service(IBus bus, IQueryProcessor processor, ISubscriptionManager manager, IDocumentStore store)
         {
             _bus = bus;
+            _processor = processor;
+            _manager = manager;
+            _store = store;
         }
 
-        public Task<GetResponse> Any(Get request)
+        public Object Any(Services.Get request)
         {
-            return _bus.Send("application.ravendb", new Demo.Application.RavenDB.Authentication.Users.Queries.Get
+            return base.Request.ToOptimizedCachedAndSubscribedResult(request, base.Cache, _manager, () =>
             {
-                Id = Profile.UserId
-            }).Register(x =>
-            {
-                var result = x.GetQueryResponse<Demo.Application.RavenDB.Authentication.Users.User>();
-
-                if (result == null)
-                    throw new HttpError(HttpStatusCode.NotFound, "Get request failed");
-
-                // Convert application object to our DTO
-                var item = result.ConvertTo<GetResponse>();
-
-                return item;
+                var dto = _store.WaitAndLoad<Responses.Get>(Profile.UserId);
+                return dto.ToQueryResponse(request);
             });
         }
 
-        public async Task<Command> Post(Login request)
+        public async Task<Object> Post(Services.Login request)
         {
             var command = request.ConvertTo<Domain.Authentication.Users.Commands.Login>();
 
@@ -50,43 +48,54 @@ namespace Demo.Application.ServiceStack.Authentication.Users
             command.ImageType = image.Type;
             command.ImageData = image.Data;
 
-            return await _bus.Send("domain", command).IsCommand<Command>();
+            return await _bus.Send(command).IsCommand<Command>();
         }
 
-        public Task<Command> Post(Logout request)
+        public async Task<Object> Post(Services.Logout request)
         {
             var command = request.ConvertTo<Domain.Authentication.Users.Commands.Logout>();
 
             command.UserId = Profile.UserId;
 
-            return _bus.Send("domain", command).IsCommand<Command>();
+            return await _bus.Send(command).IsCommand<Command>();
         }
 
-        public Task<Command> Post(ChangeEmail request)
+        public async Task<Object> Post(Services.ChangeEmail request)
         {
             var command = request.ConvertTo<Domain.Authentication.Users.Commands.ChangeEmail>();
 
             command.UserId = Profile.UserId;
 
-            return _bus.Send("domain", command).IsCommand<Command>();
+            return await _bus.Send(command).IsCommand<Command>();
         }
 
-        public Task<Command> Post(ChangeAvatar request)
+        public async Task<Object> Post(Services.ChangeAvatar request)
         {
             var command = request.ConvertTo<Domain.Authentication.Users.Commands.ChangeAvatar>();
 
             command.UserId = Profile.UserId;
 
-            return _bus.Send("domain", command).IsCommand<Command>();
+            return await _bus.Send(command).IsCommand<Command>();
         }
 
-        public Task<Command> Post(ChangeName request)
+        public async Task<Object> Post(Services.ChangeName request)
         {
+            var session = Request.GetPermanentSessionId();
+
             var command = request.ConvertTo<Domain.Authentication.Users.Commands.ChangeName>();
 
             command.UserId = Profile.UserId;
 
-            return _bus.Send("domain", command).IsCommand<Command>();
+            return await _bus.Send(command).IsCommand<Command>();
+        }
+
+        public async Task<Object> Post(Services.ChangeTimezone request)
+        {
+            var command = request.ConvertTo<Domain.Authentication.Users.Commands.ChangeTimezone>();
+
+            command.UserId = Profile.UserId;
+
+            return await _bus.Send(command).IsCommand<Command>();
         }
 
         private class Image

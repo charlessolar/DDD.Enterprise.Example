@@ -8,7 +8,8 @@ namespace Demo.Domain.Authentication.Users
         IHandleMessages<Commands.Logout>,
         IHandleMessages<Commands.ChangeAvatar>,
         IHandleMessages<Commands.ChangeEmail>,
-        IHandleMessages<Commands.ChangeName>
+        IHandleMessages<Commands.ChangeName>,
+        IHandleMessages<Commands.ChangeTimezone>
     {
         private readonly IUnitOfWork _uow;
         private readonly IBus _bus;
@@ -51,6 +52,12 @@ namespace Demo.Domain.Authentication.Users
         {
             var user = _uow.R<User>().Get(command.UserId);
             user.ChangeName(command.Name);
+        }
+
+        public void Handle(Commands.ChangeTimezone command)
+        {
+            var user = _uow.R<User>().Get(command.UserId);
+            user.ChangeTimezone(command.Timezone);
         }
     }
 }

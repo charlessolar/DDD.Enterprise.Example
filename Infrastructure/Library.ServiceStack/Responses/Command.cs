@@ -1,6 +1,6 @@
 ﻿namespace Demo.Library.Responses
 {
-    public class Command : Base
+    public class Command : IResponse
     {
     }
 }

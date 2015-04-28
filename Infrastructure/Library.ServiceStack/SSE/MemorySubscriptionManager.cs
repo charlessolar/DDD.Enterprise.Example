@@ -1,61 +1,73 @@
-﻿using ServiceStack;
+﻿using Demo.Library.Extensions;
+using Demo.Library.Responses;
+using ServiceStack;
+using ServiceStack.Caching;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Demo.Infrastructure.Library.SSE
+namespace Demo.Library.SSE
 {
-    class Listener
-    {
-        public String Receiver { get; set; }
-        public DateTime? Timeout { get; set; }
-    }
     public class MemorySubscriptionManager : ISubscriptionManager
     {
         private readonly IServerEvents _sse;
-        private ConcurrentDictionary<Guid, IDictionary<String, Listener>> _subscriptions;
+        private readonly ICacheClient _cache;
+        private static IList<Subscription> _subscriptions = new List<Subscription>();
 
-        public MemorySubscriptionManager(IServerEvents sse)
+        public MemorySubscriptionManager(IServerEvents sse, ICacheClient cache)
         {
             _sse = sse;
-            _subscriptions = new ConcurrentDictionary<Guid, IDictionary<String, Listener>>();
+            _cache = cache;
         }
 
-        public void AddTracked(String Session, String Receiver, Guid QueryId, Int32? Timeout)
+        public void Manage<T>(String CacheKey, String DocumentId, String SubscriptionId, String Session)
         {
-            var listener = new Listener { Receiver = Receiver, Timeout = Timeout.HasValue ? DateTime.UtcNow.AddSeconds( Timeout.Value ) : (DateTime?)null };
+            var existing = _subscriptions.SingleOrDefault(x => x.SubscriptionId == SubscriptionId && x.DocumentId == DocumentId && x.Session == Session);
 
-            _subscriptions.AddOrUpdate(
-                QueryId,
-                new Dictionary<String, Listener> { { Session, listener } },
-                (k, v) => { v[Session] = listener; return v; }
-            );
-        }
-        public void RemoveTracked(String Session, Guid QueryId)
-        {
-            IDictionary<String, Listener> listeners;
-            if( _subscriptions.TryGetValue(QueryId, out listeners)){
-                var newValue = new Dictionary<String, Listener>(listeners);
-                newValue.Remove(Session);
-                _subscriptions.TryUpdate(QueryId, newValue, listeners);
-            }
-        }
+            if (existing != null) return;
 
-        public void Publish(Guid QueryId, Int32 Version, Object Payload)
-        {
-            IDictionary<String, Listener> listeners;
-            if (!_subscriptions.TryGetValue(QueryId, out listeners))
-                return;
-
-            foreach (var listener in listeners)
+            _subscriptions.Add(new Subscription
             {
-                if( listener.Value.Timeout < DateTime.UtcNow )
-                {
-                    RemoveTracked(listener.Key, QueryId);
-                    return;
-                }
+                SubscriptionId = SubscriptionId,
+                CacheKey = CacheKey,
+                Document = typeof(T).FullName,
+                DocumentId = DocumentId,
+                Session = Session
+            });
+        }
 
-                _sse.NotifySession(listener.Key, new { Version = Version, Payload = Payload });
+
+        public void Publish<T>(String DocumentId, T Payload, ChangeType Type = ChangeType.CHANGE)
+        {
+            var interested = _subscriptions.Where(x => x.DocumentId == DocumentId && x.Document == typeof(T).FullName);
+
+            if (Type == ChangeType.NEW)
+            {
+                var interestedNew = _subscriptions.Where(x => x.Document == typeof(T).FullName && x.DocumentId.IsNullOrEmpty());
+
+                foreach (var sub in interestedNew)
+                    Manage<T>(sub.CacheKey, DocumentId, sub.SubscriptionId, sub.Session);
+
+                interested = interested.Concat(interestedNew);
+            }
+            interested = interested.Distinct(x => x.SubscriptionId);
+
+            // Delete entries from cache (new data == old data stale)
+            _cache.RemoveAll(interested.Select(x => x.CacheKey).Distinct());
+
+            foreach (var sub in interested)
+            {
+                _sse.NotifySession(sub.Session,
+                        "forte.Update",
+                        new Responses.Update<T>
+                        {
+                            Payload = Payload,
+                            Type = Type,
+                            //Etag = ETag,
+                            SubscriptionId = sub.SubscriptionId
+                        });
             }
         }
     }
