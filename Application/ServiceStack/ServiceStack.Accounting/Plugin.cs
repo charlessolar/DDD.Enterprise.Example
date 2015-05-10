@@ -1,9 +1,7 @@
-﻿using Demo.Library.Queries;
+﻿using System.Linq;
+using Demo.Library.Queries;
 using ServiceStack;
-
 using ServiceStack.Validation;
-using SimpleInjector.Extensions;
-using System.Linq;
 
 namespace Demo.Application.ServiceStack.Accounting
 {

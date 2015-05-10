@@ -1,7 +1,16 @@
-﻿using Demo.Library.IoC;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Net;
+using Aggregates;
+using Demo.Application.Servicestack.RavenDB;
+using Demo.Library.IoC;
 using Demo.Library.Queries.Processor;
 using Demo.Library.Security;
 using Demo.Library.SSE;
+using EventStore.ClientAPI;
+using EventStore.ClientAPI.SystemData;
 using Nest;
 using NServiceBus;
 using Raven.Client;
@@ -15,10 +24,6 @@ using ServiceStack.Logging.Log4Net;
 using ServiceStack.Text;
 using ServiceStack.Validation;
 using StructureMap;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using Q = Demo.Library.Queries;
 using R = Demo.Library.Responses;
 
@@ -46,6 +51,23 @@ namespace Demo.Application.ServiceStack
             return store;
         }
 
+        public IEventStoreConnection ConfigureEventStore()
+        {
+            var endpoint = new IPEndPoint(IPAddress.Loopback, 3111);
+            var cred = new UserCredentials("admin", "changeit");
+
+            var settings = EventStore.ClientAPI.ConnectionSettings.Create()
+                .UseConsoleLogger()
+                .KeepReconnecting()
+                .SetDefaultUserCredentials(cred);
+
+            var client = EventStoreConnection.Create(settings, endpoint);
+
+            client.ConnectAsync().Wait();
+
+            return client;
+        }
+
         public IElasticClient ConfigureElastic()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["Elastic"];
@@ -65,7 +87,7 @@ namespace Demo.Application.ServiceStack
 
             var node = new Uri(url.Substring(4));
 
-            var settings = new ConnectionSettings(node);
+            var settings = new Nest.ConnectionSettings(node);
             settings.SetDefaultIndex(index);
 
             settings.SetDefaultTypeNameInferrer(type => type.FullName.Replace("Demo.Application.ServiceStack.", "").Replace('.', '_'));
@@ -115,6 +137,7 @@ namespace Demo.Application.ServiceStack
 
             var store = ConfigureStore();
             var elastic = ConfigureElastic();
+            var eventstore = ConfigureEventStore();
 
             _container = new Container(x =>
             {
@@ -124,7 +147,9 @@ namespace Demo.Application.ServiceStack
                 x.For<ISubscriptionManager>().Use<MemorySubscriptionManager>();
                 x.For<IDocumentStore>().Use(store).Singleton();
                 x.For<IElasticClient>().Use(elastic).Singleton();
+                x.For<IEventStoreConnection>().Use(eventstore).Singleton();
                 x.For<IQueryProcessor>().Use<QueryProcessor>();
+                x.For<IPersistCheckpoints>().Use<RavenCheckpointPersister>();
 
                 x.Scan(y =>
                 {
@@ -156,6 +181,9 @@ namespace Demo.Application.ServiceStack
             config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
             config.UseSerialization<NServiceBus.JsonSerializer>();
             config.EnableInstallers();
+
+            config.EnableFeature<Aggregates.EventStore>();
+            config.EnableFeature<Aggregates.DurableConsumer>();
 
             var bus = Bus.Create(config).Start();
 

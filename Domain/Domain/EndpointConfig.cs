@@ -1,5 +1,9 @@
 namespace Demo.Domain
 {
+    using System;
+    using System.Configuration;
+    using System.Linq;
+    using System.Net;
     using Aggregates;
     using Demo.Domain.Security;
     using Demo.Library.Command;
@@ -10,13 +14,6 @@ namespace Demo.Domain
     using NServiceBus;
     using NServiceBus.Log4Net;
     using StructureMap;
-    using System;
-    using System.Configuration;
-    using System.Linq;
-    using System.Net;
-
-
-
 
     /*
         This class configures this endpoint as a Server. More information about how to configure the NServiceBus host
@@ -43,14 +40,18 @@ namespace Demo.Domain
 
             return client;
         }
+
         public void Customize(BusConfiguration config)
         {
             log4net.Config.XmlConfigurator.Configure();
             NServiceBus.Logging.LogManager.Use<Log4NetFactory>();
 
+            var client = ConfigureStore();
+
             _container = new Container(x =>
             {
                 x.For<IManager>().Use<Manager>();
+                x.For<IEventStoreConnection>().Use(client).Singleton();
             });
 
             //var conventions = config.Conventions();
@@ -75,13 +76,8 @@ namespace Demo.Domain
 
             config.EnableInstallers();
 
-            var client = ConfigureStore();
-
-            config.UseAggregates(
-                () => new Accept(),
-                (message) => new Reject { Message = message }
-            );
-            config.UseGetEventStore(client);
+            config.EnableFeature<AggregatesNet>();
+            config.EnableFeature<EventStore>();
         }
 
         public void SpecifyOrder(Order order)
