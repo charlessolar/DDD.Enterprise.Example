@@ -1,8 +1,9 @@
-﻿using FluentValidation;
+﻿using System.Linq;
+using Aggregates.Messages;
 using Demo.Library.Command;
+using FluentValidation;
 using NServiceBus;
 using StructureMap;
-using System.Linq;
 
 namespace Demo.Library.Validation
 {
@@ -32,7 +33,7 @@ namespace Demo.Library.Validation
 
             if (validationErrors.Count > 0)
             {
-                _bus.Reply<Reject>(e =>
+                _bus.Reply<RejectValidation>(e =>
                 {
                     e.Message = "Validation";
                     e.ValidationResults = validationErrors;
