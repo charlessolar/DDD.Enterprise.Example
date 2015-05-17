@@ -10,7 +10,9 @@ namespace Demo.Domain
     using Demo.Library.Security;
     using Demo.Library.Validation;
     using EventStore.ClientAPI;
+    using EventStore.ClientAPI.Embedded;
     using EventStore.ClientAPI.SystemData;
+    using log4net;
     using NServiceBus;
     using NServiceBus.Log4Net;
     using StructureMap;
@@ -22,19 +24,45 @@ namespace Demo.Domain
 
     public class EndpointConfig : IConfigureThisEndpoint, ISpecifyMessageHandlerOrdering
     {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(EndpointConfig));
         private IContainer _container;
 
         public IEventStoreConnection ConfigureStore()
         {
-            var endpoint = new IPEndPoint(IPAddress.Loopback, 3111);
-            var cred = new UserCredentials("admin", "changeit");
+            var path = ConfigurationManager.AppSettings["eventstorePath"];
+            var tcpPort = ConfigurationManager.AppSettings["eventstoreTcp"];
+            var httpPort = ConfigurationManager.AppSettings["eventstoreHttp"];
+
+            Int32 tcpExtPort = 1113;
+            Int32 httpExtPort = 2112;
+
+            Int32.TryParse(tcpPort, out tcpExtPort);
+            Int32.TryParse(httpPort, out httpExtPort);
+
+            System.IO.Directory.CreateDirectory(path);
+
+            var embedded = EmbeddedVNodeBuilder
+                            .AsSingleNode()
+                            .RunOnDisk(path)
+                            .RunProjections(ProjectionsMode.All)
+                            .WithInternalTcpOn(new IPEndPoint(IPAddress.Loopback, tcpExtPort - 1))
+                            .WithExternalTcpOn(new IPEndPoint(IPAddress.Loopback, tcpExtPort))
+                            .WithInternalHttpOn(new IPEndPoint(IPAddress.Loopback, httpExtPort - 1))
+                            .WithExternalHttpOn(new IPEndPoint(IPAddress.Loopback, httpExtPort))
+                            .Build();
+
+            embedded.NodeStatusChanged += (sender, e) =>
+            {
+                Logger.InfoFormat("EventStore status changed: {0}", e.NewVNodeState);
+            };
+
+            embedded.Start();
 
             var settings = ConnectionSettings.Create()
                 .UseConsoleLogger()
-                .KeepReconnecting()
-                .SetDefaultUserCredentials(cred);
+                .KeepReconnecting();
 
-            var client = EventStoreConnection.Create(settings, endpoint);
+            var client = EventStoreConnection.Create(settings, new IPEndPoint(IPAddress.Loopback, tcpExtPort));
 
             client.ConnectAsync().Wait();
 

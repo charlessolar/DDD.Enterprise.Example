@@ -11,6 +11,8 @@
     <AssemblyName>Domain</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +57,10 @@
     <Reference Include="EventStore.ClientAPI, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EventStore.Client.3.0.2\lib\net40\EventStore.ClientAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="EventStore.ClientAPI.Embedded, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EventStore.Client.Embedded.3.0.2\lib\net40\EventStore.ClientAPI.Embedded.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="FluentValidation">
       <HintPath>..\..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
@@ -166,4 +172,11 @@
     <StartAction>Program</StartAction>
     <StartProgram>$(ProjectDir)$(OutputPath)NServiceBus.Host.exe</StartProgram>
   </PropertyGroup>
+  <Import Project="..\..\packages\EventStore.Client.Embedded.3.0.2\build\EventStore.Client.Embedded.targets" Condition="Exists('..\..\packages\EventStore.Client.Embedded.3.0.2\build\EventStore.Client.Embedded.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\EventStore.Client.Embedded.3.0.2\build\EventStore.Client.Embedded.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EventStore.Client.Embedded.3.0.2\build\EventStore.Client.Embedded.targets'))" />
+  </Target>
 </Project>
