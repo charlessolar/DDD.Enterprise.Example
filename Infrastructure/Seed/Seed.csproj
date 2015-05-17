@@ -42,8 +42,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aggregates.NET, Version=0.1.0.35, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Aggregates.NET.0.1.0.35\lib\net45\Aggregates.NET.dll</HintPath>
+    <Reference Include="Aggregates.NET, Version=0.1.2.36, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aggregates.NET.0.1.2.36\lib\net45\Aggregates.NET.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elasticsearch.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
