@@ -17,20 +17,32 @@ namespace Demo.Application.Servicestack.RavenDB
             _store = store;
         }
 
-        public Position Load(String endpoint)
+        public EventStore.ClientAPI.Position Load(String endpoint)
         {
             using (var session = _store.OpenSession())
             {
-                var position = session.Load<Position?>(endpoint);
-                return position ?? Position.Start;
+                var position = session.Load<Position>(endpoint);
+                if (position == null) return EventStore.ClientAPI.Position.Start;
+
+                return new EventStore.ClientAPI.Position(position.CommitPosition, position.PreparePosition);
             }
         }
 
-        public void Save(String endpoint, Position position)
+        public void Save(String endpoint, EventStore.ClientAPI.Position position)
         {
             using (var session = _store.OpenSession())
             {
-                session.Store(position, endpoint);
+                var db = session.Load<Position>(endpoint);
+
+                if (db == null)
+                {
+                    db = new Position { Id = endpoint };
+                    session.Store(db);
+                }
+
+                db.CommitPosition = position.CommitPosition;
+                db.PreparePosition = position.PreparePosition;
+
                 session.SaveChanges();
             }
         }
