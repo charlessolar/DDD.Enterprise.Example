@@ -39,11 +39,12 @@ namespace Demo.Domain
             Int32.TryParse(tcpPort, out tcpExtPort);
             Int32.TryParse(httpPort, out httpExtPort);
 
-            System.IO.Directory.CreateDirectory(path);
+            //System.IO.Directory.CreateDirectory(path);
 
             var embedded = EmbeddedVNodeBuilder
                             .AsSingleNode()
-                            .RunOnDisk(path)
+                            //.RunOnDisk(path)
+                            .RunInMemory()
                             .RunProjections(ProjectionsMode.All)
                             .WithInternalTcpOn(new IPEndPoint(IPAddress.Loopback, tcpExtPort - 1))
                             .WithExternalTcpOn(new IPEndPoint(IPAddress.Loopback, tcpExtPort))

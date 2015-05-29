@@ -53,7 +53,13 @@ namespace Demo.Application.ServiceStack
 
         public IEventStoreConnection ConfigureEventStore()
         {
-            var endpoint = new IPEndPoint(IPAddress.Loopback, 3111);
+            var tcpPort = ConfigurationManager.AppSettings["eventstoreTcp"];
+
+            Int32 tcpExtPort = 1113;
+
+            Int32.TryParse(tcpPort, out tcpExtPort);
+
+            var endpoint = new IPEndPoint(IPAddress.Loopback, tcpExtPort);
             var cred = new UserCredentials("admin", "changeit");
 
             var settings = EventStore.ClientAPI.ConnectionSettings.Create()
