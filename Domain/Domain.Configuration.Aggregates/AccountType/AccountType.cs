@@ -23,13 +23,13 @@ namespace Demo.Domain.Configuration.AccountType
             Apply<Events.DeferralChanged>(e =>
             {
                 e.AccountTypeId = Id;
-                e.DeferralMethod = deferral.Value;
+                e.DeferralMethod = deferral;
             });
         }
 
         private void Handle(Events.DeferralChanged e)
         {
-            this.DeferralMethod = DEFERRAL_METHOD.FromValue(e.DeferralMethod);
+            this.DeferralMethod = e.DeferralMethod;
         }
 
         public void ChangeDescription(String Description)
@@ -66,7 +66,7 @@ namespace Demo.Domain.Configuration.AccountType
             {
                 e.AccountTypeId = Id;
                 e.Name = Name;
-                e.DeferralMethod = Deferral.Value;
+                e.DeferralMethod = Deferral;
                 e.ParentId = ParentId;
             });
         }
@@ -74,7 +74,7 @@ namespace Demo.Domain.Configuration.AccountType
         private void Handle(Events.Created e)
         {
             this.Name = new ValueObjects.Name(e.Name);
-            this.DeferralMethod = DEFERRAL_METHOD.FromValue(e.DeferralMethod);
+            this.DeferralMethod = e.DeferralMethod;
         }
 
         public void Destroy()

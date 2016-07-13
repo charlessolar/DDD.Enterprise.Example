@@ -50,13 +50,13 @@ namespace Seed.Operations
 
         public async Task<Boolean> Seed()
         {
-            var commands = Data.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id, Timestamp = DateTime.UtcNow, UserId = "IMPORT" });
+            var commands = Data.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id, Timestamp = DateTime.UtcNow.Ticks, UserId = "IMPORT" });
             await commands.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
 
-            var assets = Assets.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id, Timestamp = DateTime.UtcNow, UserId = "IMPORT" });
+            var assets = Assets.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id, Timestamp = DateTime.UtcNow.Ticks, UserId = "IMPORT" });
             await assets.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
 
-            var liabilities = Liabilities.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id, Timestamp = DateTime.UtcNow, UserId = "IMPORT" });
+            var liabilities = Liabilities.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id, Timestamp = DateTime.UtcNow.Ticks, UserId = "IMPORT" });
             await liabilities.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
 
             this.Done = true;

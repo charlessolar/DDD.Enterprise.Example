@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 namespace Demo.Domain.Accounting.Account
 {
     public class Handler :
-        IHandleMessages<Commands.ChangeDescription>,
-        IHandleMessages<Commands.ChangeName>,
-        IHandleMessages<Commands.ChangeType>,
-        IHandleMessages<Commands.ChangeParent>,
-        IHandleMessages<Commands.Freeze>,
-        IHandleMessages<Commands.Unfreeze>,
-        IHandleMessages<Commands.Create>,
-        IHandleMessages<Commands.Destroy>
+        IHandleMessagesAsync<Commands.ChangeDescription>,
+        IHandleMessagesAsync<Commands.ChangeName>,
+        IHandleMessagesAsync<Commands.ChangeType>,
+        IHandleMessagesAsync<Commands.ChangeParent>,
+        IHandleMessagesAsync<Commands.Freeze>,
+        IHandleMessagesAsync<Commands.Unfreeze>,
+        IHandleMessagesAsync<Commands.Create>,
+        IHandleMessagesAsync<Commands.Destroy>
     {
         private readonly IUnitOfWork _uow;
         private readonly IBus _bus;
@@ -27,55 +27,56 @@ namespace Demo.Domain.Accounting.Account
             _bus = bus;
         }
 
-        public void Handle(Commands.Create command)
+        public async Task Handle(Commands.Create command, IHandleContext ctx)
         {
-            var account = _uow.R<Account>().New(command.AccountId);
-            var currency = _uow.R<Currency.Currency>().Get(command.CurrencyId);
+            var account = await _uow.For<Account>().New(command.AccountId);
+            var currency = await _uow.For<Currency.Currency>().Get(command.CurrencyId);
+            var store = await _uow.For<Relations.Store.Store>().Get(command.StoreId);
 
-            account.Create(command.Code, command.Name, command.AcceptPayments, command.AllowReconcile, command.Operation, currency);
+            account.Create(command.Code, command.Name, command.AcceptPayments, command.AllowReconcile, command.Operation, currency, store);
         }
 
-        public void Handle(Commands.ChangeDescription command)
+        public async Task Handle(Commands.ChangeDescription command, IHandleContext ctx)
         {
-            var account = _uow.R<Account>().Get(command.AccountId);
+            var account = await _uow.For<Account>().Get(command.AccountId);
             account.ChangeDescription(command.Description);
         }
 
-        public void Handle(Commands.ChangeName command)
+        public async Task Handle(Commands.ChangeName command, IHandleContext ctx)
         {
-            var account = _uow.R<Account>().Get(command.AccountId);
+            var account = await _uow.For<Account>().Get(command.AccountId);
             account.ChangeName(command.Name);
         }
 
-        public void Handle(Commands.ChangeType command)
+        public async Task Handle(Commands.ChangeType command, IHandleContext ctx)
         {
-            var account = _uow.R<Account>().Get(command.AccountId);
-            var accountType = _uow.R<Configuration.AccountType.AccountType>().Get(command.TypeId);
+            var account = await _uow.For<Account>().Get(command.AccountId);
+            var accountType = await _uow.For<Configuration.AccountType.AccountType>().Get(command.TypeId);
             account.ChangeType(accountType);
         }
 
-        public void Handle(Commands.ChangeParent command)
+        public async Task Handle(Commands.ChangeParent command, IHandleContext ctx)
         {
-            var account = _uow.R<Account>().Get(command.AccountId);
-            var parent = _uow.R<Account>().Get(command.ParentId);
+            var account = await _uow.For<Account>().Get(command.AccountId);
+            var parent = await _uow.For<Account>().Get(command.ParentId);
             account.ChangeParent(parent);
         }
 
-        public void Handle(Commands.Freeze command)
+        public async Task Handle(Commands.Freeze command, IHandleContext ctx)
         {
-            var account = _uow.R<Account>().Get(command.AccountId);
+            var account = await _uow.For<Account>().Get(command.AccountId);
             account.Freeze();
         }
 
-        public void Handle(Commands.Unfreeze command)
+        public async Task Handle(Commands.Unfreeze command, IHandleContext ctx)
         {
-            var account = _uow.R<Account>().Get(command.AccountId);
+            var account = await _uow.For<Account>().Get(command.AccountId);
             account.Unfreeze();
         }
 
-        public void Handle(Commands.Destroy command)
+        public async Task Handle(Commands.Destroy command, IHandleContext ctx)
         {
-            var account = _uow.R<Account>().Get(command.AccountId);
+            var account = await _uow.For<Account>().Get(command.AccountId);
             account.Destroy();
         }
     }

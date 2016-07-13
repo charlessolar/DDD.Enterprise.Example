@@ -5,106 +5,130 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{41EE3714-98E2-4D18-B259-BDCF3250C0D2}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Demo.Domain</RootNamespace>
     <AssemblyName>Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Development\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;LOCAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
-    <OutputPath>bin\Staging\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
-    <OutputPath>bin\Production\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aggregates.NET, Version=0.1.2.36, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Aggregates.NET.0.1.2.36\lib\net45\Aggregates.NET.dll</HintPath>
+    <Reference Include="Aggregates.NET, Version=0.2.1.345, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aggregates.NET.0.2.1.345\lib\net45\Aggregates.NET.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aggregates.NET.Domain, Version=0.1.2.36, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Aggregates.NET.Domain.0.1.2.36\lib\net45\Aggregates.NET.Domain.dll</HintPath>
+    <Reference Include="Aggregates.NET.Consumer, Version=0.2.1.345, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aggregates.NET.Consumer.0.2.1.345\lib\net45\Aggregates.NET.Consumer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aggregates.NET.GetEventStore, Version=0.1.2.36, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Aggregates.NET.GetEventStore.0.1.2.36\lib\net45\Aggregates.NET.GetEventStore.dll</HintPath>
+    <Reference Include="Aggregates.NET.Domain, Version=0.2.1.345, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aggregates.NET.Domain.0.2.1.345\lib\net45\Aggregates.NET.Domain.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EventStore.ClientAPI, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EventStore.Client.3.0.2\lib\net40\EventStore.ClientAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="EventStore.ClientAPI.Embedded, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EventStore.Client.Embedded.3.0.2\lib\net40\EventStore.ClientAPI.Embedded.dll</HintPath>
+    <Reference Include="Aggregates.NET.GetEventStore, Version=0.2.1.345, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aggregates.NET.GetEventStore.0.2.1.345\lib\net45\Aggregates.NET.GetEventStore.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FluentValidation">
-      <HintPath>..\..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    <Reference Include="EventStore.ClientAPI, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EventStore.Client.3.7.0\lib\net40\EventStore.ClientAPI.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="EventStore.ClientAPI.Embedded, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EventStore.Client.Embedded.3.7.0\lib\net40\EventStore.ClientAPI.Embedded.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="FluentValidation, Version=6.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Metrics, Version=0.3.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Metrics.NET.0.3.7\lib\net45\Metrics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NLog.4.3.5\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NServiceBus.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NServiceBus.5.2.0\lib\net45\NServiceBus.Core.dll</HintPath>
+      <HintPath>..\..\packages\NServiceBus.5.2.14\lib\net45\NServiceBus.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="NServiceBus.Host">
-      <HintPath>..\..\packages\NServiceBus.Host.6.0.0\lib\net45\NServiceBus.Host.exe</HintPath>
+    <Reference Include="NServiceBus.NLog, Version=1.1.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NServiceBus.NLog.1.1.0\lib\net45\NServiceBus.NLog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="NServiceBus.Log4Net">
-      <HintPath>..\..\packages\NServiceBus.Log4Net.1.0.0\lib\net45\NServiceBus.Log4Net.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceBus.ObjectBuilder.StructureMap">
+    <Reference Include="NServiceBus.ObjectBuilder.StructureMap, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NServiceBus.StructureMap.5.0.1\lib\net45\NServiceBus.ObjectBuilder.StructureMap.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Abstractions">
-      <HintPath>..\..\packages\RavenDB.Client.3.0.3660\lib\net45\Raven.Abstractions.dll</HintPath>
+    <Reference Include="NServiceBus.Transports.RabbitMQ, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NServiceBus.RabbitMQ.3.3.1\lib\net45\NServiceBus.Transports.RabbitMQ.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\packages\RavenDB.Client.3.0.3660\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Database">
-      <HintPath>..\..\packages\RavenDB.Database.3.0.3660\lib\net45\Raven.Database.dll</HintPath>
+    <Reference Include="RabbitMQ.Client, Version=3.6.2.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RabbitMQ.Client.3.6.2\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap">
-      <HintPath>..\..\packages\structuremap.3.1.5.154\lib\net40\StructureMap.dll</HintPath>
+    <Reference Include="RiakClient, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4ad54fc1c28a86cb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RiakClient.2.3.0\lib\net40\RiakClient.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="StructureMap.Net4">
-      <HintPath>..\..\packages\structuremap.3.1.5.154\lib\net40\StructureMap.Net4.dll</HintPath>
+    <Reference Include="StructureMap, Version=3.1.7.350, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.3.1.7.350\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=3.1.7.350, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.3.1.7.350\lib\net40\StructureMap.Net4.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -113,41 +137,216 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EndpointConfig.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\SecurityMessageHandler.cs" />
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="UnitOfWork.cs" />
+    <Compile Include="Endpoint.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App.config" />
+    <Content Include="App.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App.Development.config">
       <DependentUpon>App.config</DependentUpon>
     </Content>
     <Content Include="App.Production.config">
       <DependentUpon>App.config</DependentUpon>
     </Content>
-    <Content Include="App.Staging.config">
+    <Content Include="App.Local.config">
       <DependentUpon>App.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
-    <None Include="packages.config" />
+    <Content Include="logging.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Prelude\1Prelude.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Prelude\Modules.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Prelude\ModulesExecuted.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Prelude\Projections.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="projections\es.projections.environment.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
       <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
       <Name>Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Domain.Accounting.Messages\Domain.Accounting.Messages.csproj">
+      <Project>{31293825-daa0-4523-9109-cf717b0d9a00}</Project>
+      <Name>Domain.Accounting.Messages</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain.Accounting\Domain.Accounting.csproj">
-      <Project>{f4b51b6f-97be-40d0-bcb8-4ceca244e8d0}</Project>
+      <Project>{a1ba8205-f757-41c1-863d-47eb3f9be9d3}</Project>
       <Name>Domain.Accounting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Authentication.Messages\Domain.Authentication.Messages.csproj">
+      <Project>{3c293825-daa0-4523-9109-cf717b0d9a00}</Project>
+      <Name>Domain.Authentication.Messages</Name>
     </ProjectReference>
     <ProjectReference Include="..\Domain.Authentication\Domain.Authentication.csproj">
       <Project>{a0ba8205-f757-41c1-863d-47eb3f9be9d3}</Project>
       <Name>Domain.Authentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Domain.Configuration.Messages\Domain.Configuration.Messages.csproj">
+      <Project>{32293825-daa0-4523-9109-cf717b0d9a00}</Project>
+      <Name>Domain.Configuration.Messages</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain.Configuration\Domain.Configuration.csproj">
-      <Project>{b507b824-2734-40f5-b3d6-e68c93a66aa5}</Project>
+      <Project>{a2ba8205-f757-41c1-863d-47eb3f9be9d3}</Project>
       <Name>Domain.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Domain.HumanResources.Messages\Domain.HumanResources.Messages.csproj">
+      <Project>{33293825-daa0-4523-9109-cf717b0d9a00}</Project>
+      <Name>Domain.HumanResources.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.HumanResources\Domain.HumanResources.csproj">
+      <Project>{a3ba8205-f757-41c1-863d-47eb3f9be9d3}</Project>
+      <Name>Domain.HumanResources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Manufacturing.Messages\Domain.Manufacturing.Messages.csproj">
+      <Project>{1758739c-5e88-4497-b732-245a03484e6c}</Project>
+      <Name>Domain.Manufacturing.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Manufacturing\Domain.Manufacturing.csproj">
+      <Project>{f5094401-f88e-4f49-a971-d38471aa589c}</Project>
+      <Name>Domain.Manufacturing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Messaging.Messages\Domain.Messaging.Messages.csproj">
+      <Project>{e0025282-846d-4b56-8801-6c3a27b16a5e}</Project>
+      <Name>Domain.Messaging.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Messaging\Domain.Messaging.csproj">
+      <Project>{91b31914-fd6d-47ed-960f-ec223743f51d}</Project>
+      <Name>Domain.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Projects.Messages\Domain.Projects.Messages.csproj">
+      <Project>{8b50acae-5956-45e6-8ef2-119f372f131c}</Project>
+      <Name>Domain.Projects.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Projects\Domain.Projects.csproj">
+      <Project>{d0801729-c9ae-4eb1-8e5f-048c688b79fd}</Project>
+      <Name>Domain.Projects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Purchasing.Messages\Domain.Purchasing.Messages.csproj">
+      <Project>{f40d5285-dd83-4bb0-bfd0-ce50e6a61e1d}</Project>
+      <Name>Domain.Purchasing.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Purchasing\Domain.Purchasing.csproj">
+      <Project>{9f017c73-1d0d-458c-9277-7d6f257ac387}</Project>
+      <Name>Domain.Purchasing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Relations.Messages\Domain.Relations.Messages.csproj">
+      <Project>{34293825-daa0-4523-9109-cf717b0d9a00}</Project>
+      <Name>Domain.Relations.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Relations\Domain.Relations.csproj">
+      <Project>{a4ba8205-f757-41c1-863d-47eb3f9be9d3}</Project>
+      <Name>Domain.Relations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Sales.Messages\Domain.Sales.Messages.csproj">
+      <Project>{4bca795e-352d-490e-b84f-13ff114e1a1d}</Project>
+      <Name>Domain.Sales.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Sales\Domain.Sales.csproj">
+      <Project>{6db36d0b-96bc-4878-8879-5076ec9ec886}</Project>
+      <Name>Domain.Sales</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Warehouse.Messages\Domain.Warehouse.Messages.csproj">
+      <Project>{35293825-daa0-4523-9109-cf717b0d9a00}</Project>
+      <Name>Domain.Warehouse.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Warehouse\Domain.Warehouse.csproj">
+      <Project>{a5ba8205-f757-41c1-863d-47eb3f9be9d3}</Project>
+      <Name>Domain.Warehouse</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{a346473e-aad9-4a9e-a8f2-e2cbbdfecc93}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="clusternode-web\fonts\roboto-bold-webfont.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\fonts\roboto-bold-webfont.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\fonts\roboto-bolditalic-webfont.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\fonts\roboto-bolditalic-webfont.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\fonts\roboto-italic-webfont.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\fonts\roboto-italic-webfont.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\fonts\roboto-regular-webfont.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\fonts\roboto-regular-webfont.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\apple-touch-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\css\main.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\es-tile.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\favicon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\images\logo.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\js\ace\ace.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\js\ace\mode-javascript.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\js\ace\mode-json.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\js\ace\theme-monokai.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\js\ace\worker-javascript.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\js\ace\worker-json.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\js\app.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="clusternode-web\js\requirejs.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -157,12 +356,12 @@
   </Target>
   -->
   <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Web\Microsoft.Web.Publishing.Tasks.dll" />
-  <Target Name="AfterCompile" Condition="$(BuildingInsideVisualStudio) != true">
+  <Target Name="AfterCompile" Condition="exists('App.$(Configuration).config')">
     <!-- Generate transformed app config in the intermediate directory -->
-    <TransformXml Source="app.config" Destination="$(IntermediateOutputPath)$(TargetFileName).config" Transform="app.$(Configuration).config" />
+    <TransformXml Source="App.config" Destination="$(IntermediateOutputPath)$(TargetFileName).config" Transform="App.$(Configuration).config" />
     <!-- Force build process to use the transformed configuration file from now on. -->
     <ItemGroup>
-      <AppConfigWithTargetPath Remove="app.config" />
+      <AppConfigWithTargetPath Remove="App.config" />
       <AppConfigWithTargetPath Include="$(IntermediateOutputPath)$(TargetFileName).config">
         <TargetPath>$(TargetFileName).config</TargetPath>
       </AppConfigWithTargetPath>
@@ -172,11 +371,11 @@
     <StartAction>Program</StartAction>
     <StartProgram>$(ProjectDir)$(OutputPath)NServiceBus.Host.exe</StartProgram>
   </PropertyGroup>
-  <Import Project="..\..\packages\EventStore.Client.Embedded.3.0.2\build\EventStore.Client.Embedded.targets" Condition="Exists('..\..\packages\EventStore.Client.Embedded.3.0.2\build\EventStore.Client.Embedded.targets')" />
+  <Import Project="..\..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets" Condition="Exists('..\..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\EventStore.Client.Embedded.3.0.2\build\EventStore.Client.Embedded.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EventStore.Client.Embedded.3.0.2\build\EventStore.Client.Embedded.targets'))" />
+    <Error Condition="!Exists('..\..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EventStore.Client.Embedded.3.7.0\build\EventStore.Client.Embedded.targets'))" />
   </Target>
 </Project>

@@ -4,53 +4,72 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F4B51B6F-97BE-40D0-BCB8-4CECA244E8D0}</ProjectGuid>
+    <ProjectGuid>{A1BA8205-F757-41C1-863D-47EB3F9BE9D3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Demo.Domain.Accounting</RootNamespace>
     <AssemblyName>Domain.Accounting</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Development\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;LOCAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
-    <OutputPath>bin\Staging\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
-    <OutputPath>bin\Production\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aggregates.NET, Version=0.1.2.36, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Aggregates.NET.0.1.2.36\lib\net45\Aggregates.NET.dll</HintPath>
+    <Reference Include="Aggregates.NET, Version=0.2.1.345, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aggregates.NET.0.2.1.345\lib\net45\Aggregates.NET.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aggregates.NET.Domain, Version=0.1.2.36, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Aggregates.NET.Domain.0.1.2.36\lib\net45\Aggregates.NET.Domain.dll</HintPath>
+    <Reference Include="Aggregates.NET.Consumer, Version=0.2.1.345, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aggregates.NET.Consumer.0.2.1.345\lib\net45\Aggregates.NET.Consumer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Aggregates.NET.Domain, Version=0.2.1.345, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aggregates.NET.Domain.0.2.1.345\lib\net45\Aggregates.NET.Domain.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EventStore.ClientAPI, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EventStore.Client.3.7.0\lib\net40\EventStore.ClientAPI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Metrics, Version=0.3.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Metrics.NET.0.3.7\lib\net45\Metrics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NServiceBus.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NServiceBus.5.2.0\lib\net45\NServiceBus.Core.dll</HintPath>
+      <HintPath>..\..\packages\NServiceBus.5.2.14\lib\net45\NServiceBus.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,22 +80,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Account\Handler.cs" />
     <Compile Include="Currency\Handler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Library\Library.csproj">
       <Project>{b209fcc1-8a94-42cb-9d26-bcb4ee991ffb}</Project>
       <Name>Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain.Accounting.Messages\Domain.Accounting.Messages.csproj">
-      <Project>{68b6427a-163e-41b9-a2b2-792a394c0814}</Project>
-      <Name>Domain.Accounting.Messages</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Domain.Accounting.Aggregates\Domain.Accounting.Aggregates.csproj">
-      <Project>{c0beae72-2b43-4d2f-afd5-444065ae27cd}</Project>
+      <Project>{7126adc2-103d-4249-bf62-9650df467178}</Project>
       <Name>Domain.Accounting.Aggregates</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Accounting.Messages\Domain.Accounting.Messages.csproj">
+      <Project>{31293825-daa0-4523-9109-cf717b0d9a00}</Project>
+      <Name>Domain.Accounting.Messages</Name>
     </ProjectReference>
     <ProjectReference Include="..\Domain.Authentication.Aggregates\Domain.Authentication.Aggregates.csproj">
       <Project>{7726adc2-103d-4249-bf62-9650df467178}</Project>
@@ -87,12 +108,32 @@
       <Name>Domain.Authentication.Messages</Name>
     </ProjectReference>
     <ProjectReference Include="..\Domain.Configuration.Aggregates\Domain.Configuration.Aggregates.csproj">
-      <Project>{63caf241-5bfd-43a1-b25f-3eb49872c6c5}</Project>
+      <Project>{7226adc2-103d-4249-bf62-9650df467178}</Project>
       <Name>Domain.Configuration.Aggregates</Name>
     </ProjectReference>
     <ProjectReference Include="..\Domain.Configuration.Messages\Domain.Configuration.Messages.csproj">
-      <Project>{3c61e443-d507-458a-8c0c-74f53e3c052d}</Project>
+      <Project>{32293825-daa0-4523-9109-cf717b0d9a00}</Project>
       <Name>Domain.Configuration.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.HumanResources.Aggregates\Domain.HumanResources.Aggregates.csproj">
+      <Project>{7326adc2-103d-4249-bf62-9650df467178}</Project>
+      <Name>Domain.HumanResources.Aggregates</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.HumanResources.Messages\Domain.HumanResources.Messages.csproj">
+      <Project>{33293825-daa0-4523-9109-cf717b0d9a00}</Project>
+      <Name>Domain.HumanResources.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Relations.Aggregates\Domain.Relations.Aggregates.csproj">
+      <Project>{7426adc2-103d-4249-bf62-9650df467178}</Project>
+      <Name>Domain.Relations.Aggregates</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain.Relations.Messages\Domain.Relations.Messages.csproj">
+      <Project>{34293825-daa0-4523-9109-cf717b0d9a00}</Project>
+      <Name>Domain.Relations.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{a346473e-aad9-4a9e-a8f2-e2cbbdfecc93}</Project>
+      <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

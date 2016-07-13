@@ -1,4 +1,5 @@
-﻿using NServiceBus;
+﻿using FluentValidation.Internal;
+using NServiceBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Demo.Library.Command
 {
     public class DemoCommand : ICommand
     {
-        public DateTime Timestamp { get; set; }
+        public Int64 Timestamp { get; set; }
 
         public String UserId { get; set; }
     }

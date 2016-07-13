@@ -147,21 +147,21 @@ namespace Seed.Operations
                             AcceptPayments = x.AcceptPayments,
                             AllowReconcile = x.AllowReconcile,
                             CurrencyId = x.Currency.Id,
-                            Timestamp = DateTime.UtcNow,
+                            Timestamp = DateTime.UtcNow.Ticks,
                             UserId = User.Data.ElementAt(0).Id
                         },
                         Type = x.Type == null ? null : new Commands.ChangeType
                         {
                             AccountId = x.Id,
                             TypeId = x.Type.Id,
-                            Timestamp = DateTime.UtcNow,
+                            Timestamp = DateTime.UtcNow.Ticks,
                             UserId = User.Data.ElementAt(0).Id
                         },
                         Parent = Parent == null ? null : new Commands.ChangeParent
                         {
                             AccountId = x.Id,
                             ParentId = Parent.Id,
-                            Timestamp = DateTime.UtcNow,
+                            Timestamp = DateTime.UtcNow.Ticks,
                             UserId = User.Data.ElementAt(0).Id
                         },
                     });

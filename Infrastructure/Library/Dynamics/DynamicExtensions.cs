@@ -103,6 +103,7 @@ namespace Demo.Library.Extensions
             return source.SelectPartialNoDynamic(propertyNames.AsEnumerable());
         }
 
+
         public static dynamic ToPartial<T>(this T obj, IEnumerable<String> propertyNames)
         {
             Contract.Requires(obj != null);

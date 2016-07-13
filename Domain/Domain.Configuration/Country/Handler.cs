@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace Demo.Domain.Configuration.Country
 {
     public class Handler :
-        IHandleMessages<Commands.Create>,
-        IHandleMessages<Commands.UpdateName>,
-        IHandleMessages<Commands.Destroy>
+        IHandleMessagesAsync<Commands.Create>,
+        IHandleMessagesAsync<Commands.UpdateName>,
+        IHandleMessagesAsync<Commands.Destroy>
     {
         private readonly IUnitOfWork _uow;
         private readonly IBus _bus;
@@ -22,21 +22,21 @@ namespace Demo.Domain.Configuration.Country
             _bus = bus;
         }
 
-        public void Handle(Commands.Create command)
+        public async Task Handle(Commands.Create command, IHandleContext ctx)
         {
-            var country = _uow.R<Country>().New(command.CountryId);
+            var country = await _uow.For<Country>().New(command.CountryId);
             country.Create(command.Code, command.Name);
         }
 
-        public void Handle(Commands.Destroy command)
+        public async Task Handle(Commands.Destroy command, IHandleContext ctx)
         {
-            var country = _uow.R<Country>().Get(command.CountryId);
+            var country = await _uow.For<Country>().Get(command.CountryId);
             country.Destroy();
         }
 
-        public void Handle(Commands.UpdateName command)
+        public async Task Handle(Commands.UpdateName command, IHandleContext ctx)
         {
-            var country = _uow.R<Country>().Get(command.CountryId);
+            var country = await _uow.For<Country>().Get(command.CountryId);
             country.ChangeName(command.Name);
         }
     }

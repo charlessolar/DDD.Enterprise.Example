@@ -28,7 +28,7 @@ namespace Seed.Operations
         }
         public async Task<Boolean> Seed()
         {
-            var commands = Data.Select(x => new Commands.Login { UserId = x.Id, Name = x.Name, Timestamp = DateTime.UtcNow });
+            var commands = Data.Select(x => new Commands.Login { UserId = x.Id, Name = x.Name, Timestamp = DateTime.UtcNow.Ticks });
             await commands.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
 
             this.Done = true;

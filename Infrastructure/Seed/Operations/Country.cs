@@ -282,7 +282,7 @@ namespace Seed.Operations
                 CountryId = x.Id,
                 Code = x.Code,
                 Name = x.Name,
-                Timestamp = DateTime.UtcNow,
+                Timestamp = DateTime.UtcNow.Ticks,
                 UserId = User.Data.ElementAt(0).Id
             });
             await commands.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());

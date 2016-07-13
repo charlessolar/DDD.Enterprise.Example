@@ -41,7 +41,7 @@ namespace Seed.Operations
                 ComputationalAccuracy = x.ComputationalAccuracy,
                 Format = x.Format,
                 Fraction = x.Fraction,
-                Timestamp = DateTime.UtcNow,
+                Timestamp = DateTime.UtcNow.Ticks,
                 UserId = User.Data.ElementAt(0).Id
             });
             await commands.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
@@ -49,7 +49,7 @@ namespace Seed.Operations
             var activations = Data.Where(x => x.Activated).Select(x => new Commands.Activate
                 {
                     CurrencyId = x.Id,
-                    Timestamp = DateTime.UtcNow,
+                    Timestamp = DateTime.UtcNow.Ticks,
                     UserId = "IMPORT",
                 });
             await activations.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());

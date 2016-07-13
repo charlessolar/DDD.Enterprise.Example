@@ -19,5 +19,11 @@ namespace Demo.Library.Extensions
         {
             return await Task.WhenAll(values.Select(asyncSelector));
         }
+        public static async Task WhenAllSync<T>(this IEnumerable<T> values, Func<T, Task> asyncAction)
+        {
+            foreach (var val in values)
+                await asyncAction.Invoke(val);
+        }
+        
     }
 }

@@ -21,7 +21,7 @@ namespace Demo.Domain.Accounting.Account.Events
 
         String Operation { get; set; }
 
-
+        Guid StoreId { get; set; }
         Guid CurrencyId { get; set; }
     }
 }

@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 namespace Demo.Domain.Accounting.Currency
 {
     public class Handler :
-        IHandleMessages<Commands.Activate>,
-        IHandleMessages<Commands.AddRate>,
-        IHandleMessages<Commands.ChangeAccuracy>,
-        IHandleMessages<Commands.ChangeName>,
-        IHandleMessages<Commands.ChangeRoundingFactor>,
-        IHandleMessages<Commands.ChangeSymbol>,
-        IHandleMessages<Commands.Create>,
-        IHandleMessages<Commands.Deactivate>,
-        IHandleMessages<Commands.SymbolBefore>,
-        IHandleMessages<Commands.ChangeFormat>,
-        IHandleMessages<Commands.ChangeFraction>
+        IHandleMessagesAsync<Commands.Activate>,
+        IHandleMessagesAsync<Commands.AddRate>,
+        IHandleMessagesAsync<Commands.ChangeAccuracy>,
+        IHandleMessagesAsync<Commands.ChangeName>,
+        IHandleMessagesAsync<Commands.ChangeRoundingFactor>,
+        IHandleMessagesAsync<Commands.ChangeSymbol>,
+        IHandleMessagesAsync<Commands.Create>,
+        IHandleMessagesAsync<Commands.Deactivate>,
+        IHandleMessagesAsync<Commands.SymbolBefore>,
+        IHandleMessagesAsync<Commands.ChangeFormat>,
+        IHandleMessagesAsync<Commands.ChangeFraction>
     {
         private readonly IUnitOfWork _uow;
         private readonly IBus _bus;
@@ -30,79 +30,79 @@ namespace Demo.Domain.Accounting.Currency
             _bus = bus;
         }
 
-        public void Handle(Commands.Create command)
+        public async Task Handle(Commands.Create command, IHandleContext ctx)
         {
-            var user = _uow.R<Authentication.Users.User>().Get(command.UserId);
-            var currency = _uow.R<Currency>().New(command.CurrencyId);
+            var user = await _uow.For<Authentication.Users.User>().Get(command.UserId);
+            var currency = await _uow.For<Currency>().New(command.CurrencyId);
             currency.Create(command.Code, command.Name, command.Symbol, command.SymbolBefore, command.RoundingFactor, command.ComputationalAccuracy, command.Format, command.Fraction);
         }
 
-        public void Handle(Commands.Activate command)
+        public async Task Handle(Commands.Activate command, IHandleContext ctx)
         {
-            var currency = _uow.R<Currency>().Get(command.CurrencyId);
-            var user = _uow.R<Authentication.Users.User>().Get(command.UserId);
+            var currency = await _uow.For<Currency>().Get(command.CurrencyId);
+            var user = await _uow.For<Authentication.Users.User>().Get(command.UserId);
             currency.Activate(user);
         }
 
-        public void Handle(Commands.AddRate command)
+        public async Task Handle(Commands.AddRate command, IHandleContext ctx)
         {
-            var currency = _uow.R<Currency>().Get(command.CurrencyId);
-            var destination = _uow.R<Currency>().Get(command.DestinationCurrencyId);
+            var currency = await _uow.For<Currency>().Get(command.CurrencyId);
+            var destination = await _uow.For<Currency>().Get(command.DestinationCurrencyId);
             currency.AddRate(command.Factor, destination, command.EffectiveTill);
         }
 
-        public void Handle(Commands.ChangeFormat command)
+        public async Task Handle(Commands.ChangeFormat command, IHandleContext ctx)
         {
-            var currency = _uow.R<Currency>().Get(command.CurrencyId);
+            var currency = await _uow.For<Currency>().Get(command.CurrencyId);
             currency.ChangeFormat(command.Format);
         }
 
-        public void Handle(Commands.ChangeFraction command)
+        public async Task Handle(Commands.ChangeFraction command, IHandleContext ctx)
         {
-            var currency = _uow.R<Currency>().Get(command.CurrencyId);
+            var currency = await _uow.For<Currency>().Get(command.CurrencyId);
             currency.ChangeFraction(command.Fraction);
         }
 
-        public void Handle(Commands.ChangeAccuracy command)
+        public async Task Handle(Commands.ChangeAccuracy command, IHandleContext ctx)
         {
-            var currency = _uow.R<Currency>().Get(command.CurrencyId);
+            var currency = await _uow.For<Currency>().Get(command.CurrencyId);
             currency.ChangeAccuracy(command.ComputationalAccuracy);
         }
 
-        public void Handle(Commands.ChangeName command)
+        public async Task Handle(Commands.ChangeName command, IHandleContext ctx)
         {
-            var currency = _uow.R<Currency>().Get(command.CurrencyId);
+            var currency = await _uow.For<Currency>().Get(command.CurrencyId);
             currency.ChangeName(command.Name);
         }
 
-        public void Handle(Commands.ChangeRoundingFactor command)
+        public async Task Handle(Commands.ChangeRoundingFactor command, IHandleContext ctx)
         {
-            var currency = _uow.R<Currency>().Get(command.CurrencyId);
+            var currency = await _uow.For<Currency>().Get(command.CurrencyId);
             currency.ChangeRoundingFactor(command.RoundingFactor);
         }
 
-        public void Handle(Commands.ChangeSymbol command)
+        public async Task Handle(Commands.ChangeSymbol command, IHandleContext ctx)
         {
-            var currency = _uow.R<Currency>().Get(command.CurrencyId);
+            var currency = await _uow.For<Currency>().Get(command.CurrencyId);
             currency.ChangeSymbol(command.Symbol);
         }
 
-        public void Handle(Commands.Deactivate command)
+        public async Task Handle(Commands.Deactivate command, IHandleContext ctx)
         {
-            var currency = _uow.R<Currency>().Get(command.CurrencyId);
-            var user = _uow.R<Authentication.Users.User>().Get(command.UserId);
+            var currency = await _uow.For<Currency>().Get(command.CurrencyId);
+            var user = await _uow.For<Authentication.Users.User>().Get(command.UserId);
             currency.Deactivate(user);
         }
 
-        public void Handle(Commands.SymbolBefore command)
+        public async Task Handle(Commands.SymbolBefore command, IHandleContext ctx)
         {
-            var currency = _uow.R<Currency>().Get(command.CurrencyId);
+            var currency = await _uow.For<Currency>().Get(command.CurrencyId);
             currency.ChangeSymbolBefore(command.Before);
         }
 
-        public void Handle(Commands.Destroy command)
+        public async Task Handle(Commands.Destroy command, IHandleContext ctx)
         {
-            var currency = _uow.R<Currency>().Get(command.CurrencyId);
+            var currency = await _uow.For<Currency>().Get(command.CurrencyId);
             currency.Destroy();
         }
     }

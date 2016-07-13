@@ -6,7 +6,7 @@ namespace Demo.Library.IoC
 {
     public class StructureMapContainerAdapter : IContainerAdapter
     {
-        private IContainer _container;
+        private readonly IContainer _container;
 
         public StructureMapContainerAdapter(IContainer container)
         {

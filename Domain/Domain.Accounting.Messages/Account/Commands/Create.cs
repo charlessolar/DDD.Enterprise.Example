@@ -21,6 +21,7 @@ namespace Demo.Domain.Accounting.Account.Commands
         public Boolean AllowReconcile { get; set; }
 
         public Guid CurrencyId { get; set; }
+        public Guid StoreId { get; set; }
 
         public OPERATION Operation { get; set; }
     }

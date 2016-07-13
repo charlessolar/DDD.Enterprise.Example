@@ -12,8 +12,8 @@ namespace Demo.Domain.Configuration.AccountType.Events
         Guid AccountTypeId { get; set; }
 
         String Name { get; set; }
-
-        String DeferralMethod { get; set; }
+        Boolean Selectable { get; set; }
+        DEFERRAL_METHOD DeferralMethod { get; set; }
 
         Guid? ParentId { get; set; }
     }

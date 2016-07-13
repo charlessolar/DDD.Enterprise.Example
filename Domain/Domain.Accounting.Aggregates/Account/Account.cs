@@ -1,5 +1,4 @@
 ﻿using Aggregates.Exceptions;
-using Demo.Library.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +16,7 @@ namespace Demo.Domain.Accounting.Account
             this.Frozen = new Aggregates.SingleValueObject<bool>(false);
         }
 
-        public void Create(String Code, String Name, Boolean AcceptPayments, Boolean AllowReconcile, OPERATION Operation, Currency.ICurrency Currency)
+        public void Create(String Code, String Name, Boolean AcceptPayments, Boolean AllowReconcile, OPERATION Operation, Currency.ICurrency Currency, Relations.Store.IStore Store)
         {
             Apply<Events.Created>(e =>
             {
@@ -28,6 +27,7 @@ namespace Demo.Domain.Accounting.Account
                 e.AllowReconcile = AllowReconcile;
                 e.Operation = Operation.Value;
                 e.CurrencyId = Currency.Id;
+                e.StoreId = Store.Id;
             });
         }
 
