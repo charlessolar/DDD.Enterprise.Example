@@ -11,7 +11,6 @@ namespace Demo.Domain.Authentication.Users.Validators
     {
         public ChangeTimezone()
         {
-            RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.Timezone).NotEmpty();
         }
     }

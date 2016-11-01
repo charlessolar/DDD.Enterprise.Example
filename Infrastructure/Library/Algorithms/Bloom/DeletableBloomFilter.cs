@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.Bloom
 {
@@ -83,7 +81,7 @@ namespace Demo.Library.Algorithms.Bloom
             this.IndexBuffer = new uint[k];
         }
 
-        public Boolean Equals(DeletableBloomFilter other)
+        public bool Equals(DeletableBloomFilter other)
         {
             if (this.M != other.M) return false;
             if (this.RegionSize != other.RegionSize) return false;

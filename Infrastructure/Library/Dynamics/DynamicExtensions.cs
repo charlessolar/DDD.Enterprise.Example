@@ -29,7 +29,7 @@ namespace Demo.Library.Extensions
         /// <param name="source">Source IQueryable</param>
         /// <param name="propertyNames">List of Property-Names you want to Select</param>
         /// <returns>A dynamic IQueryable Object. The object includes all Property-Names you have given as Fields.</returns>
-        public static IQueryable<dynamic> SelectPartial<T>(this IQueryable<T> source, IEnumerable<String> propertyNames)
+        public static IQueryable<dynamic> SelectPartial<T>(this IQueryable<T> source, IEnumerable<string> propertyNames)
         {
             Contract.Requires(source != null);
 
@@ -70,7 +70,7 @@ namespace Demo.Library.Extensions
         // This is a temporary solution, Json.Net SUCKS at deserializing anonymous types, it just makes an expando which ServiceStack can't serialize
         // and Json.NET is the only option for NServiceBus ATM - in 5.0 they have an extension system setup to I can serialize using ServiceStack.
         // So until then the query will return a list of all fields, which I dont want.  I only want the user to know about the fields he/she has access to
-        public static IQueryable<T> SelectPartialNoDynamic<T>(this IQueryable<T> source, IEnumerable<String> propertyNames)
+        public static IQueryable<T> SelectPartialNoDynamic<T>(this IQueryable<T> source, IEnumerable<string> propertyNames)
         {
             Contract.Requires(source != null);
 
@@ -93,18 +93,18 @@ namespace Demo.Library.Extensions
             return source.Select(selector);
         }
 
-        public static IQueryable<dynamic> SelectPartial<T>(this IQueryable<T> source, params String[] propertyNames)
+        public static IQueryable<dynamic> SelectPartial<T>(this IQueryable<T> source, params string[] propertyNames)
         {
             return source.SelectPartial(propertyNames.AsEnumerable());
         }
 
-        public static IQueryable<T> SelectPartialNoDynamic<T>(this IQueryable<T> source, params String[] propertyNames)
+        public static IQueryable<T> SelectPartialNoDynamic<T>(this IQueryable<T> source, params string[] propertyNames)
         {
             return source.SelectPartialNoDynamic(propertyNames.AsEnumerable());
         }
 
 
-        public static dynamic ToPartial<T>(this T obj, IEnumerable<String> propertyNames)
+        public static dynamic ToPartial<T>(this T obj, IEnumerable<string> propertyNames)
         {
             Contract.Requires(obj != null);
 
@@ -129,28 +129,28 @@ namespace Demo.Library.Extensions
             return selector.Compile().Invoke(obj);
         }
 
-        public static dynamic ToPartial<T>(this T obj, params String[] propertyNames)
+        public static dynamic ToPartial<T>(this T obj, params string[] propertyNames)
         {
             return obj.ToPartial(propertyNames.AsEnumerable());
         }
 
-        public static IQueryable<T> SelectCondition<T>(this IQueryable<T> source, Func<PropertyInfo, Boolean> Condition)
+        public static IQueryable<T> SelectCondition<T>(this IQueryable<T> source, Func<PropertyInfo, bool> condition)
         {
-            var fields = new List<String>();
+            var fields = new List<string>();
             foreach (var prop in source.ElementType.GetProperties())
             {
-                if (Condition.Invoke(prop))
+                if (condition.Invoke(prop))
                     fields.Add(prop.Name);
             }
             return source.ToPartial(fields);
         }
 
-        public static T ToCondition<T>(this T obj, Func<PropertyInfo, Boolean> Condition)
+        public static T ToCondition<T>(this T obj, Func<PropertyInfo, bool> condition)
         {
-            var fields = new List<String>();
+            var fields = new List<string>();
             foreach (var prop in typeof(T).GetProperties())
             {
-                if (Condition.Invoke(prop))
+                if (condition.Invoke(prop))
                     fields.Add(prop.Name);
             }
             return obj.ToPartial(fields);

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.CountMin
 {
@@ -58,11 +54,11 @@ namespace Demo.Library.Algorithms.CountMin
                 var width = (uint)(Math.Ceiling(Math.E / epsilon));
                 var depth = (uint)(Math.Ceiling(Math.Log(1 / delta)));
                 
-                var matrix = new UInt64[depth][];
+                var matrix = new ulong[depth][];
 
                 for (var i = 0; i < depth; i++)
                 {
-                    matrix[i] = new UInt64[width];
+                    matrix[i] = new ulong[width];
                     for (var j = 0; j < width; j++)
                     {
                         var element = br.ReadUInt64();
@@ -93,8 +89,7 @@ namespace Demo.Library.Algorithms.CountMin
             if (dataFormatMajorVersion > DataFormatMajorVersion)
             {
                 throw new SerializationException(
-                    string.Format("Incompatible data format, can't deserialize data version {0}.{1} (serializer version: {2}.{3})",
-                        dataFormatMajorVersion, dataFormatMinorVersion, DataFormatMajorVersion, DataFormatMinorVersion));
+                    $"Incompatible data format, can't deserialize data version {dataFormatMajorVersion}.{dataFormatMinorVersion} (serializer version: {DataFormatMajorVersion}.{DataFormatMinorVersion})");
             }
         }
     }

@@ -8,12 +8,12 @@ namespace Demo.Library.Exceptions
         {
         }
 
-        public BusinessLogicException(String message)
+        public BusinessLogicException(string message)
             : base(message)
         {
         }
 
-        public BusinessLogicException(String message, Exception innerException)
+        public BusinessLogicException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

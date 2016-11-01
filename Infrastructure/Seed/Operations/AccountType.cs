@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aggregates.Extensions;
 using Commands = Demo.Domain.Configuration.AccountType.Commands;
 using Type = Seed.Types.Configuration;
 
@@ -41,23 +42,23 @@ namespace Seed.Operations
             new Type.AccountType { Id = Guid.NewGuid(), Name = "Long-Term Liability", DeferralMethod = DEFERRAL_METHOD.Balance, Parent = Data.ElementAt(1) },
         };
 
-        private readonly IBus _bus;
+        private readonly IMessageSession _bus;
 
-        public AccountType(IBus bus)
+        public AccountType(IMessageSession bus)
         {
             _bus = bus;
         }
 
         public async Task<Boolean> Seed()
         {
-            var commands = Data.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id, Timestamp = DateTime.UtcNow.Ticks, UserId = "IMPORT" });
-            await commands.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
+            var commands = Data.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id });
+            await commands.WhenAllAsync(x => _bus.Command(x));
 
-            var assets = Assets.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id, Timestamp = DateTime.UtcNow.Ticks, UserId = "IMPORT" });
-            await assets.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
+            var assets = Assets.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id });
+            await assets.WhenAllAsync(x => _bus.Command(x));
 
-            var liabilities = Liabilities.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id, Timestamp = DateTime.UtcNow.Ticks, UserId = "IMPORT" });
-            await liabilities.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
+            var liabilities = Liabilities.Select(x => new Commands.Create { AccountTypeId = x.Id, Name = x.Name, DeferralMethod = x.DeferralMethod, ParentId = x.Parent == null ? (Guid?)null : x.Parent.Id });
+            await liabilities.WhenAllAsync(x => _bus.Command(x));
 
             this.Done = true;
             return this.Done;

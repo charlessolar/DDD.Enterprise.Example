@@ -1,16 +1,6 @@
-﻿using Newtonsoft.Json;
-using Demo.Presentation.ServiceStack.Infrastructure.Extensions;
-using Demo.Presentation.ServiceStack.Infrastructure.Queries;
-using Demo.Library.SSE;
-using ServiceStack;
-using ServiceStack.Caching;
-using ServiceStack.Text;
+﻿using Demo.Library.SSE;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
@@ -18,11 +8,11 @@ using System.Linq.Expressions;
 
 namespace Demo.Presentation.ServiceStack.Infrastructure.SSE
 {
-    public class MSSQLStorage : ISubscriptionStorage
+    public class MssqlStorage : ISubscriptionStorage
     {
         private readonly IDbConnectionFactory _sql;
 
-        public MSSQLStorage(IDbConnectionFactory sql)
+        public MssqlStorage(IDbConnectionFactory sql)
         {
             _sql = sql;
         }
@@ -31,12 +21,12 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.SSE
         {
             using (var session = _sql.Open())
             {
-                var existing = await session.SingleByIdAsync<Subscription>(subscription.Id);
+                var existing = await session.SingleByIdAsync<Subscription>(subscription.Id).ConfigureAwait(false);
                 if (existing == null) return;
 
                 existing.Paused = pause;
 
-                await session.UpdateOnlyAsync(existing, onlyFields: x => x.Paused, where: x => x.SubscriptionId == subscription.SubscriptionId);
+                await session.UpdateOnlyAsync(existing, onlyFields: x => x.Paused, @where: x => x.SubscriptionId == subscription.SubscriptionId).ConfigureAwait(false);
 
             }
         }
@@ -45,7 +35,7 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.SSE
         {
             using (var session = _sql.Open())
             {
-                await session.DeleteByIdAsync<Subscription>(subscription.SubscriptionId);
+                await session.DeleteByIdAsync<Subscription>(subscription.SubscriptionId).ConfigureAwait(false);
             }
         }
 
@@ -58,7 +48,7 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.SSE
                 //var expression = Expression.Lambda<Func<ISubscription, bool>>(Expression.Call(selector.Method), parameter);
                 var fromSql = session.From<Subscription>().Where(selector);
 
-                return await session.SelectAsync(fromSql);
+                return await session.SelectAsync(fromSql).ConfigureAwait(false);
             }
         }
 
@@ -66,15 +56,15 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.SSE
         {
             using (var session = _sql.Open())
             {
-                var existing = await session.SingleByIdAsync<Subscription>(subscription.Id);
+                var existing = await session.SingleByIdAsync<Subscription>(subscription.Id).ConfigureAwait(false);
                 if (existing != null)
                 {
                     existing.Expires = subscription.Expires;
-                    await session.UpdateOnlyAsync<Subscription>(existing, onlyFields: x => x.Expires, where: x => x.SubscriptionId == subscription.SubscriptionId);
+                    await session.UpdateOnlyAsync<Subscription>(existing, onlyFields: x => x.Expires, @where: x => x.SubscriptionId == subscription.SubscriptionId).ConfigureAwait(false);
                     return;
                 }
 
-                await session.InsertAsync<Subscription>(subscription);
+                await session.InsertAsync<Subscription>(subscription).ConfigureAwait(false);
 
             }
         }
@@ -82,7 +72,7 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.SSE
         {
             using (var session = _sql.Open())
             {
-                await session.DeleteAsync<Subscription>(x => x.Expires < DateTime.UtcNow);
+                await session.DeleteAsync<Subscription>(x => x.Expires < DateTime.UtcNow).ConfigureAwait(false);
             }
         }
     }

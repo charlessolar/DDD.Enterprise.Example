@@ -1,16 +1,11 @@
 ﻿using ServiceStack;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Presentation.ServiceStack.Utils.Services
 {
     [Api("Utilities")]
     [Route("/util/logging", "POST")]
-    public class ChangeLogLevel : IReturnVoid
+    public class ChangeLogLevel  : Infrastructure.Commands.ServiceCommand
     {
-        public String LogLevel { get; set; }
+        public string LogLevel { get; set; }
     }
 }

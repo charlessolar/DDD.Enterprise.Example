@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Demo.Library.Algorithms.CountMin
+﻿namespace Demo.Library.Algorithms.CountMin
 {
     /// <summary>
     /// TopK uses a Count-Min Sketch to calculate the top-K frequent elements in a
@@ -45,9 +39,9 @@ namespace Demo.Library.Algorithms.CountMin
             this.N++;
 
             var freq = this.Cms.Count(data);
-            if (this.elements.isTop(freq, this.K))
+            if (this.elements.IsTop(freq, this.K))
             {
-                elements.insert(data, freq, this.K);
+                elements.Insert(data, freq, this.K);
             }
 
             return this;

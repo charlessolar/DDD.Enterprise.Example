@@ -3,7 +3,7 @@ using System;
 
 namespace Demo.Domain.Authentication.Users
 {
-    public class User : Aggregates.Aggregate<String>, IUser
+    public class User : Aggregates.Aggregate<User, String>, IUser
     {
         private User()
         {

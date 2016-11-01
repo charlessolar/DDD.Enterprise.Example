@@ -1,10 +1,8 @@
 ﻿using Demo.Library.SSE;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Demo.Presentation.ServiceStack.Infrastructure.SSE
@@ -23,7 +21,7 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.SSE
             }
         }
 
-        public Task Pause(Subscription subscription, Boolean paused)
+        public Task Pause(Subscription subscription, bool paused)
         {
             lock (_subscriptions)
             {

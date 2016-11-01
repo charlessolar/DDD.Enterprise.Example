@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Demo.Library.Algorithms.Frugal
 {
     internal class FrugalState
     {
-        public ICollection<Double> DirectCount;
-        public Double Quantile;
-        public Double Estimate;
+        public ICollection<double> DirectCount;
+        public double Quantile;
+        public double Estimate;
     }
 }

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.UUID
 {
@@ -86,12 +82,12 @@ namespace Demo.Library.UUID
         public static byte[] GenerateNodeBytes(IPAddress ip)
         {
             if (ip == null)
-                throw new ArgumentNullException("ip");
+                throw new ArgumentNullException(nameof(ip));
 
             var bytes = ip.GetAddressBytes();
 
             if (bytes.Length < 6)
-                throw new ArgumentOutOfRangeException("ip", "The passed in IP address must contain at least 6 bytes.");
+                throw new ArgumentOutOfRangeException(nameof(ip), "The passed in IP address must contain at least 6 bytes.");
 
             var node = new byte[6];
             Array.Copy(bytes, node, 6);
@@ -107,7 +103,7 @@ namespace Demo.Library.UUID
         public static byte[] GenerateNodeBytes(PhysicalAddress mac)
         {
             if (mac == null)
-                throw new ArgumentNullException("mac");
+                throw new ArgumentNullException(nameof(mac));
 
             var node = mac.GetAddressBytes();
 
@@ -254,16 +250,16 @@ namespace Demo.Library.UUID
         public static Guid GenerateTimeBasedGuid(DateTimeOffset dateTime, byte[] clockSequence, byte[] node)
         {
             if (clockSequence == null)
-                throw new ArgumentNullException("clockSequence");
+                throw new ArgumentNullException(nameof(clockSequence));
 
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
             if (clockSequence.Length != 2)
-                throw new ArgumentOutOfRangeException("clockSequence", "The clockSequence must be 2 bytes.");
+                throw new ArgumentOutOfRangeException(nameof(clockSequence), "The clockSequence must be 2 bytes.");
 
             if (node.Length != 6)
-                throw new ArgumentOutOfRangeException("node", "The node must be 6 bytes.");
+                throw new ArgumentOutOfRangeException(nameof(node), "The node must be 6 bytes.");
 
             long ticks = (dateTime - GregorianCalendarStart).Ticks;
             byte[] guid = new byte[ByteArraySize];

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Demo.Domain.Configuration</RootNamespace>
     <AssemblyName>Domain.Configuration.Messages</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
@@ -43,20 +43,20 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aggregates.NET, Version=0.2.1.345, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Aggregates.NET.0.2.1.345\lib\net45\Aggregates.NET.dll</HintPath>
+    <Reference Include="Aggregates.NET, Version=0.3.0.517, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aggregates.NET.0.3.0.517-beta\lib\net461\Aggregates.NET.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aggregates.NET.Consumer, Version=0.2.1.345, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Aggregates.NET.Consumer.0.2.1.345\lib\net45\Aggregates.NET.Consumer.dll</HintPath>
+    <Reference Include="Aggregates.NET.Consumer, Version=0.3.0.517, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aggregates.NET.Consumer.0.3.0.517-beta\lib\net461\Aggregates.NET.Consumer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Aggregates.NET.Domain, Version=0.2.1.345, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Aggregates.NET.Domain.0.2.1.345\lib\net45\Aggregates.NET.Domain.dll</HintPath>
+    <Reference Include="Aggregates.NET.Domain, Version=0.3.0.517, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Aggregates.NET.Domain.0.3.0.517-beta\lib\net461\Aggregates.NET.Domain.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EventStore.ClientAPI, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EventStore.Client.3.7.0\lib\net40\EventStore.ClientAPI.dll</HintPath>
+    <Reference Include="EventStore.ClientAPI, Version=3.9.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EventStore.Client.3.9.2\lib\net40\EventStore.ClientAPI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentValidation, Version=6.2.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -71,8 +71,12 @@
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NServiceBus.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NServiceBus.5.2.14\lib\net45\NServiceBus.Core.dll</HintPath>
+    <Reference Include="NServiceBus.Callbacks, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NServiceBus.Callbacks.1.0.0\lib\net452\NServiceBus.Callbacks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NServiceBus.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NServiceBus.6.0.0\lib\net452\NServiceBus.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -124,6 +128,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

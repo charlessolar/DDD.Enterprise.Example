@@ -1,31 +1,25 @@
-﻿
-
-using ServiceStack.Auth;
-using ServiceStack.Model;
+﻿using ServiceStack.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Presentation.ServiceStack.Authentication.Users.Models
 {
-    public class AU_UserResponse : IHasStringId
+    public class AuUserResponse : IHasStringId
     {
-        public String Id { get; set; }
+        public string Id { get; set; }
         public Guid? EmployeeId { get; set; }
 
-        public String Name { get; set; }
+        public string Name { get; set; }
 
-        public String Email { get; set; }
+        public string Email { get; set; }
 
-        public String Nickname { get; set; }
+        public string Nickname { get; set; }
 
-        public String Timezone { get; set; }
+        public string Timezone { get; set; }
 
-        public String ImageType { get; set; }
+        public string ImageType { get; set; }
 
-        public String ImageData { get; set; }
+        public string ImageData { get; set; }
 
 
         public DateTime CreatedDate { get; set; }

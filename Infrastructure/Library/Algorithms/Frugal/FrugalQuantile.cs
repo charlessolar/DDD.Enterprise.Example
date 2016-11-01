@@ -1,9 +1,6 @@
 ﻿using Demo.Library.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.Frugal
 {
@@ -97,7 +94,7 @@ namespace Demo.Library.Algorithms.Frugal
         /// 
         /// As the algorithm proceeds, this is adjusted up and down to improve convergence.
         /// </summary>
-        private double _step { get; set; }
+        private double Step { get; set; }
 
         /// <summary>
         /// Tracks whether the previous adjustment was to increase the Estimate or decrease it.
@@ -106,14 +103,14 @@ namespace Demo.Library.Algorithms.Frugal
         /// If -1, the Estimate decreased.
         /// This should always have the value +1 or -1.
         /// </summary>
-        private SByte _sign { get; set; }
+        private sbyte Sign { get; set; }
 
         /// <summary>
         /// Random number generator.
         /// 
         /// Note: One could refactor to use the C# Random class instead. I prefer FastRandom.
         /// </summary>
-        private FastRandom _rand { get; set; }
+        private FastRandom Rand { get; set; }
 
         #endregion
 
@@ -136,22 +133,22 @@ namespace Demo.Library.Algorithms.Frugal
         public FrugalQuantile(double quantile)
         {
             if (quantile <= 0 || quantile >= 1)
-                throw new ArgumentOutOfRangeException("quantile", "Must be between zero and one, exclusive.");
+                throw new ArgumentOutOfRangeException(nameof(quantile), "Must be between zero and one, exclusive.");
             Quantile = quantile;
             this._directCount = new List<double>();
-            _step = 1;
-            _sign = 1;
+            Step = 1;
+            Sign = 1;
             StepAdjuster = ConstantStepAdjuster;
-            _rand = new FastRandom();
+            Rand = new FastRandom();
         }
         internal FrugalQuantile(FrugalState state)
         {
             this.Quantile = state.Quantile;
             this.Estimate = state.Estimate;
-            this._directCount = state.DirectCount == null ? null : new List<Double>(state.DirectCount);
+            this._directCount = state.DirectCount == null ? null : new List<double>(state.DirectCount);
 
             StepAdjuster = ConstantStepAdjuster;
-            _rand = new FastRandom();
+            Rand = new FastRandom();
         }
 
         #endregion
@@ -186,23 +183,23 @@ namespace Demo.Library.Algorithms.Frugal
                 var m = Estimate;
                 var q = Quantile;
                 var f = StepAdjuster;
-                var random = _rand.NextDouble();
+                var random = Rand.NextDouble();
                 if (item > m && random > 1 - q)
                 {
                     // Increment the step size if and only if the estimate keeps moving in
                     // the same direction. Step size is incremented by the result of applying
                     // the specified step function to the previous step size.
-                    _step += (_sign > 0 ? 1 : -1) * f(_step);
+                    Step += (Sign > 0 ? 1 : -1) * f(Step);
                     // Increment the estimate by step size if step is positive. Otherwise,
                     // increment the step size by one.
-                    m += _step > 0 ? _step : 1;
+                    m += Step > 0 ? Step : 1;
                     // Mark that the estimate increased this step
-                    _sign = 1;
+                    Sign = 1;
                     // If the estimate overshot the item in the stream, pull the estimate back
                     // and re-adjust the step size.
                     if (m > item)
                     {
-                        _step += (item - m);
+                        Step += (item - m);
                         m = item;
                     }
                 }
@@ -210,18 +207,18 @@ namespace Demo.Library.Algorithms.Frugal
                 {
                     // If the item is less than the stream, follow all of the same steps as
                     // above, with signs reversed.
-                    _step += (_sign < 0 ? 1 : -1) * f(_step);
-                    m -= _step > 0 ? _step : 1;
-                    _sign = -1;
+                    Step += (Sign < 0 ? 1 : -1) * f(Step);
+                    m -= Step > 0 ? Step : 1;
+                    Sign = -1;
                     if (m < item)
                     {
-                        _step += (m - item);
+                        Step += (m - item);
                         m = item;
                     }
                 }
                 // Damp down the step size to avoid oscillation.
-                if ((m - item) * _sign < 0 && _step > 1)
-                    _step = 1;
+                if ((m - item) * Sign < 0 && Step > 1)
+                    Step = 1;
 
                 Estimate = m;
             }

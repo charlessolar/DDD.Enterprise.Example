@@ -6,7 +6,6 @@ namespace Demo.Domain.Authentication.Users.Validators
     {
         public ChangeName()
         {
-            RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.Name).NotEmpty();
         }
     }

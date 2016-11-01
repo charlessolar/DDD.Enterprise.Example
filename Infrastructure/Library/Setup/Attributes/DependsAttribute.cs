@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Setup.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class DependsAttribute : Attribute
     {
-        public DependsAttribute(params String[] Depends)
+        public DependsAttribute(params string[] depends)
             : base()
         {
-            this.Depends = Depends;
+            this.Depends = depends;
         }
 
-        public String[] Depends { get; set; }
+        public string[] Depends { get; set; }
     }
 }

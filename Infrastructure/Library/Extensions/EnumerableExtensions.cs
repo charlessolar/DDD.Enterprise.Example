@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Extensions
 {
@@ -12,6 +10,18 @@ namespace Demo.Library.Extensions
         {
             if (source == null)
                 source = new string[] { };
+
+            if (source.Contains(element))
+                return source;
+
+            var ret = source.ToList();
+            ret.Add(element);
+            return ret;
+        }
+        public static IEnumerable<Guid> TryAdd(this IEnumerable<Guid> source, Guid element)
+        {
+            if (source == null)
+                source = new Guid[] { };
 
             if (source.Contains(element))
                 return source;
@@ -32,7 +42,7 @@ namespace Demo.Library.Extensions
             ret.Add(element.ToString());
             return ret;
         }
-        public static IEnumerable<T> TryAdd<T, U>(this IEnumerable<T> source, T element, Func<T, U> selector)
+        public static IEnumerable<T> TryAdd<T, TU>(this IEnumerable<T> source, T element, Func<T, TU> selector)
         {
             if (source == null)
                 source = new T[] { };
@@ -65,6 +75,18 @@ namespace Demo.Library.Extensions
             ret.Remove(element);
             return ret;
         }
+        public static IEnumerable<Guid> TryRemove(this IEnumerable<Guid> source, Guid element)
+        {
+            if (source == null)
+                source = new Guid[] { };
+
+            if (!source.Contains(element))
+                return source;
+
+            var ret = source.ToList();
+            ret.Remove(element);
+            return ret;
+        }
         public static IEnumerable<string> TryRemove(this IEnumerable<string> source, ValueType element)
         {
             if (source == null)
@@ -77,7 +99,7 @@ namespace Demo.Library.Extensions
             ret.Remove(element.ToString());
             return ret;
         }
-        public static IEnumerable<T> TryRemove<T,U>(this IEnumerable<T> source, T element, Func<T, U> selector)
+        public static IEnumerable<T> TryRemove<T,TU>(this IEnumerable<T> source, T element, Func<T, TU> selector)
         {
             if (source == null)
                 source = new T[] { };
@@ -90,7 +112,7 @@ namespace Demo.Library.Extensions
             ret.Remove(idx);
             return ret;
         }
-        public static IEnumerable<T> TryRemove<T, K>(this IEnumerable<T> source, K key, Func<T, K> selector)
+        public static IEnumerable<T> TryRemove<T, TK>(this IEnumerable<T> source, TK key, Func<T, TK> selector)
         {
             if (source == null)
                 source = new T[] { };

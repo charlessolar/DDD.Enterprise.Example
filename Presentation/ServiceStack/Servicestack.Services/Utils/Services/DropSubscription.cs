@@ -1,16 +1,11 @@
 ﻿using ServiceStack;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Presentation.ServiceStack.Utils.Services
 {
     [Api("Utilities")]
     [Route("/util/subscriptions/{SubscriptionId}", "DELETE")]
-    public class DropSubscription : IReturnVoid
+    public class DropSubscription  : Infrastructure.Commands.ServiceCommand
     {
-        public String SubscriptionId { get; set; }
+        public new string SubscriptionId { get; set; }
     }
 }

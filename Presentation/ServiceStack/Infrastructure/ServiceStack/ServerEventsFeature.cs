@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using ServiceStack.Auth;
-using ServiceStack.DataAnnotations;
 using ServiceStack.Host.Handlers;
-using ServiceStack.Logging;
 using ServiceStack.Web;
 using ServiceStack;
 
@@ -132,13 +128,12 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.ServiceStack
             res.UseBufferedStream = false;
             res.KeepAlive = true;
 
-            if (feature.OnInit != null)
-                feature.OnInit(req);
+            feature.OnInit?.Invoke(req);
 
             res.Flush();
 
             var serverEvents = req.TryResolve<IServerEvents>();
-            var userAuthId = session != null ? session.UserAuthId : null;
+            var userAuthId = session?.UserAuthId;
             var anonUserId = serverEvents.GetNextSequence("anonUser");
             var userId = userAuthId ?? ("-" + anonUserId);
             var displayName = session.GetSafeDisplayName()
@@ -181,8 +176,7 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.ServiceStack
                 }
             };
 
-            if (feature.OnCreated != null)
-                feature.OnCreated(subscription, req);
+            feature.OnCreated?.Invoke(subscription, req);
 
             if (req.Response.IsClosed)
                 return TypeConstants.EmptyTask; //Allow short-circuiting in OnCreated callback
@@ -207,8 +201,7 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.ServiceStack
                 {"idleTimeoutMs", ((long)feature.IdleTimeout.TotalMilliseconds).ToString(CultureInfo.InvariantCulture)}
             };
 
-            if (feature.OnConnect != null)
-                feature.OnConnect(subscription, subscription.ConnectArgs);
+            feature.OnConnect?.Invoke(subscription, subscription.ConnectArgs);
 
             serverEvents.Register(subscription, subscription.ConnectArgs);
 
@@ -260,8 +253,7 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.ServiceStack
             serverEvents.RemoveExpiredSubscriptions();
 
             var feature = HostContext.GetPlugin<ServerEventsFeature>();
-            if (feature.OnHeartbeatInit != null)
-                feature.OnHeartbeatInit(req);
+            feature.OnHeartbeatInit?.Invoke(req);
 
             if (req.Response.IsClosed)
                 return TypeConstants.EmptyTask;

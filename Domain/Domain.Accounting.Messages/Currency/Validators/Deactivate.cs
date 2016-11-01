@@ -13,7 +13,6 @@ namespace Demo.Domain.Accounting.Currency.Validators
         public Deactivate()
         {
             RuleFor(x => x.CurrencyId).NotEmpty();
-            RuleFor(x => x.UserId).NotEmpty();
         }
     }
 }

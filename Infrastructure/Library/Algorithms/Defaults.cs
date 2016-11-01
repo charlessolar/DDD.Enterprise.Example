@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Cryptography;
 
 namespace Demo.Library.Algorithms
 {
     // https://github.com/mattlorimor/ProbabilisticDataStructures/blob/master/ProbabilisticDataStructures/Defaults.cs
     public static class Defaults
     {
-        public const double FILL_RATIO = 0.5;
+        public const double FillRatio = 0.5;
 
         /// <summary>
         /// Returns the default hashing algorithm for the library.

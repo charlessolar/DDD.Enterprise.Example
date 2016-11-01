@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.Bloom
 {
@@ -29,7 +26,7 @@ namespace Demo.Library.Algorithms.Bloom
         /// The maximum number of relocations to attempt when inserting an element before
         /// considering the filter full.
         /// </summary>
-        private const int MAX_NUM_KICKS = 500;
+        private const int MaxNumKicks = 500;
 
         internal byte[][][] Buckets { get; set; }
         /// <summary>
@@ -57,7 +54,7 @@ namespace Demo.Library.Algorithms.Bloom
         /// </summary>
         private uint N { get; set; }
 
-        private FastRandom random = new FastRandom();
+        private readonly FastRandom _random = new FastRandom();
 
         /// <summary>
         /// Creates a new Cuckoo Bloom filter optimized to store n items with a specified
@@ -131,14 +128,14 @@ namespace Demo.Library.Algorithms.Bloom
             foreach (var sequence in b1)
             {
                 if (sequence != null)
-                    if (Enumerable.SequenceEqual(sequence, f))
+                    if (sequence.SequenceEqual(f))
                         return true;
             }
             var b2 = this.Buckets[i2 % this.M];
             foreach (var sequence in b2)
             {
                 if (sequence != null)
-                    if (Enumerable.SequenceEqual(sequence, f))
+                    if (sequence.SequenceEqual(f))
                         return true;
             }
             return false;
@@ -186,7 +183,7 @@ namespace Demo.Library.Algorithms.Bloom
             {
                 if (sequence != null)
                 { 
-                    if (Enumerable.SequenceEqual(sequence, f))
+                    if (sequence.SequenceEqual(f))
                     {
                         return TestAndAddReturnValue.Create(true, false);
                     }
@@ -197,7 +194,7 @@ namespace Demo.Library.Algorithms.Bloom
             {
                 if (sequence != null)
                 {
-                    if (Enumerable.SequenceEqual(sequence, f))
+                    if (sequence.SequenceEqual(f))
                     {
                         return TestAndAddReturnValue.Create(true, false);
                     }
@@ -291,12 +288,12 @@ namespace Demo.Library.Algorithms.Bloom
         /// bucket</returns>
         private static int IndexOf(byte[][] bucket, byte[] f)
         {
-            for (int i = 0; i < bucket.Count(); i++)
+            for (int i = 0; i < bucket.Length; i++)
             {
                 var sequence = bucket[i];
                 if (sequence != null)
                 {
-                    if (Enumerable.SequenceEqual(f, bucket[i]))
+                    if (f.SequenceEqual(bucket[i]))
                     {
                         return i;
                     }
@@ -312,7 +309,7 @@ namespace Demo.Library.Algorithms.Bloom
         /// <returns></returns>
         private static int GetEmptyEntry(byte[][] bucket)
         {
-            for (int i = 0; i < bucket.Count(); i++)
+            for (int i = 0; i < bucket.Length; i++)
             {
                 if (bucket[i] == null)
                 {
@@ -356,10 +353,10 @@ namespace Demo.Library.Algorithms.Bloom
 
             // Must relocate existing items.
             var i = i1;
-            for (int n = 0; n < MAX_NUM_KICKS; n++)
+            for (int n = 0; n < MaxNumKicks; n++)
             {
                 var bucketIdx = i % this.M;
-                var entryIdx = random.Next((int)this.B);
+                var entryIdx = _random.Next((int)this.B);
                 var tempF = f;
                 f = this.Buckets[bucketIdx][entryIdx];
                 this.Buckets[bucketIdx][entryIdx] = tempF;

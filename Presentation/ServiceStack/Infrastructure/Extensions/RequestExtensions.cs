@@ -3,27 +3,25 @@ using NServiceBus;
 using Demo.Library.Exceptions;
 using Demo.Library.Reply;
 using Demo.Presentation.ServiceStack.Infrastructure.Authentication;
-using Demo.Presentation.ServiceStack.Infrastructure.Exceptions;
-using Demo.Presentation.ServiceStack.Infrastructure.SSE;
+using Demo.Presentation.ServiceStack.Infrastructure.Commands;
+using Demo.Library.SSE;
 using ServiceStack;
 using ServiceStack.Caching;
 using ServiceStack.Configuration;
 using ServiceStack.Logging;
-using ServiceStack.Text;
 using ServiceStack.Web;
 using System;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Q = Demo.Presentation.ServiceStack.Infrastructure.Queries;
 using R = Demo.Presentation.ServiceStack.Infrastructure.Responses;
+using Demo.Presentation.ServiceStack.Infrastructure.SSE;
 
 namespace Demo.Presentation.ServiceStack.Infrastructure.Extensions
 {
     public static class RequestExtensions
     {
-        private static ILog Logger = LogManager.GetLogger("Requests");
+        private static readonly ILog Logger = LogManager.GetLogger("Requests");
         public static Auth0Profile RetreiveUserProfile(this IRequest request)
         {
             var appSettings = new AppSettings();
@@ -54,54 +52,53 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.Extensions
             }
         }
 
-        public static R.Responses_Query<TResponse> ToOptimizedCachedResult<TResponse>(this IRequest request, Q.Queries_Query<TResponse> query, ICacheClient cache, Func<R.Responses_Query<TResponse>> factory)
+        public static R.ResponsesQuery<TResponse> ToOptimizedCachedResult<TResponse>(this IRequest request, Q.QueriesQuery<TResponse> query, ICacheClient cache, Func<R.ResponsesQuery<TResponse>> factory)
         {
             var key = query.GetCacheKey();
-            var cached = cache.GetOrCreate(key, () =>
-            {
-                return factory();
-            });
-            
+            var cached = cache.GetOrCreate(key, factory);
+
             return cached;
         }
-        public static async Task<R.Responses_Query<TResponse>> ToOptimizedCachedResult<TResponse>(this IRequest request, Q.Queries_Query<TResponse> query, ICacheClient cache, Func<Task<R.Responses_Query<TResponse>>> factory)
+        public static async Task<R.ResponsesQuery<TResponse>> ToOptimizedCachedResult<TResponse>(this IRequest request, Q.QueriesQuery<TResponse> query, ICacheClient cache, Func<Task<R.ResponsesQuery<TResponse>>> factory)
         {
             var key = query.GetCacheKey();
-            var cached = cache.Get<R.Responses_Query<TResponse>>(key);
+            var cached = cache.Get<R.ResponsesQuery<TResponse>>(key);
             if (cached == null)
             {
-                cached = await factory();
+                cached = await factory().ConfigureAwait(false);
                 cache.Add(key, cached);
             }
 
             return cached;
         }
 
-        public static R.Responses_Query<TResponse> ToOptimizedCachedAndSubscribedResult<TResponse>(this IRequest request, Q.Queries_Query<TResponse> query, ICacheClient cache, ISubscriptionManager manager, Func<R.Responses_Query<TResponse>> factory)
+        public static R.ResponsesQuery<TResponse> ToOptimizedCachedAndSubscribedResult<TResponse>(this IRequest request, Q.QueriesQuery<TResponse> query, ICacheClient cache, ISubscriptionManager manager, Func<R.ResponsesQuery<TResponse>> factory)
         {
             var result = request.ToOptimizedCachedResult(query, cache, () =>
             {
                 var response = factory();
                 return response;
             });
-            manager.SubscribeWith(result, query, request.GetSessionId());
+            if (!query.SubscriptionId.IsNullOrEmpty())
+                manager.SubscribeWith(result, query, request.GetSessionId());
             return result;
         }
-        public static async Task<R.Responses_Query<TResponse>> ToOptimizedCachedAndSubscribedResult<TResponse>(this IRequest request, Q.Queries_Query<TResponse> query, ICacheClient cache, ISubscriptionManager manager, Func<Task<R.Responses_Query<TResponse>>> factory)
+        public static async Task<R.ResponsesQuery<TResponse>> ToOptimizedCachedAndSubscribedResult<TResponse>(this IRequest request, Q.QueriesQuery<TResponse> query, ICacheClient cache, ISubscriptionManager manager, Func<Task<R.ResponsesQuery<TResponse>>> factory)
         {
             var key = query.GetCacheKey();
-            var cached = cache.Get<R.Responses_Query<TResponse>>(key);
+            var cached = cache.Get<R.ResponsesQuery<TResponse>>(key);
             if (cached == null)
             {
-                cached = await factory();
+                cached = await factory().ConfigureAwait(false);
                 cache.Add(key, cached);
             }
-            manager.SubscribeWith(cached, query, request.GetSessionId());
+            if (!query.SubscriptionId.IsNullOrEmpty())
+                manager.SubscribeWith(cached, query, request.GetSessionId());
 
             return cached;
         }
 
-        public static R.Responses_Paged<TResponse> ToOptimizedCachedResult<TResponse>(this IRequest request, Q.Queries_Paged<TResponse> query, ICacheClient cache, Func<R.Responses_Paged<TResponse>> factory)
+        public static R.ResponsesPaged<TResponse> ToOptimizedCachedResult<TResponse>(this IRequest request, Q.QueriesPaged<TResponse> query, ICacheClient cache, Func<R.ResponsesPaged<TResponse>> factory)
         {
             var key = query.GetCacheKey();
             var cached = cache.GetOrCreate(key, () =>
@@ -109,101 +106,118 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.Extensions
                 var result = factory();
                 return result;
             });
-            
+
             return cached;
         }
-        public static async Task<R.Responses_Paged<TResponse>> ToOptimizedCachedResult<TResponse>(this IRequest request, Q.Queries_Paged<TResponse> query, ICacheClient cache, Func<Task<R.Responses_Paged<TResponse>>> factory)
+        public static async Task<R.ResponsesPaged<TResponse>> ToOptimizedCachedResult<TResponse>(this IRequest request, Q.QueriesPaged<TResponse> query, ICacheClient cache, Func<Task<R.ResponsesPaged<TResponse>>> factory)
         {
             var key = query.GetCacheKey();
-            var cached = cache.Get<R.Responses_Paged<TResponse>>(key);
-            if(cached == null)
+            var cached = cache.Get<R.ResponsesPaged<TResponse>>(key);
+            if (cached == null)
             {
-                cached = await factory();
+                cached = await factory().ConfigureAwait(false);
                 cache.Add(key, cached);
             }
 
             return cached;
         }
 
-        public static R.Responses_Paged<TResponse> ToOptimizedCachedAndSubscribedPagedResult<TResponse>(this IRequest request, Q.Queries_Paged<TResponse> query, ICacheClient cache, ISubscriptionManager manager, Func<R.Responses_Paged<TResponse>> factory)
+        public static R.ResponsesPaged<TResponse> ToOptimizedCachedAndSubscribedPagedResult<TResponse>(this IRequest request, Q.QueriesPaged<TResponse> query, ICacheClient cache, ISubscriptionManager manager, Func<R.ResponsesPaged<TResponse>> factory)
         {
             var result = request.ToOptimizedCachedResult(query, cache, () =>
             {
                 var response = factory();
                 return response;
             });
-            manager.SubscribeWith(result, query, request.GetSessionId());
+            if (!query.SubscriptionId.IsNullOrEmpty())
+                manager.SubscribeWith(result, query, request.GetSessionId());
             return result;
         }
-        public static async Task<R.Responses_Paged<TResponse>> ToOptimizedCachedAndSubscribedPagedResult<TResponse>(this IRequest request, Q.Queries_Paged<TResponse> query, ICacheClient cache, ISubscriptionManager manager, Func<Task<R.Responses_Paged<TResponse>>> factory)
+        public static async Task<R.ResponsesPaged<TResponse>> ToOptimizedCachedAndSubscribedPagedResult<TResponse>(this IRequest request, Q.QueriesPaged<TResponse> query, ICacheClient cache, ISubscriptionManager manager, Func<Task<R.ResponsesPaged<TResponse>>> factory)
         {
             var key = query.GetCacheKey();
-            var cached = cache.Get<R.Responses_Paged<TResponse>>(key);
+            var cached = cache.Get<R.ResponsesPaged<TResponse>>(key);
             if (cached == null)
             {
-                cached = await factory();
+                cached = await factory().ConfigureAwait(false);
                 cache.Add(key, cached);
             }
-            manager.SubscribeWith(cached, query, request.GetSessionId());
+            if (!query.SubscriptionId.IsNullOrEmpty())
+                manager.SubscribeWith(cached, query, request.GetSessionId());
 
             return cached;
         }
-        public static Task<IReply> IsQuery<TResponse>(this ICallback callback) where TResponse : class
+        public static R.ResponsesQuery<TResponse> RequestQuery<TResponse>(this IMessage message, Q.QueriesQuery<TResponse> query = null) where TResponse : class
         {
-            return callback.Register(x =>
-            {
-                var reply = x.Messages.FirstOrDefault();
-                if (reply == null || reply is Reject)
-                {
-                    var reject = reply as Reject;
-                    Logger.WarnFormat("Query was rejected - Message: {0}\nException: {1}", reject.Message, reject.Exception);
-                    if (reject != null && reject.Exception != null)
-                        throw new QueryRejectedException(reject.Message, reject.Exception);
-                    else if (reject != null)
-                        throw new QueryRejectedException(reject.Message);
-                    throw new QueryRejectedException();
-                }
-                if(reply is Error)
-                {
-                    var error = reply as Error;
-                    Logger.WarnFormat("Query raised an error - Message: {0}", error.Message);
-                    throw new QueryRejectedException(error.Message);
-                }
 
-                var package = reply as IReply;
-                if (package == null)
-                    throw new QueryRejectedException($"Unexpected response type: {reply.GetType().FullName}");
-                return package;
-            });
+            if (message == null || message is Reject)
+            {
+                var reject = (Reject) message;
+                Logger.WarnFormat("Query was rejected - Message: {0}\n", reject.Message);
+                if (reject != null)
+                    throw new QueryRejectedException(reject.Message);
+                throw new QueryRejectedException();
+            }
+            if (message is Error)
+            {
+                var error = (Error) message;
+                Logger.WarnFormat("Query raised an error - Message: {0}", error.Message);
+                throw new QueryRejectedException(error.Message);
+            }
+
+            var package = (IReply) message;
+            if (package == null)
+                throw new QueryRejectedException($"Unexpected response type: {message.GetType().FullName}");
+
+            var payload = package.Payload.ConvertTo<TResponse>();
+
+            return new R.ResponsesQuery<TResponse>
+            {
+                Payload = payload,
+                Etag = package.ETag,
+                SubscriptionId = query?.SubscriptionId,
+                SubscriptionTime = query?.SubscriptionTime,
+            };
         }
-        public static Task<IPagedReply> IsPaged<TResponse>(this ICallback callback) where TResponse : class
+        public static R.ResponsesPaged<TResponse> RequestPaged<TResponse>(this IMessage message, Q.QueriesPaged<TResponse> query = null) where TResponse : class
         {
-            return callback.Register(x =>
-            {
-                var reply = x.Messages.FirstOrDefault();
-                if (reply == null || reply is Reject)
-                {
-                    var reject = reply as Reject;
-                    Logger.WarnFormat("Query was rejected - Message: {0}\nException: {1}", reject.Message, reject.Exception);
-                    if (reject != null && reject.Exception != null)
-                        throw new QueryRejectedException(reject.Message, reject.Exception);
-                    else if (reject != null)
-                        throw new QueryRejectedException(reject.Message);
-                    throw new QueryRejectedException();
-                }
-                if (reply is Error)
-                {
-                    var error = reply as Error;
-                    Logger.WarnFormat("Query raised an error - Message: {0}", error.Message);
-                    throw new QueryRejectedException(error.Message);
-                }
 
-                var package = reply as IPagedReply;
-                if (package == null)
-                    throw new QueryRejectedException($"Unexpected response type: {reply.GetType().FullName}");
-                
-                return package;
-            });
+            if (message == null || message is Reject)
+            {
+                var reject = (Reject) message;
+                Logger.WarnFormat("Query was rejected - Message: {0}\n", reject.Message);
+                if (reject != null)
+                    throw new QueryRejectedException(reject.Message);
+                throw new QueryRejectedException();
+            }
+            if (message is Error)
+            {
+                var error = (Error) message;
+                Logger.WarnFormat("Query raised an error - Message: {0}", error.Message);
+                throw new QueryRejectedException(error.Message);
+            }
+
+            var package = (IPagedReply) message;
+            if (package == null)
+                throw new QueryRejectedException($"Unexpected response type: {message.GetType().FullName}");
+
+            var records = package.Records.Select(x => x.ConvertTo<TResponse>());
+
+            return new R.ResponsesPaged<TResponse>
+            {
+                Records = records,
+                Total = package.Total,
+                ElapsedMs = package.ElapsedMs,
+                SubscriptionId = query?.SubscriptionId,
+                SubscriptionTime = query?.SubscriptionTime,
+            };
+        }
+
+        public static Task SubscribeCommand<TResponse>(this IRequest request, string documentId, ServiceCommand command, ISubscriptionManager manager)
+        {
+            if (!command.SubscriptionId.IsNullOrEmpty())
+                return manager.Manage<TResponse>(documentId, command.SubscriptionId, command.SubscriptionType ?? ChangeType.All, TimeSpan.FromSeconds(command.SubscriptionTime ?? 300), request.GetSessionId());
+            return Task.FromResult(0);
         }
     }
 }

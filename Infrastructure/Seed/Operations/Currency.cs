@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aggregates.Extensions;
 using Commands = Demo.Domain.Accounting.Currency.Commands;
 using Type = Seed.Types.Accounting;
 
@@ -21,9 +22,9 @@ namespace Seed.Operations
             new Type.Currency { Id = Guid.NewGuid(), Code = "USD", Name = "United States Dollar", Symbol = "$", SymbolBefore = true, RoundingFactor = 2, ComputationalAccuracy = 4, Format = "#,###.##", Fraction = "Cents", Activated = true },
         };
 
-        private readonly IBus _bus;
+        private readonly IMessageSession _bus;
 
-        public Currency(IBus bus)
+        public Currency(IMessageSession bus)
         {
             _bus = bus;
         }
@@ -41,18 +42,14 @@ namespace Seed.Operations
                 ComputationalAccuracy = x.ComputationalAccuracy,
                 Format = x.Format,
                 Fraction = x.Fraction,
-                Timestamp = DateTime.UtcNow.Ticks,
-                UserId = User.Data.ElementAt(0).Id
             });
-            await commands.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
+            await commands.WhenAllAsync(x => _bus.Command(x));
 
             var activations = Data.Where(x => x.Activated).Select(x => new Commands.Activate
                 {
                     CurrencyId = x.Id,
-                    Timestamp = DateTime.UtcNow.Ticks,
-                    UserId = "IMPORT",
                 });
-            await activations.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
+            await activations.WhenAllAsync(x => _bus.Command(x));
 
             this.Done = true;
             return this.Done;

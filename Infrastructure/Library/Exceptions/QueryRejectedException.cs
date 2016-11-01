@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Exceptions
 {
@@ -12,12 +8,12 @@ namespace Demo.Library.Exceptions
         {
         }
 
-        public QueryRejectedException(String message)
+        public QueryRejectedException(string message)
             : base(message)
         {
         }
 
-        public QueryRejectedException(String message, Exception innerException)
+        public QueryRejectedException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

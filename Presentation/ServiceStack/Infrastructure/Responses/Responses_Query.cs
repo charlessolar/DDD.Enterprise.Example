@@ -1,18 +1,15 @@
-﻿using Demo.Presentation.ServiceStack.Infrastructure.SSE;
-using Demo.Library.SSE;
-using System;
-using ServiceStack;
+﻿using ServiceStack;
 
 namespace Demo.Presentation.ServiceStack.Infrastructure.Responses
 {
-    public class Responses_Query<TResponse>
+    public class ResponsesQuery<TResponse>
     {
         public TResponse Payload { get; set; }
-        public String SubscriptionId { get; set; }
+        public string SubscriptionId { get; set; }
 
-        public Int32? SubscriptionTime { get; set; }
+        public int? SubscriptionTime { get; set; }
 
-        public String Etag { get; set; }
+        public string Etag { get; set; }
 
         public ResponseStatus ResponseStatus { get; set; }
     }

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.Bloom
 {
@@ -42,7 +41,7 @@ namespace Demo.Library.Algorithms.Bloom
     /// Bloom Filters.
     /// </summary>
     public class ScalableBloomFilter : IFilter<string>, IFilter<int>, IFilter<uint>,
-        IFilter<long>, IFilter<ulong>, IFilter<float>, IFilter<double>, IFilter<DateTime>, IFilter<Boolean>, IFilter<Guid>,
+        IFilter<long>, IFilter<ulong>, IFilter<float>, IFilter<double>, IFilter<DateTime>, IFilter<bool>, IFilter<Guid>,
         IFilter<byte[]>, IEquatable<ScalableBloomFilter>
     {
         /// <summary>
@@ -56,7 +55,7 @@ namespace Demo.Library.Algorithms.Bloom
         /// <summary>
         /// Target false-positive rate
         /// </summary>
-        internal double FP { get; set; }
+        internal double Fp { get; set; }
         /// <summary>
         /// Partition fill ratio
         /// </summary>
@@ -78,24 +77,35 @@ namespace Demo.Library.Algorithms.Bloom
         {
             this.Filters = new List<PartitionedBloomFilter>();
             this.R = r;
-            this.FP = fpRate;
-            this.P = Defaults.FILL_RATIO;
+            this.Fp = fpRate;
+            this.P = Defaults.FillRatio;
             this.Hint = hint;
 
             this.AddFilter();
         }
         internal ScalableBloomFilter(ScalableBloomState state)
         {
-            this.Filters = state.partitions.Select(x => new PartitionedBloomFilter(x)).ToList();
+            this.Filters = state.Partitions.Select(x => new PartitionedBloomFilter(x)).ToList();
             this.R = state.R;
-            this.FP = state.FP;
+            this.Fp = state.Fp;
             this.P = state.P;
             this.Hint = state.Hint;
         }
-        public Boolean Equals(ScalableBloomFilter other)
+        internal ScalableBloomState GetState()
+        {
+            return new ScalableBloomState
+            {
+                Partitions = this.Filters.Select(x => x.GetState()).ToArray(),
+                R = this.R,
+                Fp = this.Fp,
+                P = this.P,
+                Hint = this.Hint
+            };
+        }
+        public bool Equals(ScalableBloomFilter other)
         {
             if (this.R != other.R) return false;
-            if (this.FP != other.FP) return false;
+            if (this.Fp != other.Fp) return false;
             if (this.P != other.P) return false;
             if (this.Hint != other.Hint) return false;
             if (!this.Filters.SequenceEqual(other.Filters)) return false;
@@ -148,7 +158,7 @@ namespace Demo.Library.Algorithms.Bloom
             {
                 sum += filter.FillRatio();
             }
-            return (double)sum / this.Filters.Count();
+            return (double)sum / this.Filters.Count;
         }
 
 
@@ -190,7 +200,7 @@ namespace Demo.Library.Algorithms.Bloom
         {
             return Test(element.Ticks);
         }
-        public bool Test(Boolean element)
+        public bool Test(bool element)
         {
             return TestBytes(BitConverter.GetBytes(element));
         }
@@ -241,7 +251,7 @@ namespace Demo.Library.Algorithms.Bloom
         {
             return TestAndAdd(element.Ticks);
         }
-        public bool TestAndAdd(Boolean element)
+        public bool TestAndAdd(bool element)
         {
             return TestAndAddBytes(BitConverter.GetBytes(element));
         }
@@ -292,9 +302,9 @@ namespace Demo.Library.Algorithms.Bloom
         {
             return AddBytes<DateTime>(BitConverter.GetBytes(element.Ticks));
         }
-        public IFilter<Boolean> Add(Boolean element)
+        public IFilter<bool> Add(bool element)
         {
-            return AddBytes<Boolean>(BitConverter.GetBytes(element));
+            return AddBytes<bool>(BitConverter.GetBytes(element));
         }
         public IFilter<Guid> Add(Guid element)
         {
@@ -335,7 +345,7 @@ namespace Demo.Library.Algorithms.Bloom
         /// <returns>The ScalableBloomFilter</returns>
         private IFilter<T> AddBytes<T>(byte[] data)
         {
-            var idx = this.Filters.Count() - 1;
+            var idx = this.Filters.Count - 1;
 
             // If the last filter has reached its fill ratio, add a new one.
             if (this.Filters[idx].EstimatedFillRatio() >= this.P)
@@ -392,24 +402,13 @@ namespace Demo.Library.Algorithms.Bloom
         /// </summary>
         internal void AddFilter()
         {
-            var fpRate = this.FP * Math.Pow(this.R, this.Filters.Count());
+            var fpRate = this.Fp * Math.Pow(this.R, this.Filters.Count);
             var p = new PartitionedBloomFilter(this.Hint, fpRate);
-            if (this.Filters.Count() > 0)
+            if (this.Filters.Any())
             {
                 p.SetHash(this.Filters[0].Hash);
             }
             this.Filters.Add(p);
-        }
-        internal ScalableBloomState GetState()
-        {
-            return new ScalableBloomState
-            {
-                partitions = this.Filters.Select(x => x.GetState()).ToArray(),
-                R = this.R,
-                FP = this.FP,
-                P = this.P,
-                Hint = this.Hint
-            };
         }
     }
 }

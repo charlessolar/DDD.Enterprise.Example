@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms
 {
@@ -64,17 +61,17 @@ namespace Demo.Library.Algorithms
                 };
         }
 
-        private byte ShiftRight(UInt64 n, int amount)
+        private byte ShiftRight(ulong n, int amount)
         {
             return (byte)(n >> amount);
         }
 
-        private byte[] StringToByteArray(String hex)
+        private byte[] StringToByteArray(string hex)
         {
             // http://stackoverflow.com/questions/311165/how-do-you-convert-byte-array-to-hexadecimal-string-and-vice-versa
-            int NumberChars = hex.Length;
-            byte[] bytes = new byte[NumberChars / 2];
-            for (int i = 0; i < NumberChars; i += 2)
+            int numberChars = hex.Length;
+            byte[] bytes = new byte[numberChars / 2];
+            for (int i = 0; i < numberChars; i += 2)
                 bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
             return bytes;
         }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aggregates.Extensions;
 using Commands = Demo.Domain.Configuration.Country.Commands;
 using Type = Seed.Types.Configuration;
 
@@ -268,9 +269,9 @@ namespace Seed.Operations
             new Type.Country { Id = Guid.NewGuid(), Code = "ZW", Name = "Zimbabwe" }
         };
 
-        private readonly IBus _bus;
+        private readonly IMessageSession _bus;
 
-        public Country(IBus bus)
+        public Country(IMessageSession bus)
         {
             _bus = bus;
         }
@@ -282,10 +283,8 @@ namespace Seed.Operations
                 CountryId = x.Id,
                 Code = x.Code,
                 Name = x.Name,
-                Timestamp = DateTime.UtcNow.Ticks,
-                UserId = User.Data.ElementAt(0).Id
             });
-            await commands.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
+            await commands.WhenAllAsync(x => _bus.Command(x));
 
             this.Done = true;
             return this.Done;

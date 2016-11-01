@@ -1,14 +1,9 @@
 ﻿using Demo.Library.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Presentation.ServiceStack.Authentication.Users.Queries
 {
-    public interface Permissions : IQuery
+    public interface IPermissions : IQuery
     {
-        String UserAuthId { get; set; }
+        string UserAuthId { get; set; }
     }
 }

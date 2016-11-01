@@ -8,12 +8,12 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.Cache
     {
         public Wrapper()
         {
-            Sessions = new List<String>();
+            Sessions = new List<string>();
         }
 
-        public Int32 Version { get; set; }
+        public int Version { get; set; }
 
-        public ICollection<String> Sessions { get; set; }
+        public ICollection<string> Sessions { get; set; }
 
         public DateTime Created { get; set; }
 

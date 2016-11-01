@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Domain.Accounting.Account
 {
-    public class Account : Aggregates.Aggregate<Guid>, IAccount
+    public class Account : Aggregates.Aggregate<Account, Guid>, IAccount
     {
         public Aggregates.SingleValueObject<Boolean> Frozen { get; private set; }
 
@@ -16,7 +16,7 @@ namespace Demo.Domain.Accounting.Account
             this.Frozen = new Aggregates.SingleValueObject<bool>(false);
         }
 
-        public void Create(String Code, String Name, Boolean AcceptPayments, Boolean AllowReconcile, OPERATION Operation, Currency.ICurrency Currency, Relations.Store.IStore Store)
+        public void Create(String Code, String Name, Boolean AcceptPayments, Boolean AllowReconcile, OPERATION Operation, Currency.ICurrency Currency)
         {
             Apply<Events.Created>(e =>
             {
@@ -27,7 +27,6 @@ namespace Demo.Domain.Accounting.Account
                 e.AllowReconcile = AllowReconcile;
                 e.Operation = Operation.Value;
                 e.CurrencyId = Currency.Id;
-                e.StoreId = Store.Id;
             });
         }
 

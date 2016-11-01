@@ -1,10 +1,5 @@
-﻿using NServiceBus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Queries.Grid
 {
@@ -12,13 +7,13 @@ namespace Demo.Library.Queries.Grid
     public class Filter
     {
         [DataMember(Name = "field")]
-        public String Field { get; set; }
+        public string Field { get; set; }
         [DataMember(Name = "operator")]
-        public String Operator { get; set; }
+        public string Operator { get; set; }
         [DataMember(Name = "value")]
-        public String Value { get; set; }
+        public string Value { get; set; }
         [DataMember(Name = "logic")]
-        public String Logic { get; set; }
+        public string Logic { get; set; }
         [DataMember(Name = "filters")]
         public IEnumerable<Filter> Filters { get; set; }
     }

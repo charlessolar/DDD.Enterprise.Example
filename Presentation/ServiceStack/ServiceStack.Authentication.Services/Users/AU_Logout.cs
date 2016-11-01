@@ -1,14 +1,12 @@
-﻿using Demo.Presentation.ServiceStack.Infrastructure.Responses;
-using ServiceStack;
-using System;
+﻿using ServiceStack;
 
 namespace Demo.Presentation.ServiceStack.Authentication.Users.Models
 {
     [Api("Authentication")]
     [Route("/user/logout", "POST")]
-    public class AU_Logout : IReturnVoid
+    public class AuLogout  : Infrastructure.Commands.ServiceCommand
     {
         // Manual logout, timeout, or other
-        public String Event { get; set; }
+        public string Event { get; set; }
     }
 }

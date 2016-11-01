@@ -1,9 +1,7 @@
 ﻿
 using System;
-using System.Diagnostics;
 using System.Web;
 using Metrics;
-using Metrics.Core;
 using ServiceStack;
 
 namespace Demo.Presentation.ServiceStack.Profiling
@@ -12,11 +10,11 @@ namespace Demo.Presentation.ServiceStack.Profiling
 
     public class MetricsFeature : IPlugin
     {
-        private Meter _requestsMeter = Metric.Meter( "Requests", Unit.Requests);
-        private Timer _requestsTimer = Metric.Timer("Requests Duration", Unit.Requests);
-        private Counter _requestsConcurrent = Metric.Counter("Concurrent Requests", Unit.Requests);
+        private readonly Meter _requestsMeter = Metric.Meter( "Requests", Unit.Requests);
+        private readonly Timer _requestsTimer = Metric.Timer("Requests Duration", Unit.Requests);
+        private readonly Counter _requestsConcurrent = Metric.Counter("Concurrent Requests", Unit.Requests);
 
-        private Meter _errorsMeter = Metric.Meter("Request Errors", Unit.Errors);
+        private readonly Meter _errorsMeter = Metric.Meter("Request Errors", Unit.Errors);
 
         private class RequestTimer : IDisposable
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Domain.Configuration.AccountType
 {
-    public class AccountType : Aggregates.Aggregate<Guid>, IAccountType
+    public class AccountType : Aggregates.Aggregate<AccountType, Guid>, IAccountType
     {
         public ValueObjects.Name Name { get; private set; }
 

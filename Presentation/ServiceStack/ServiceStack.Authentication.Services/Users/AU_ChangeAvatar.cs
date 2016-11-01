@@ -1,16 +1,14 @@
 ﻿
 using ServiceStack;
-using System;
-using Demo.Presentation.ServiceStack.Infrastructure.Responses;
 
 namespace Demo.Presentation.ServiceStack.Authentication.Users.Models
 {
     [Api("Users")]
     [Route("/user/avatar", "PUT POST")]
-    public class AU_ChangeAvatar : IReturnVoid
+    public class AuChangeAvatar  : Infrastructure.Commands.ServiceCommand
     {
-        public String ImageType { get; set; }
+        public string ImageType { get; set; }
 
-        public String ImageData { get; set; }
+        public string ImageData { get; set; }
     }
 }

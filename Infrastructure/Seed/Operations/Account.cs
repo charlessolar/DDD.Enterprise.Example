@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aggregates.Extensions;
 using Commands = Demo.Domain.Accounting.Account.Commands;
 using Type = Seed.Types.Accounting;
 
@@ -97,9 +98,9 @@ namespace Seed.Operations
             }},
         };
 
-        private readonly IBus _bus;
+        private readonly IMessageSession _bus;
 
-        public Account(IBus bus)
+        public Account(IMessageSession bus)
         {
             _bus = bus;
         }
@@ -109,13 +110,13 @@ namespace Seed.Operations
             var commands = MapCommands(Data);
 
             foreach (var account in commands)
-                await _bus.Send(account.Create).IsCommand<Command>();
+                await _bus.Command(account.Create);
 
             foreach (var account in commands.Where(x => x.Type != null))
-                await _bus.Send(account.Type).IsCommand<Command>();
+                await _bus.Command(account.Type);
 
             foreach (var account in commands.Where(x => x.Parent != null))
-                await _bus.Send(account.Parent).IsCommand<Command>();
+                await _bus.Command(account.Parent);
 
             this.Done = true;
             return this.Done;
@@ -147,22 +148,16 @@ namespace Seed.Operations
                             AcceptPayments = x.AcceptPayments,
                             AllowReconcile = x.AllowReconcile,
                             CurrencyId = x.Currency.Id,
-                            Timestamp = DateTime.UtcNow.Ticks,
-                            UserId = User.Data.ElementAt(0).Id
                         },
                         Type = x.Type == null ? null : new Commands.ChangeType
                         {
                             AccountId = x.Id,
                             TypeId = x.Type.Id,
-                            Timestamp = DateTime.UtcNow.Ticks,
-                            UserId = User.Data.ElementAt(0).Id
                         },
                         Parent = Parent == null ? null : new Commands.ChangeParent
                         {
                             AccountId = x.Id,
                             ParentId = Parent.Id,
-                            Timestamp = DateTime.UtcNow.Ticks,
-                            UserId = User.Data.ElementAt(0).Id
                         },
                     });
                 if (x.Children != null && x.Children.Count > 0)

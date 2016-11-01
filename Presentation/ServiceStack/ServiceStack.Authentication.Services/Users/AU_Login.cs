@@ -1,15 +1,12 @@
-﻿
-using Demo.Presentation.ServiceStack.Infrastructure.Responses;
-using ServiceStack;
-using System;
+﻿using ServiceStack;
 
 namespace Demo.Presentation.ServiceStack.Authentication.Users.Models
 {
     [Api("Authentication")]
     [Route("/user/login", "POST")]
-    public class AU_Login : IReturnVoid
+    public class AuLogin  : Infrastructure.Commands.ServiceCommand
     {
-        public String Username { get; set; }
-        public String Password { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -54,9 +54,6 @@ namespace Demo.Library.Algorithms.Cardinality.Hash
             return hash;
         }
 
-        public HashFunctionId HashFunctionId
-        {
-            get { return HashFunctionId.Fnv1A; }
-        }
+        public HashFunctionId HashFunctionId => HashFunctionId.Fnv1A;
     }
 }

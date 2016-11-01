@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Demo.Library.Updates;
-using Demo.Presentation.ServiceStack.Infrastructure.SSE;
 using Demo.Library.Queries;
 using Demo.Application.Riak.Infrastructure;
 using presentationUsers = Demo.Presentation.ServiceStack.Authentication.Users;
@@ -19,167 +18,95 @@ using Aggregates.Extensions;
 namespace Demo.Application.Riak.Authentication.Users
 {
     public class Get :
-        IHandleQueries<presentationUsers.Queries.Get>,
-        IHandleMessagesAsync<Registered>,
-        IHandleMessagesAsync<LoggedIn>,
-        IHandleMessagesAsync<LoggedOut>,
-        IHandleMessagesAsync<PasswordChanged>,
-        IHandleMessagesAsync<EmailChanged>,
-        IHandleMessagesAsync<AvatarChanged>,
-        IHandleMessagesAsync<NameChanged>,
-        IHandleMessagesAsync<TimezoneChanged>,
-        IHandleMessagesAsync<Deactivated>,
-        IHandleMessagesAsync<RolesAssigned>,
-        IHandleMessagesAsync<RolesUnassigned>,
-        IHandleMessagesAsync<Updated>
+        IHandleQueries<presentationUsers.Queries.IGet>,
+        IHandleMessages<LoggedIn>,
+        IHandleMessages<LoggedOut>,
+        IHandleMessages<EmailChanged>,
+        IHandleMessages<AvatarChanged>,
+        IHandleMessages<NameChanged>,
+        IHandleMessages<TimezoneChanged>
     {
-        private readonly IBus _bus;
+        
         private readonly IUnitOfWork _uow;
 
-        public Get(IBus bus, IUnitOfWork uow)
+        public Get(IUnitOfWork uow)
         {
-            _bus = bus;
+           
             _uow = uow;
         }
 
-        public async Task Handle(presentationUsers.Queries.Get q, IHandleContext ctx)
+        public async Task Handle(presentationUsers.Queries.IGet q, IMessageHandlerContext ctx)
         {
-            var get = await _uow.Get<presentationUsers.Models.AU_UserResponse>(q.UserAuthId);
-            ctx.ResultAsync(get);
-        }
-        public Task Handle(Registered e, IHandleContext ctx)
-        {
-            var get = new presentationUsers.Models.AU_UserResponse
-            {
-                Id = e.UserAuthId,
-                Password = e.Password
-            };
-            _uow.Save(get);
-            ctx.UpdateAsync(get, ChangeType.NEW);
-
-            return Task.FromResult(0);
+            var get = await _uow.Get<presentationUsers.Models.AuUserResponse>(q.UserAuthId);
+            ctx.Result(get);
         }
 
-        public async Task Handle(LoggedIn e, IHandleContext ctx)
+        public async Task Handle(LoggedIn e, IMessageHandlerContext ctx)
         {
             
-            var get = await _uow.Get<presentationUsers.Models.AU_UserResponse>(e.UserId);
+            var get = await _uow.Get<presentationUsers.Models.AuUserResponse>(e.UserId);
 
             get.LastLoginAttempt = DateTime.UtcNow;
 
             _uow.Save(get);
-            ctx.UpdateAsync(get, ChangeType.CHANGE);
-
-            _Demo.Report("Login", new { Name = get.Name, Id = get.Id, Email = get.Email });
+            ctx.Update(get, ChangeType.Change);
+            
         }
-        public async Task Handle(LoggedOut e, IHandleContext ctx)
+        public async Task Handle(LoggedOut e, IMessageHandlerContext ctx)
         {
             
-            var user = await _uow.Get<presentationUsers.Models.AU_UserResponse>(e.UserId);
+            var user = await _uow.Get<presentationUsers.Models.AuUserResponse>(e.UserId);
 
             if (user == null) return;
-
-            _Demo.Report("Logout", new { Name = user.Name, Id = user.Id, Email = user.Email });
-
-
+            
         }
-        public async Task Handle(PasswordChanged e, IHandleContext ctx)
-        {
-            var get = await _uow.Get<presentationUsers.Models.AU_UserResponse>(e.UserId);
-
-            get.Password = e.Password;
-
-            _uow.Save(get);
-            ctx.UpdateAsync(get, ChangeType.CHANGE);
-        }
-        public async Task Handle(EmailChanged e, IHandleContext ctx)
+        public async Task Handle(EmailChanged e, IMessageHandlerContext ctx)
         {
             
-            var get = await _uow.Get<presentationUsers.Models.AU_UserResponse>(e.UserId);
+            var get = await _uow.Get<presentationUsers.Models.AuUserResponse>(e.UserId);
 
             get.Email = e.Email;
 
             _uow.Save(get);
-            ctx.UpdateAsync(get, ChangeType.CHANGE);
+            ctx.Update(get, ChangeType.Change);
 
         }
 
-        public async Task Handle(AvatarChanged e, IHandleContext ctx)
+        public async Task Handle(AvatarChanged e, IMessageHandlerContext ctx)
         {
             
-            var get = await _uow.Get<presentationUsers.Models.AU_UserResponse>(e.UserId);
+            var get = await _uow.Get<presentationUsers.Models.AuUserResponse>(e.UserId);
 
             get.ImageType = e.ImageType;
             get.ImageData = e.ImageData;
 
             _uow.Save(get);
-            ctx.UpdateAsync(get, ChangeType.CHANGE);
+            ctx.Update(get, ChangeType.Change);
 
         }
 
-        public async Task Handle(NameChanged e, IHandleContext ctx)
+        public async Task Handle(NameChanged e, IMessageHandlerContext ctx)
         {
             
-            var get = await _uow.Get<presentationUsers.Models.AU_UserResponse>(e.UserId);
+            var get = await _uow.Get<presentationUsers.Models.AuUserResponse>(e.UserId);
 
             get.Name = e.Name;
 
             _uow.Save(get);
-            ctx.UpdateAsync(get, ChangeType.CHANGE);
+            ctx.Update(get, ChangeType.Change);
 
         }
 
-        public async Task Handle(TimezoneChanged e, IHandleContext ctx)
+        public async Task Handle(TimezoneChanged e, IMessageHandlerContext ctx)
         {
             
-            var get = await _uow.Get<presentationUsers.Models.AU_UserResponse>(e.UserId);
+            var get = await _uow.Get<presentationUsers.Models.AuUserResponse>(e.UserId);
 
             get.Timezone = e.Timezone;
 
             _uow.Save(get);
-            ctx.UpdateAsync(get, ChangeType.CHANGE);
+            ctx.Update(get, ChangeType.Change);
 
-        }
-        public async Task Handle(Deactivated e, IHandleContext ctx)
-        {
-            var get = await _uow.Get<presentationUsers.Models.AU_UserResponse>(e.UserAuthId);
-            get.LockedDate = DateTime.UtcNow;
-
-            _uow.Save(get);
-            ctx.UpdateAsync(get, ChangeType.CHANGE);
-        }
-
-        public async Task Handle(RolesAssigned e, IHandleContext ctx) {
-
-            var get = await _uow.Get<presentationUsers.Models.AU_UserResponse>(e.UserAuthId);
-
-            get.Roles = get.Roles.Concat(e.Roles).Distinct();
-
-            _uow.Save(get);
-            ctx.UpdateAsync(get, ChangeType.CHANGE);
-        }
-
-        public async Task Handle(RolesUnassigned e, IHandleContext ctx)
-        {
-            var get = await _uow.Get<presentationUsers.Models.AU_UserResponse>(e.UserAuthId);
-
-            get.Roles = get.Roles.Except(e.Roles).Distinct();
-
-            _uow.Save(get);
-            ctx.UpdateAsync(get, ChangeType.CHANGE);
-        }
-        public async Task Handle(Updated e, IHandleContext ctx)
-        {
-            var get = await _uow.Get<presentationUsers.Models.AU_UserResponse>(e.UserAuthId);
-
-            get.Name = e.DisplayName;
-            get.Email = e.PrimaryEmail;
-            get.Nickname = e.Nickname;
-            get.Timezone = e.Timezone;
-            get.ModifiedDate = DateTime.UtcNow;
-            
-            _uow.Save(get);
-            ctx.UpdateAsync(get, ChangeType.CHANGE);
         }
     }
 }

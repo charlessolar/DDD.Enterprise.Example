@@ -30,16 +30,13 @@ namespace Demo.Library.Algorithms.Cardinality.Hash
 
     internal class Murmur3 : IHashFunction
     {
-        private static readonly Murmur128 murmurHash = MurmurHash.Create128(managed: true, preference: AlgorithmPreference.X64);
+        private static readonly Murmur128 MurmurHash = Murmur.MurmurHash.Create128(managed: true, preference: AlgorithmPreference.X64);
 
         public ulong GetHashCode(byte[] bytes)
         {
-            return BitConverter.ToUInt64(murmurHash.ComputeHash(bytes), 0);
+            return BitConverter.ToUInt64(MurmurHash.ComputeHash(bytes), 0);
         }
 
-        public HashFunctionId HashFunctionId
-        {
-            get { return HashFunctionId.Murmur3; }
-        }
+        public HashFunctionId HashFunctionId => HashFunctionId.Murmur3;
     }
 }

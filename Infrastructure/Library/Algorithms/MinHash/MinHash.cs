@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.MinHash
@@ -19,7 +17,7 @@ namespace Demo.Library.Algorithms.MinHash
     /// </summary>
     public static class MinHash
     {
-        private static FastRandom random = new FastRandom();
+        private static readonly FastRandom Random = new FastRandom();
 
         /// <summary>
         /// Returns the similarity between two bags.
@@ -33,15 +31,15 @@ namespace Demo.Library.Algorithms.MinHash
             var hashes = new int[k];
             for (int i = 0; i < k; i++)
             {
-                var a = random.Next();
-                var b = random.Next();
-                var c = random.Next();
-                var x = computeHash((uint)(a * b * c), (uint)a, (uint)b, c);
+                var a = Random.Next();
+                var b = Random.Next();
+                var c = Random.Next();
+                var x = ComputeHash((uint)(a * b * c), (uint)a, (uint)b, c);
                 hashes[i] = (int)x;
             }
 
-            var bMap = bitMap(bag1, bag2);
-            var minHashValues = hashBuckets(2, k);
+            var bMap = BitMap(bag1, bag2);
+            var minHashValues = HashBuckets(2, k);
             minHash(bag1, 0, minHashValues, bMap, k, hashes);
             minHash(bag2, 1, minHashValues, bMap, k, hashes);
             return similarity(minHashValues, k);
@@ -55,8 +53,7 @@ namespace Demo.Library.Algorithms.MinHash
             int k,
             int[] hashes)
         {
-            var options = new ParallelOptions();
-            options.MaxDegreeOfParallelism = 4;
+            var options = new ParallelOptions {MaxDegreeOfParallelism = 4};
             var index = 0;
 
             foreach (var element in bitArray)
@@ -76,7 +73,7 @@ namespace Demo.Library.Algorithms.MinHash
             }
         }
 
-        private static Dictionary<string, bool[]> bitMap(string[] bag1, string[] bag2)
+        private static Dictionary<string, bool[]> BitMap(string[] bag1, string[] bag2)
         {
             var bitArray = new Dictionary<string, bool[]>();
             foreach (var element in bag1)
@@ -99,7 +96,7 @@ namespace Demo.Library.Algorithms.MinHash
             return bitArray;
         }
 
-        private static int[][] hashBuckets(int numSets, int k)
+        private static int[][] HashBuckets(int numSets, int k)
         {
             var minHashValues = new int[numSets][];
             for (int i = 0; i < numSets; i++)
@@ -117,7 +114,7 @@ namespace Demo.Library.Algorithms.MinHash
             return minHashValues;
         }
 
-        private static uint computeHash(uint x, uint a, uint b, int u)
+        private static uint ComputeHash(uint x, uint a, uint b, int u)
         {
             return (a * x + b) >> (32 - u);
         }

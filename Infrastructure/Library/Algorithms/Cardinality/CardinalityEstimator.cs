@@ -52,44 +52,44 @@ namespace Demo.Library.Algorithms.Cardinality
         ICardinalityEstimator<byte[]>
     {
         /// <summary> Number of bits for indexing HLL substreams - the number of estimators is 2^bitsPerIndex </summary>
-        private readonly int bitsPerIndex;
+        private readonly int _bitsPerIndex;
 
         /// <summary> Number of bits to compute the HLL estimate on </summary>
-        private readonly int bitsForHll;
+        private readonly int _bitsForHll;
 
         /// <summary> HLL lookup table size </summary>
-        private readonly int m;
+        private readonly int _m;
 
         /// <summary> Fixed bias correction factor </summary>
-        private readonly double alphaM;
+        private readonly double _alphaM;
 
         /// <summary> Threshold determining whether to use LinearCounting or HyperLogLog based on an initial estimate </summary>
-        private readonly double subAlgorithmSelectionThreshold;
+        private readonly double _subAlgorithmSelectionThreshold;
 
         /// <summary> Lookup table for the dense representation </summary>
-        private byte[] lookupDense;
+        private byte[] _lookupDense;
 
         /// <summary> Lookup dictionary for the sparse representation </summary>
-        private IDictionary<ushort, byte> lookupSparse;
+        private IDictionary<ushort, byte> _lookupSparse;
 
         /// <summary> Max number of elements to hold in the sparse representation </summary>
-        private readonly int sparseMaxElements;
+        private readonly int _sparseMaxElements;
 
         /// <summary> Indicates that the sparse representation is currently used </summary>
-        private bool isSparse;
+        private bool _isSparse;
 
         /// <summary> Set for direct counting of elements </summary>
-        private HashSet<ulong> directCount;
+        private HashSet<ulong> _directCount;
 
         /// <summary> Max number of elements to hold in the direct representation </summary>
         private const int DirectCounterMaxElements = 100;
 
         /// <summary> ID of hash function used </summary>
-        private readonly HashFunctionId hashFunctionId;
+        private readonly HashFunctionId _hashFunctionId;
 
         /// <summary> Hash function used </summary>
         [NonSerialized]
-        private IHashFunction hashFunction;
+        private IHashFunction _hashFunction;
         /// <summary>
         ///     C'tor
         /// </summary>
@@ -108,44 +108,44 @@ namespace Demo.Library.Algorithms.Cardinality
         /// </summary>
         internal CardinalityEstimator(CardinalityEstimatorState state)
         {
-            this.bitsPerIndex = state.BitsPerIndex;
-            this.bitsForHll = 64 - this.bitsPerIndex;
-            this.m = (int)Math.Pow(2, this.bitsPerIndex);
-            this.alphaM = GetAlphaM(this.m);
-            this.subAlgorithmSelectionThreshold = GetSubAlgorithmSelectionThreshold(this.bitsPerIndex);
+            this._bitsPerIndex = state.BitsPerIndex;
+            this._bitsForHll = 64 - this._bitsPerIndex;
+            this._m = (int)Math.Pow(2, this._bitsPerIndex);
+            this._alphaM = GetAlphaM(this._m);
+            this._subAlgorithmSelectionThreshold = GetSubAlgorithmSelectionThreshold(this._bitsPerIndex);
 
             // Init the hash function
-            this.hashFunctionId = state.HashFunctionId;
-            this.hashFunction = HashFunctionFactory.GetHashFunction(this.hashFunctionId);
+            this._hashFunctionId = state.HashFunctionId;
+            this._hashFunction = HashFunctionFactory.GetHashFunction(this._hashFunctionId);
 
             // Init the direct count
-            this.directCount = state.DirectCount != null ? new HashSet<ulong>(state.DirectCount) : null;
+            this._directCount = state.DirectCount != null ? new HashSet<ulong>(state.DirectCount) : null;
 
             // Init the sparse representation
-            this.isSparse = state.IsSparse;
-            this.lookupSparse = state.LookupSparse != null ? new Dictionary<ushort, byte>(state.LookupSparse) : null;
-            this.lookupDense = state.LookupDense;
+            this._isSparse = state.IsSparse;
+            this._lookupSparse = state.LookupSparse != null ? new Dictionary<ushort, byte>(state.LookupSparse) : null;
+            this._lookupDense = state.LookupDense;
             this.CountAdditions = state.CountAdditions;
 
             // Each element in the sparse representation takes 15 bytes, and there is some constant overhead
-            this.sparseMaxElements = Math.Max(0, this.m / 15 - 10);
+            this._sparseMaxElements = Math.Max(0, this._m / 15 - 10);
             // If necessary, switch to the dense representation
-            if (this.sparseMaxElements <= 0)
+            if (this._sparseMaxElements <= 0)
             {
                 SwitchToDenseRepresentation();
             }
 
             // if DirectCount is not null, populate the HLL lookup with its elements.  This allows serialization to include only directCount
-            if (this.directCount != null)
+            if (this._directCount != null)
             {
-                foreach (ulong element in this.directCount)
+                foreach (ulong element in this._directCount)
                 {
                     AddElementHash(element);
                 }
             }
             else
             {
-                this.directCount = null;
+                this._directCount = null;
             }
         }
 
@@ -211,31 +211,31 @@ namespace Demo.Library.Algorithms.Cardinality
         public ulong Count()
         {
             // If only a few elements have been seen, return the exact count
-            if (this.directCount != null)
+            if (this._directCount != null)
             {
-                return (ulong)this.directCount.Count;
+                return (ulong)this._directCount.Count;
             }
 
             double zInverse = 0;
             double v = 0;
 
-            if (this.isSparse)
+            if (this._isSparse)
             {
                 // calc c and Z's inverse
-                foreach (KeyValuePair<ushort, byte> kvp in this.lookupSparse)
+                foreach (KeyValuePair<ushort, byte> kvp in this._lookupSparse)
                 {
                     byte sigma = kvp.Value;
                     zInverse += Math.Pow(2, -sigma);
                 }
-                v = this.m - this.lookupSparse.Count;
-                zInverse += (this.m - this.lookupSparse.Count);
+                v = this._m - this._lookupSparse.Count;
+                zInverse += (this._m - this._lookupSparse.Count);
             }
             else
             {
                 // calc c and Z's inverse
-                for (var i = 0; i < this.m; i++)
+                for (var i = 0; i < this._m; i++)
                 {
-                    byte sigma = this.lookupDense[i];
+                    byte sigma = this._lookupDense[i];
                     zInverse += Math.Pow(2, -sigma);
                     if (sigma == 0)
                     {
@@ -244,24 +244,24 @@ namespace Demo.Library.Algorithms.Cardinality
                 }
             }
 
-            double e = this.alphaM * this.m * this.m / zInverse;
-            if (e <= 5.0 * this.m)
+            double e = this._alphaM * this._m * this._m / zInverse;
+            if (e <= 5.0 * this._m)
             {
-                e = BiasCorrection.CorrectBias(e, this.bitsPerIndex);
+                e = BiasCorrection.CorrectBias(e, this._bitsPerIndex);
             }
 
             double h;
             if (v > 0)
             {
                 // LinearCounting estimate
-                h = this.m * Math.Log(this.m / v);
+                h = this._m * Math.Log(this._m / v);
             }
             else
             {
                 h = e;
             }
 
-            if (h <= this.subAlgorithmSelectionThreshold)
+            if (h <= this._subAlgorithmSelectionThreshold)
             {
                 return (ulong)Math.Round(h);
             }
@@ -276,30 +276,30 @@ namespace Demo.Library.Algorithms.Cardinality
         {
             if (other == null)
             {
-                throw new ArgumentNullException("other");
+                throw new ArgumentNullException(nameof(other));
             }
 
-            if (other.m != this.m)
+            if (other._m != this._m)
             {
-                throw new ArgumentOutOfRangeException("other",
+                throw new ArgumentOutOfRangeException(nameof(other),
                     "Cannot merge CardinalityEstimator instances with different accuracy/map sizes");
             }
 
             this.CountAdditions += other.CountAdditions;
-            if (this.isSparse && other.isSparse)
+            if (this._isSparse && other._isSparse)
             {
                 // Merge two sparse instances
-                foreach (KeyValuePair<ushort, byte> kvp in other.lookupSparse)
+                foreach (KeyValuePair<ushort, byte> kvp in other._lookupSparse)
                 {
                     ushort index = kvp.Key;
                     byte otherRank = kvp.Value;
                     byte thisRank;
-                    this.lookupSparse.TryGetValue(index, out thisRank);
-                    this.lookupSparse[index] = Math.Max(thisRank, otherRank);
+                    this._lookupSparse.TryGetValue(index, out thisRank);
+                    this._lookupSparse[index] = Math.Max(thisRank, otherRank);
                 }
 
                 // Switch to dense if necessary
-                if (this.lookupSparse.Count > this.sparseMaxElements)
+                if (this._lookupSparse.Count > this._sparseMaxElements)
                 {
                     SwitchToDenseRepresentation();
                 }
@@ -308,36 +308,33 @@ namespace Demo.Library.Algorithms.Cardinality
             {
                 // Make sure this (target) instance is dense, then merge
                 SwitchToDenseRepresentation();
-                if (other.isSparse)
+                if (other._isSparse)
                 {
-                    foreach (KeyValuePair<ushort, byte> kvp in other.lookupSparse)
+                    foreach (KeyValuePair<ushort, byte> kvp in other._lookupSparse)
                     {
                         ushort index = kvp.Key;
                         byte rank = kvp.Value;
-                        this.lookupDense[index] = Math.Max(this.lookupDense[index], rank);
+                        this._lookupDense[index] = Math.Max(this._lookupDense[index], rank);
                     }
                 }
                 else
                 {
-                    for (var i = 0; i < this.m; i++)
+                    for (var i = 0; i < this._m; i++)
                     {
-                        this.lookupDense[i] = Math.Max(this.lookupDense[i], other.lookupDense[i]);
+                        this._lookupDense[i] = Math.Max(this._lookupDense[i], other._lookupDense[i]);
                     }
                 }
             }
 
-            if (other.directCount != null)
+            if (other._directCount != null)
             {
                 // Other instance is using direct counter. If this instance is also using direct counter, merge them.
-                if (this.directCount != null)
-                {
-                    this.directCount.UnionWith(other.directCount);
-                }
+                _directCount?.UnionWith(other._directCount);
             }
             else
             {
                 // Other instance is not using direct counter, make sure this instance doesn't either
-                this.directCount = null;
+                this._directCount = null;
             }
         }
 
@@ -350,11 +347,11 @@ namespace Demo.Library.Algorithms.Cardinality
         {
             if (!estimators.Any())
             {
-                throw new ArgumentException(string.Format("Was asked to merge 0 instances of {0}", typeof(CardinalityEstimator)),
-                    "estimators");
+                throw new ArgumentException($"Was asked to merge 0 instances of {typeof(CardinalityEstimator)}",
+                    nameof(estimators));
             }
 
-            var ans = new CardinalityEstimator(estimators[0].bitsPerIndex);
+            var ans = new CardinalityEstimator(estimators[0]._bitsPerIndex);
             foreach (CardinalityEstimator estimator in estimators)
             {
                 ans.Merge(estimator);
@@ -367,12 +364,12 @@ namespace Demo.Library.Algorithms.Cardinality
         {
             return new CardinalityEstimatorState
             {
-                BitsPerIndex = this.bitsPerIndex,
-                DirectCount = this.directCount,
-                IsSparse = this.isSparse,
-                LookupDense = this.lookupDense,
-                LookupSparse = this.lookupSparse,
-                HashFunctionId = this.hashFunctionId,
+                BitsPerIndex = this._bitsPerIndex,
+                DirectCount = this._directCount,
+                IsSparse = this._isSparse,
+                LookupDense = this._lookupDense,
+                LookupSparse = this._lookupSparse,
+                HashFunctionId = this._hashFunctionId,
                 CountAdditions = this.CountAdditions,
             };
         }
@@ -386,7 +383,7 @@ namespace Demo.Library.Algorithms.Cardinality
         {
             if (b < 4 || b > 16)
             {
-                throw new ArgumentOutOfRangeException("b", b, "Accuracy out of range, legal range is 4 <= BitsPerIndex <= 16");
+                throw new ArgumentOutOfRangeException(nameof(b), b, "Accuracy out of range, legal range is 4 <= BitsPerIndex <= 16");
             }
 
             return new CardinalityEstimatorState
@@ -443,7 +440,7 @@ namespace Demo.Library.Algorithms.Cardinality
                 case 18:
                     return 350000;
             }
-            throw new ArgumentOutOfRangeException("bits", "Unexpected number of bits (should never happen)");
+            throw new ArgumentOutOfRangeException(nameof(bits), "Unexpected number of bits (should never happen)");
         }
 
         /// <summary>
@@ -452,30 +449,30 @@ namespace Demo.Library.Algorithms.Cardinality
         /// <param name="hashCode">Hash code of the element to add</param>
         private void AddElementHash(ulong hashCode)
         {
-            if (this.directCount != null)
+            if (this._directCount != null)
             {
-                this.directCount.Add(hashCode);
-                if (this.directCount.Count > DirectCounterMaxElements)
+                this._directCount.Add(hashCode);
+                if (this._directCount.Count > DirectCounterMaxElements)
                 {
-                    this.directCount = null;
+                    this._directCount = null;
                 }
             }
 
-            var substream = (ushort)(hashCode >> this.bitsForHll);
-            byte sigma = GetSigma(hashCode, this.bitsForHll);
-            if (this.isSparse)
+            var substream = (ushort)(hashCode >> this._bitsForHll);
+            byte sigma = GetSigma(hashCode, this._bitsForHll);
+            if (this._isSparse)
             {
                 byte prevRank;
-                this.lookupSparse.TryGetValue(substream, out prevRank);
-                this.lookupSparse[substream] = Math.Max(prevRank, sigma);
-                if (this.lookupSparse.Count > this.sparseMaxElements)
+                this._lookupSparse.TryGetValue(substream, out prevRank);
+                this._lookupSparse[substream] = Math.Max(prevRank, sigma);
+                if (this._lookupSparse.Count > this._sparseMaxElements)
                 {
                     SwitchToDenseRepresentation();
                 }
             }
             else
             {
-                this.lookupDense[substream] = Math.Max(this.lookupDense[substream], sigma);
+                this._lookupDense[substream] = Math.Max(this._lookupDense[substream], sigma);
             }
         }
 
@@ -518,7 +515,7 @@ namespace Demo.Library.Algorithms.Cardinality
         /// <returns>The hash code of <paramref name="bytes"/></returns>
         private ulong GetHashCode(byte[] bytes)
         {
-            return this.hashFunction.GetHashCode(bytes);
+            return this._hashFunction.GetHashCode(bytes);
         }
 
         /// <summary>
@@ -549,25 +546,25 @@ namespace Demo.Library.Algorithms.Cardinality
         /// </summary>
         private void SwitchToDenseRepresentation()
         {
-            if (!this.isSparse)
+            if (!this._isSparse)
             {
                 return;
             }
 
-            this.lookupDense = new byte[this.m];
-            foreach (KeyValuePair<ushort, byte> kvp in this.lookupSparse)
+            this._lookupDense = new byte[this._m];
+            foreach (KeyValuePair<ushort, byte> kvp in this._lookupSparse)
             {
                 int index = kvp.Key;
-                this.lookupDense[index] = kvp.Value;
+                this._lookupDense[index] = kvp.Value;
             }
-            this.lookupSparse = null;
-            this.isSparse = false;
+            this._lookupSparse = null;
+            this._isSparse = false;
         }
 
         [OnDeserialized]
         internal void SetHashFunctionAfterDeserializing(StreamingContext context)
         {
-            this.hashFunction = HashFunctionFactory.GetHashFunction(this.hashFunctionId);
+            this._hashFunction = HashFunctionFactory.GetHashFunction(this._hashFunctionId);
         }
     }
 }

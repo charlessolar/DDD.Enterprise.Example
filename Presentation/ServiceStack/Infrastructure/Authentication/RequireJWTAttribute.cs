@@ -9,11 +9,11 @@ using System.Net;
 namespace Demo.Presentation.ServiceStack.Infrastructure.Authentication
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
-    public class RequireJWTAttribute : RequestFilterAttribute
+    public class RequireJwtAttribute : RequestFilterAttribute
     {
         public IContainer Container { get; set; }
 
-        public RequireJWTAttribute(ApplyTo applyTo = ApplyTo.All)
+        public RequireJwtAttribute(ApplyTo applyTo = ApplyTo.All)
             : base(applyTo)
         {
             this.Priority = (int)RequestFilterPriority.Authenticate;

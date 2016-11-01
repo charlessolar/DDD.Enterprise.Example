@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.Bloom
 {
@@ -25,13 +21,13 @@ namespace Demo.Library.Algorithms.Bloom
                 ScalableBloomState data = filter.GetState();
 
                 bw.Write(data.R);
-                bw.Write(data.FP);
+                bw.Write(data.Fp);
                 bw.Write(data.P);
                 bw.Write(data.Hint);
 
-                bw.Write(data.partitions.Length);
+                bw.Write(data.Partitions.Length);
 
-                foreach (var partition in data.partitions)
+                foreach (var partition in data.Partitions)
                     ParitionedBloomSerializer.Serialize(bw, partition);
 
                 bw.Flush();
@@ -46,12 +42,12 @@ namespace Demo.Library.Algorithms.Bloom
 
                 AssertDataVersionCanBeRead(dataFormatMajorVersion, dataFormatMinorVersion);
 
-                double R = br.ReadDouble();
-                double FP = br.ReadDouble();
-                double P = br.ReadDouble();
-                uint Hint = br.ReadUInt32();
+                double r = br.ReadDouble();
+                double fp = br.ReadDouble();
+                double p = br.ReadDouble();
+                uint hint = br.ReadUInt32();
 
-                Int32 count = br.ReadInt32();
+                int count = br.ReadInt32();
                 var stored = new List<PartitionedBloomState>();
                 for (var i = 0; i < count; i++)
                 {
@@ -61,11 +57,11 @@ namespace Demo.Library.Algorithms.Bloom
 
                 var data = new ScalableBloomState
                 {
-                    partitions = stored.ToArray(),
-                    R = R,
-                    FP = FP,
-                    P = P,
-                    Hint = Hint
+                    Partitions = stored.ToArray(),
+                    R = r,
+                    Fp = fp,
+                    P = p,
+                    Hint = hint
                 };
 
                 var result = new ScalableBloomFilter(data);
@@ -80,8 +76,7 @@ namespace Demo.Library.Algorithms.Bloom
             if (dataFormatMajorVersion > DataFormatMajorVersion)
             {
                 throw new SerializationException(
-                    string.Format("Incompatible data format, can't deserialize data version {0}.{1} (serializer version: {2}.{3})",
-                        dataFormatMajorVersion, dataFormatMinorVersion, DataFormatMajorVersion, DataFormatMinorVersion));
+                    $"Incompatible data format, can't deserialize data version {dataFormatMajorVersion}.{dataFormatMinorVersion} (serializer version: {DataFormatMajorVersion}.{DataFormatMinorVersion})");
             }
         }
     }
@@ -110,12 +105,12 @@ namespace Demo.Library.Algorithms.Bloom
         internal static void Serialize(BinaryWriter bw, PartitionedBloomState state)
         {
             bw.Write(state.M);
-            bw.Write(state.k);
+            bw.Write(state.K);
             bw.Write(state.S);
-            bw.Write(state.count);
+            bw.Write(state.Count);
 
-            bw.Write(state.buckets.Length);
-            foreach (var bucket in state.buckets)
+            bw.Write(state.Buckets.Length);
+            foreach (var bucket in state.Buckets)
                 BucketSerializer.Serialize(bw, bucket);
 
         }
@@ -133,12 +128,12 @@ namespace Demo.Library.Algorithms.Bloom
         }
         internal static PartitionedBloomState Deserialize(BinaryReader br)
         {
-            uint M = br.ReadUInt32();
+            uint m = br.ReadUInt32();
             uint k = br.ReadUInt32();
-            uint S = br.ReadUInt32();
+            uint s = br.ReadUInt32();
             uint count = br.ReadUInt32();
 
-            Int32 buckets = br.ReadInt32();
+            int buckets = br.ReadInt32();
             var stored = new List<BucketState>();
             for (var i = 0; i < buckets; i++)
             {
@@ -147,11 +142,11 @@ namespace Demo.Library.Algorithms.Bloom
 
             return new PartitionedBloomState
             {
-                buckets = stored.ToArray(),
-                M = M,
-                k = k,
-                S = S,
-                count = count
+                Buckets = stored.ToArray(),
+                M = m,
+                K = k,
+                S = s,
+                Count = count
             };
         }
 
@@ -160,8 +155,7 @@ namespace Demo.Library.Algorithms.Bloom
             if (dataFormatMajorVersion > DataFormatMajorVersion)
             {
                 throw new SerializationException(
-                    string.Format("Incompatible data format, can't deserialize data version {0}.{1} (serializer version: {2}.{3})",
-                        dataFormatMajorVersion, dataFormatMinorVersion, DataFormatMajorVersion, DataFormatMinorVersion));
+                    $"Incompatible data format, can't deserialize data version {dataFormatMajorVersion}.{dataFormatMinorVersion} (serializer version: {DataFormatMajorVersion}.{DataFormatMinorVersion})");
             }
         }
     }
@@ -169,10 +163,10 @@ namespace Demo.Library.Algorithms.Bloom
     {
         public static void Serialize(BinaryWriter bw, BucketState state)
         {
-            bw.Write(state.bucketSize);
-            bw.Write(state.max);
-            bw.Write(state.count);
-            bw.Write(state.data);
+            bw.Write(state.BucketSize);
+            bw.Write(state.Max);
+            bw.Write(state.Count);
+            bw.Write(state.Data);
         }
         public static BucketState Deserialize(BinaryReader br)
         {
@@ -180,14 +174,14 @@ namespace Demo.Library.Algorithms.Bloom
             byte max = br.ReadByte();
             uint count = br.ReadUInt32();
 
-            byte[] data = br.ReadBytes((Int32)(count * bucketSize + 7) / 8);
+            byte[] data = br.ReadBytes((int)(count * bucketSize + 7) / 8);
 
             return new BucketState
             {
-                bucketSize = bucketSize,
-                max = max,
-                count = count,
-                data = data,
+                BucketSize = bucketSize,
+                Max = max,
+                Count = count,
+                Data = data,
             };
         }
     }

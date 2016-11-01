@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.CountMin
 {
@@ -34,8 +31,8 @@ namespace Demo.Library.Algorithms.CountMin
         /// <summary>
         /// Count matrix
         /// </summary>
-        internal UInt64[][] Matrix { get; set; }
-        private readonly Object _lock = new object();
+        internal ulong[][] Matrix { get; set; }
+        private readonly object _lock = new object();
         /// <summary>
         /// Matrix width
         /// </summary>
@@ -47,7 +44,7 @@ namespace Demo.Library.Algorithms.CountMin
         /// <summary>
         /// Number of items added
         /// </summary>
-        private UInt64 count { get; set; }
+        private ulong count { get; set; }
         /// <summary>
         /// Relative-accuracy factor
         /// </summary>
@@ -72,13 +69,13 @@ namespace Demo.Library.Algorithms.CountMin
         {
             var width = (uint)(Math.Ceiling(Math.E / epsilon));
             var depth = (uint)(Math.Ceiling(Math.Log(1 / delta)));
-            this.Matrix = new UInt64[depth][];
+            this.Matrix = new ulong[depth][];
 
             lock (_lock)
             {
                 for (int i = 0; i < depth; i++)
                 {
-                    this.Matrix[i] = new UInt64[width];
+                    this.Matrix[i] = new ulong[width];
                 }
             }
 
@@ -123,42 +120,42 @@ namespace Demo.Library.Algorithms.CountMin
         /// Returns the number of items added to the sketch.
         /// </summary>
         /// <returns>The number of items added to the sketch.</returns>
-        public UInt64 TotalCount()
+        public ulong TotalCount()
         {
             return this.count;
         }
 
-        public UInt64 Add(string element)
+        public ulong Add(string element)
         {
             return Add(Encoding.UTF8.GetBytes(element));
         }
 
-        public UInt64 Add(int element)
+        public ulong Add(int element)
         {
             return Add(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Add(uint element)
+        public ulong Add(uint element)
         {
             return Add(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Add(long element)
+        public ulong Add(long element)
         {
             return Add(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Add(ulong element)
+        public ulong Add(ulong element)
         {
             return Add(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Add(float element)
+        public ulong Add(float element)
         {
             return Add(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Add(double element)
+        public ulong Add(double element)
         {
             return Add(BitConverter.GetBytes(element));
         }
@@ -167,7 +164,7 @@ namespace Demo.Library.Algorithms.CountMin
         /// </summary>
         /// <param name="data">The data to add.</param>
         /// <returns>The CountMinSketch</returns>
-        public UInt64 Add(byte[] data)
+        public ulong Add(byte[] data)
         {
             var hashKernel = Utils.HashKernel(data, this.Hash);
             var lower = hashKernel.LowerBaseHash;
@@ -185,7 +182,7 @@ namespace Demo.Library.Algorithms.CountMin
             this.count++;
             return Count(data);
         }
-        public UInt64 Remove(byte[] data)
+        public ulong Remove(byte[] data)
         {
             var hashKernel = Utils.HashKernel(data, this.Hash);
             var lower = hashKernel.LowerBaseHash;
@@ -204,37 +201,37 @@ namespace Demo.Library.Algorithms.CountMin
             return Count(data);
         }
 
-        public UInt64 Remove(string element)
+        public ulong Remove(string element)
         {
             return Remove(Encoding.UTF8.GetBytes(element));
         }
 
-        public UInt64 Remove(int element)
+        public ulong Remove(int element)
         {
             return Remove(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Remove(uint element)
+        public ulong Remove(uint element)
         {
             return Remove(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Remove(long element)
+        public ulong Remove(long element)
         {
             return Remove(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Remove(ulong element)
+        public ulong Remove(ulong element)
         {
             return Remove(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Remove(float element)
+        public ulong Remove(float element)
         {
             return Remove(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Remove(double element)
+        public ulong Remove(double element)
         {
             return Remove(BitConverter.GetBytes(element));
         }
@@ -244,12 +241,12 @@ namespace Demo.Library.Algorithms.CountMin
         /// </summary>
         /// <param name="data"></param>
         /// <returns>The data to count.</returns>
-        public UInt64 Count(byte[] data)
+        public ulong Count(byte[] data)
         {
             var hashKernel = Utils.HashKernel(data, this.Hash);
             var lower = hashKernel.LowerBaseHash;
             var upper = hashKernel.UpperBaseHash;
-            var count = UInt64.MaxValue;
+            var count = ulong.MaxValue;
 
             for (uint i = 0; i < this.Depth; i++)
             {
@@ -258,37 +255,37 @@ namespace Demo.Library.Algorithms.CountMin
 
             return count;
         }
-        public UInt64 Count(string element)
+        public ulong Count(string element)
         {
             return Count(Encoding.UTF8.GetBytes(element));
         }
 
-        public UInt64 Count(int element)
+        public ulong Count(int element)
         {
             return Count(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Count(uint element)
+        public ulong Count(uint element)
         {
             return Count(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Count(long element)
+        public ulong Count(long element)
         {
             return Count(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Count(ulong element)
+        public ulong Count(ulong element)
         {
             return Count(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Count(float element)
+        public ulong Count(float element)
         {
             return Count(BitConverter.GetBytes(element));
         }
 
-        public UInt64 Count(double element)
+        public ulong Count(double element)
         {
             return Count(BitConverter.GetBytes(element));
         }
@@ -336,10 +333,10 @@ namespace Demo.Library.Algorithms.CountMin
         {
             lock (_lock)
             {
-                this.Matrix = new UInt64[this.Depth][];
+                this.Matrix = new ulong[this.Depth][];
                 for (uint i = 0; i < this.Depth; i++)
                 {
-                    this.Matrix[i] = new UInt64[this.Width];
+                    this.Matrix[i] = new ulong[this.Width];
                 }
             }
 

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Internal
 {
@@ -43,15 +40,9 @@ namespace Demo.Library.Internal
                 set { _enumerator = value; }
             }
 
-            public TItem Current
-            {
-                get { return Enumerator.Current; }
-            }
+            public TItem Current => Enumerator.Current;
 
-            object IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object IEnumerator.Current => Current;
 
             public bool MoveNext()
             {

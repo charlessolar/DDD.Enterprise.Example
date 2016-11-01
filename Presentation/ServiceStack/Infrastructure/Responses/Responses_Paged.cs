@@ -1,24 +1,22 @@
 ﻿
 using ServiceStack;
-using ServiceStack.Model;
-using System;
 using System.Collections.Generic;
 
 namespace Demo.Presentation.ServiceStack.Infrastructure.Responses
 {
-    public class Responses_Paged<TResponse>
+    public class ResponsesPaged<TResponse>
     {
         public IEnumerable<TResponse> Records { get; set; }
 
-        public Int64 Total { get; set; }
+        public long Total { get; set; }
 
-        public Int64 ElapsedMs { get; set; }
+        public long ElapsedMs { get; set; }
 
-        public String SubscriptionId { get; set; }
+        public string SubscriptionId { get; set; }
 
-        public Int32? SubscriptionTime { get; set; }
+        public int? SubscriptionTime { get; set; }
 
-        public String Etag { get; set; }
+        public string Etag { get; set; }
 
         public ResponseStatus ResponseStatus { get; set; }
     }

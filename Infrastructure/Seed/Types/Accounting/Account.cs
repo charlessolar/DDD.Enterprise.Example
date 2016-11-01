@@ -1,6 +1,5 @@
 ﻿using Demo.Domain.Accounting.Account;
 using Seed.Types.Configuration;
-using Seed.Types.Relations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

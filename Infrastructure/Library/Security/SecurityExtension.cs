@@ -5,29 +5,29 @@ namespace Demo.Library.Extensions
 {
     public static class SecurityExtension
     {
-        public static String GetSecurityContext(this Type Type)
+        public static string GetSecurityContext(this Type type)
         {
-            return Type.FullName;
+            return type.FullName;
         }
 
-        public static String GetSecurityContext(this PropertyInfo Property)
+        public static string GetSecurityContext(this PropertyInfo property)
         {
-            return String.Format("{0}/{2}", Property.DeclaringType.FullName, Property.Name);
+            return string.Format("{0}/{2}", property.DeclaringType.FullName, property.Name);
         }
 
-        public static String GetSecurityContext(this TypeInfo Type)
+        public static string GetSecurityContext(this TypeInfo type)
         {
-            return Type.FullName;
+            return type.FullName;
         }
 
-        public static String GetSecurityContext(this MethodInfo Method)
+        public static string GetSecurityContext(this MethodInfo method)
         {
-            if (Method.IsSpecialName && (Method.Name.StartsWith("get_") || Method.Name.StartsWith("set_")))
+            if (method.IsSpecialName && (method.Name.StartsWith("get_") || method.Name.StartsWith("set_")))
             {
                 // Is property
-                return String.Format("{0}/{1}", Method.DeclaringType.FullName, Method.Name.Substring(4));
+                return $"{method.DeclaringType.FullName}/{method.Name.Substring(4)}";
             }
-            return String.Format("{0}/{1}", Method.DeclaringType.FullName, Method.Name);
+            return $"{method.DeclaringType.FullName}/{method.Name}";
         }
     }
 }

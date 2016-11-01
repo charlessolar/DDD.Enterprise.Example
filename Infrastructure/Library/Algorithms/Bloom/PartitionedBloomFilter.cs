@@ -15,11 +15,9 @@ copies or substantial portions of the Software.
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.Bloom
 {
@@ -39,7 +37,7 @@ namespace Demo.Library.Algorithms.Bloom
         IFilter<long>, IFilter<ulong>, IFilter<float>, IFilter<double>,
         IFilter<byte[]>, IEquatable<PartitionedBloomFilter>
     {
-        public Boolean Equals(PartitionedBloomFilter other)
+        public bool Equals(PartitionedBloomFilter other)
         {
             if (this.M != other.M) return false;
             if (this.k != other.k) return false;
@@ -100,21 +98,22 @@ namespace Demo.Library.Algorithms.Bloom
         }
         internal PartitionedBloomFilter(PartitionedBloomState state)
         {
-            this.M = state.M;
-            this.k = state.k;
-            this.S = state.S;
             this.Hash = Defaults.GetDefaultHashAlgorithm();
-            this.Partitions = state.buckets.Select(x => new Buckets(x)).ToArray();
+            this.M = state.M;
+            this.k = state.K;
+            this.S = state.S;
+            this.count = state.Count;
+            this.Partitions = state.Buckets.Select(x => new Buckets(x)).ToArray();
         }
         internal PartitionedBloomState GetState()
         {
             return new PartitionedBloomState
             {
-                buckets = this.Partitions.Select(x => x.GetState()).ToArray(),
+                Buckets = this.Partitions.Select(x => x.GetState()).ToArray(),
                 M = M,
-                k = k,
+                K = k,
                 S = S,
-                count = count
+                Count = count
             };
         }
 
@@ -164,7 +163,7 @@ namespace Demo.Library.Algorithms.Bloom
             for (uint i = 0; i < this.k; i++)
             {
                 uint sum = 0;
-                for (uint j = 0; j < this.Partitions[i].count; j++)
+                for (uint j = 0; j < this.Partitions[i].Count; j++)
                 {
                     sum += this.Partitions[i].Get(j);
                 }

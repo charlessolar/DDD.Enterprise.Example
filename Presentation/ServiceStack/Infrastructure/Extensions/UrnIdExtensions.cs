@@ -1,17 +1,13 @@
 ﻿using Demo.Presentation.ServiceStack.Infrastructure.Queries;
 using ServiceStack;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Presentation.ServiceStack.Infrastructure.Extensions
 {
     public static class UrnIdExtensions
     {
-        public static String GetCacheKey<TResponse>(this Queries_Query<TResponse> query)
+        public static string GetCacheKey<TResponse>(this QueriesQuery<TResponse> query)
         {
             var properties = query.GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
@@ -24,7 +20,7 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.Extensions
 
             return "urn:{0}:{1}".Fmt(query.GetType().FullName, properties.Join(":"));
         }
-        public static String GetCacheKey<TResponse>(this Queries_Paged<TResponse> query)
+        public static string GetCacheKey<TResponse>(this QueriesPaged<TResponse> query)
         {
             var properties = query.GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)

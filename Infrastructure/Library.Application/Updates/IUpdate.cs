@@ -1,18 +1,14 @@
 ﻿using NServiceBus;
-using Demo.Presentation.ServiceStack.Infrastructure.SSE;
+using Demo.Library.SSE;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Updates
 {
-    public interface Update : IMessage
+    public interface IUpdate : IEvent
     {
-        Object Payload { get; set; }
+        object Payload { get; set; }
         ChangeType ChangeType { get; set; }
         DateTime Timestamp { get; set; }
-        String ETag { get; set; }
+        string ETag { get; set; }
     }
 }

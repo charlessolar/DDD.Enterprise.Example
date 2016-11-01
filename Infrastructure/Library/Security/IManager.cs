@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace Demo.Library.Security
+﻿namespace Demo.Library.Security
 {
     public interface IManager
     {
-        Boolean Authorize(String Actor, String Context, String Action);
+        bool Authorize(string actor, string context, string action);
     }
 }

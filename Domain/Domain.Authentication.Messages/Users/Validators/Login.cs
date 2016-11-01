@@ -6,7 +6,6 @@ namespace Demo.Domain.Authentication.Users.Validators
     {
         public Login()
         {
-            RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Email).EmailAddress();
             RuleFor(x => x.NickName).NotEmpty();

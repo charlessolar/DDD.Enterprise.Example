@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.Bloom
 {
@@ -13,7 +10,7 @@ namespace Demo.Library.Algorithms.Bloom
     public class Buckets : IEquatable<Buckets>
     {
         private byte[] Data { get; set; }
-        private byte bucketSize { get; set; }
+        private byte BucketSize { get; set; }
         private byte _max;
         private int Max
         {
@@ -32,7 +29,7 @@ namespace Demo.Library.Algorithms.Bloom
                     _max = (byte)value;
             }
         }
-        internal uint count { get; set; }
+        internal uint Count { get; set; }
 
         /// <summary>
         /// Creates a new Buckets with the provided number of buckets where each bucket
@@ -42,33 +39,33 @@ namespace Demo.Library.Algorithms.Bloom
         /// <param name="bucketSize">Number of bits per bucket.</param>
         internal Buckets(uint count, byte bucketSize)
         {
-            this.count = count;
+            this.Count = count;
             this.Data = new byte[(count * bucketSize + 7) / 8];
-            this.bucketSize = bucketSize;
+            this.BucketSize = bucketSize;
             this.Max = (1 << bucketSize) - 1;
         }
 
         internal Buckets(BucketState state)
         {
-            this.count = state.count;
-            this.Data = state.data;
-            this.bucketSize = state.bucketSize;
-            this.Max = state.max;
+            this.Count = state.Count;
+            this.Data = state.Data;
+            this.BucketSize = state.BucketSize;
+            this.Max = state.Max;
         }
         internal BucketState GetState()
         {
             return new BucketState
             {
-                count = this.count,
-                data = this.Data,
-                bucketSize = this.bucketSize,
-                max = this._max
+                Count = this.Count,
+                Data = this.Data,
+                BucketSize = this.BucketSize,
+                Max = this._max
             };
         }
 
-        public Boolean Equals(Buckets other)
+        public bool Equals(Buckets other)
         {
-            if (this.bucketSize != other.bucketSize) return false;
+            if (this.BucketSize != other.BucketSize) return false;
             if (this._max != other._max) return false;
             if (!this.Data.SequenceEqual(other.Data)) return false;
             return true;
@@ -95,14 +92,14 @@ namespace Demo.Library.Algorithms.Bloom
         /// <returns>The modified bucket.</returns>
         internal Buckets Increment(uint bucket, int delta)
         {
-            int val = (int)(GetBits(bucket * this.bucketSize, this.bucketSize) + delta);
+            int val = (int)(GetBits(bucket * this.BucketSize, this.BucketSize) + delta);
 
             if (val > this.Max)
                 val = this.Max;
             else if (val < 0)
                 val = 0;
 
-            SetBits((uint)bucket * (uint)this.bucketSize, this.bucketSize, (uint)val);
+            SetBits((uint)bucket * (uint)this.BucketSize, this.BucketSize, (uint)val);
             return this;
         }
 
@@ -118,7 +115,7 @@ namespace Demo.Library.Algorithms.Bloom
             if (value > this._max)
                 value = this._max;
 
-            SetBits(bucket * this.bucketSize, this.bucketSize, value);
+            SetBits(bucket * this.BucketSize, this.BucketSize, value);
             return this;
         }
 
@@ -129,7 +126,7 @@ namespace Demo.Library.Algorithms.Bloom
         /// <returns>The specified bucket.</returns>
         internal uint Get(uint bucket)
         {
-            return GetBits(bucket * this.bucketSize, this.bucketSize);
+            return GetBits(bucket * this.BucketSize, this.BucketSize);
         }
 
         /// <summary>
@@ -139,7 +136,7 @@ namespace Demo.Library.Algorithms.Bloom
         /// <returns>The Buckets object the reset operation was performed on.</returns>
         internal Buckets Reset()
         {
-            this.Data = new byte[(this.count * this.bucketSize + 7) / 8];
+            this.Data = new byte[(this.Count * this.BucketSize + 7) / 8];
             return this;
         }
 

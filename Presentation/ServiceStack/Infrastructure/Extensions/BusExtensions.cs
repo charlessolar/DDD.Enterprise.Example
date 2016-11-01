@@ -1,59 +1,125 @@
-﻿using Aggregates.Messages;
-using NServiceBus;
-using Demo.Library.Exceptions;
+﻿using NServiceBus;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using Demo.Library.Queries;
 using Demo.Library.Command;
 using Aggregates.Extensions;
+using Q = Demo.Presentation.ServiceStack.Infrastructure.Queries;
+using R = Demo.Presentation.ServiceStack.Infrastructure.Responses;
 
 namespace Demo.Presentation.ServiceStack.Infrastructure.Extensions
 {
     public static class BusExtensions
     {
-        private static String RiakEndpoint = ConfigurationManager.AppSettings["destination.riak"];
-        private static String RavenEndpoint = ConfigurationManager.AppSettings["destination.raven"];
-        private static String ElasticEndpoint = ConfigurationManager.AppSettings["destination.elastic"];
-        private static String DomainEndpoint = ConfigurationManager.AppSettings["destination.domain"];
-        public static ICallback SendToRiak<T>(this IBus bus, Action<T> messageConstructor) where T : IQuery
+        private static readonly string RiakEndpoint = ConfigurationManager.AppSettings["destination.riak"];
+        private static readonly string ElasticEndpoint = ConfigurationManager.AppSettings["destination.elastic"];
+        private static readonly string DomainEndpoint = ConfigurationManager.AppSettings["destination.domain"];
+
+        public static async Task<R.ResponsesQuery<TResponse>> RequestToRiak<T, TResponse>(this IMessageSession bus, Action<T> messageConstructor, Q.QueriesQuery<TResponse> query) where T : IQuery where TResponse : class
         {
-            return bus.Send(RiakEndpoint, messageConstructor);
+            var options = new SendOptions();
+            options.SetDestination(RiakEndpoint);
+            options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
+
+            var response = await bus.Request<IMessage>(messageConstructor, options).ConfigureAwait(false);
+            return response.RequestQuery(query);
         }
-        public static ICallback SendToRiak<T>(this IBus bus, T query) where T : IQuery
+        public static async Task<R.ResponsesPaged<TResponse>> RequestToRiak<T, TResponse>(this IMessageSession bus, Action<T> messageConstructor, Q.QueriesPaged<TResponse> query) where T : IPaged where TResponse : class
         {
-            return bus.Send(RiakEndpoint, query);
+            var options = new SendOptions();
+            options.SetDestination(RiakEndpoint);
+            options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
+
+            var response = await bus.Request<IMessage>(messageConstructor, options).ConfigureAwait(false);
+            return response.RequestPaged(query);
         }
-        public static ICallback SendToRaven<T>(this IBus bus, Action<T> messageConstructor) where T : IQuery
+        public static async Task<R.ResponsesQuery<TResponse>> RequestToRiak<T, TResponse>(this IMessageSession bus, T message, Q.QueriesQuery<TResponse> query) where T : IQuery where TResponse : class
         {
-            return bus.Send(RavenEndpoint, messageConstructor);
+            var options = new SendOptions();
+            options.SetDestination(RiakEndpoint);
+            options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
+
+            var response = await bus.Request<IMessage>(message, options).ConfigureAwait(false);
+            return response.RequestQuery(query);
         }
-        public static ICallback SendToRaven<T>(this IBus bus, T query) where T : IQuery
+        public static async Task<R.ResponsesPaged<TResponse>> RequestToRiak<T, TResponse>(this IMessageSession bus, T message, Q.QueriesPaged<TResponse> query) where T : IPaged where TResponse : class
         {
-            return bus.Send(RavenEndpoint, query);
+            var options = new SendOptions();
+            options.SetDestination(RiakEndpoint);
+            options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
+
+            var response = await bus.Request<IMessage>(message, options).ConfigureAwait(false);
+            return response.RequestPaged(query);
         }
-        public static ICallback SendToElastic<T>(this IBus bus, Action<T> messageConstructor) where T : IQuery
+
+
+
+        public static async Task<R.ResponsesQuery<TResponse>> RequestToElastic<T, TResponse>(this IMessageSession bus, Action<T> messageConstructor, Q.QueriesQuery<TResponse> query) where T : IQuery where TResponse : class
         {
-            return bus.Send(ElasticEndpoint, messageConstructor);
+            var options = new SendOptions();
+            options.SetDestination(ElasticEndpoint);
+            options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
+
+            var response = await bus.Request<IMessage>(messageConstructor, options).ConfigureAwait(false);
+            return response.RequestQuery(query);
         }
-        public static ICallback SendToElastic<T>(this IBus bus, T query) where T : IQuery
+        public static async Task<R.ResponsesPaged<TResponse>> RequestToElastic<T, TResponse>(this IMessageSession bus, Action<T> messageConstructor, Q.QueriesPaged<TResponse> query) where T : IPaged where TResponse : class
         {
-            return bus.Send(ElasticEndpoint, query);
+            var options = new SendOptions();
+            options.SetDestination(ElasticEndpoint);
+            options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
+
+            var response = await bus.Request<IMessage>(messageConstructor, options).ConfigureAwait(false);
+            return response.RequestPaged(query);
         }
-        public static Task CommandToDomain<T>(this IBus bus, Action<T> messageConstructor) where T : DemoCommand
+        public static async Task<R.ResponsesQuery<TResponse>> RequestToElastic<T, TResponse>(this IMessageSession bus, T message, Q.QueriesQuery<TResponse> query) where T : IQuery where TResponse : class
         {
-            return bus.Send(DomainEndpoint, messageConstructor).AsCommandResult();
+            var options = new SendOptions();
+            options.SetDestination(RiakEndpoint);
+            options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
+
+            var response = await bus.Request<IMessage>(message, options).ConfigureAwait(false);
+            return response.RequestQuery(query);
         }
-        public static ICallback SendToDomain<T>(this IBus bus, T message)
+        public static async Task<R.ResponsesPaged<TResponse>> RequestToElastic<T, TResponse>(this IMessageSession bus, T message, Q.QueriesPaged<TResponse> query) where T : IPaged where TResponse : class
         {
-            return bus.Send(DomainEndpoint, message);
+            var options = new SendOptions();
+            options.SetDestination(ElasticEndpoint);
+            options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
+
+            var response = await bus.Request<IMessage>(message, options).ConfigureAwait(false);
+            return response.RequestPaged(query);
         }
-        public static Task CommandToDomain<T>(this IBus bus, T message) where T : DemoCommand
+
+
+
+        public static async Task CommandToDomain<T>(this IMessageSession bus, Action<T> messageConstructor) where T : DemoCommand
         {
-            return bus.Command(DomainEndpoint, message);
+            var options = new SendOptions();
+            options.SetDestination(DomainEndpoint);
+            options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
+
+            var response = await bus.Request<IMessage>(messageConstructor, options).ConfigureAwait(false);
+            response.CommandResponse();
+        }
+        public static async Task CommandToDomain<T>(this IMessageSession bus, T message) where T : DemoCommand
+        {
+            var options = new SendOptions();
+            options.SetDestination(DomainEndpoint);
+            options.SetHeader(Aggregates.Defaults.RequestResponse, "1");
+
+            var response = await bus.Request<IMessage>(message, options).ConfigureAwait(false);
+            response.CommandResponse();
+        }
+
+        public static Task SendToDomain<T>(this IMessageSession bus, T message)
+        {
+            var options = new SendOptions();
+            options.SetDestination(DomainEndpoint);
+            options.SetHeader(Aggregates.Defaults.RequestResponse, "0");
+
+            return bus.Send(message, options);
         }
     }
 }

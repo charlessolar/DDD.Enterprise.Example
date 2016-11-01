@@ -1,4 +1,5 @@
-﻿using Aggregates;
+﻿using System.Threading.Tasks;
+using Aggregates;
 using NServiceBus;
 
 namespace Demo.Domain.Authentication.Users
@@ -12,51 +13,51 @@ namespace Demo.Domain.Authentication.Users
         IHandleMessages<Commands.ChangeTimezone>
     {
         private readonly IUnitOfWork _uow;
-        private readonly IBus _bus;
+        
 
-        public Handler(IUnitOfWork uow, IBus bus)
+        public Handler(IUnitOfWork uow)
         {
             _uow = uow;
-            _bus = bus;
+           
         }
 
-        public void Handle(Commands.Login command)
+        public async Task Handle(Commands.Login command, IMessageHandlerContext ctx)
         {
-            var user = _uow.R<User>().Get(command.UserId);
+            var user = await _uow.For<User>().Get(command.CurrentUserId);
 
             if (user == null)
-                user = _uow.R<User>().New(command.UserId);
+                user = await _uow.For<User>().New(command.CurrentUserId);
 
             user.Login(command.Name, command.Email, command.NickName, command.ImageType, command.ImageData);
         }
 
-        public void Handle(Commands.Logout command)
+        public async Task Handle(Commands.Logout command, IMessageHandlerContext ctx)
         {
-            var user = _uow.R<User>().Get(command.UserId);
+            var user = await _uow.For<User>().Get(command.CurrentUserId);
             user.Logout();
         }
 
-        public void Handle(Commands.ChangeAvatar command)
+        public async Task Handle(Commands.ChangeAvatar command, IMessageHandlerContext ctx)
         {
-            var user = _uow.R<User>().Get(command.UserId);
+            var user = await _uow.For<User>().Get(command.CurrentUserId);
             user.ChangeAvatar(command.ImageType, command.ImageData);
         }
 
-        public void Handle(Commands.ChangeEmail command)
+        public async Task Handle(Commands.ChangeEmail command, IMessageHandlerContext ctx)
         {
-            var user = _uow.R<User>().Get(command.UserId);
+            var user = await _uow.For<User>().Get(command.CurrentUserId);
             user.ChangeEmail(command.Email);
         }
 
-        public void Handle(Commands.ChangeName command)
+        public async Task Handle(Commands.ChangeName command, IMessageHandlerContext ctx)
         {
-            var user = _uow.R<User>().Get(command.UserId);
+            var user = await _uow.For<User>().Get(command.CurrentUserId);
             user.ChangeName(command.Name);
         }
 
-        public void Handle(Commands.ChangeTimezone command)
+        public async Task Handle(Commands.ChangeTimezone command, IMessageHandlerContext ctx)
         {
-            var user = _uow.R<User>().Get(command.UserId);
+            var user = await _uow.For<User>().Get(command.CurrentUserId);
             user.ChangeTimezone(command.Timezone);
         }
     }

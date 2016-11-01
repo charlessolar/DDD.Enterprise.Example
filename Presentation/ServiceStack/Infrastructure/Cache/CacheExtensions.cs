@@ -15,7 +15,7 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.Extensions
         /// <param name="obj">The object to be wrapped</param>
         /// <param name="version">Optional initial version</param>
         /// <returns>A wrapper object to serialize into cache</returns>
-        public static Wrapper<T> Wrap<T>(this T obj, Int32 version = 0) where T : class, IHasGuidId
+        public static Wrapper<T> Wrap<T>(this T obj, int version = 0) where T : class, IHasGuidId
         {
             return new Wrapper<T>
             {
@@ -26,7 +26,7 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.Extensions
             };
         }
 
-        public static Wrapper<T> AddSession<T>(this T obj, ICacheClient cache, String session) where T : class, IHasGuidId
+        public static Wrapper<T> AddSession<T>(this T obj, ICacheClient cache, string session) where T : class, IHasGuidId
         {
             var key = UrnId.Create<T>(obj.Id);
 
@@ -34,7 +34,7 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.Extensions
                 ?? obj.Wrap();
 
             if (cached.Sessions == null)
-                cached.Sessions = new List<String>();
+                cached.Sessions = new List<string>();
 
             // Don't allow duplicate session strings, so remove if it exists first
             cached.Sessions.Remove(session);
@@ -45,32 +45,31 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.Extensions
             return cached;
         }
 
-        public static void RemoveSession<T>(this T obj, ICacheClient cache, String session) where T : class, IHasGuidId
+        public static void RemoveSession<T>(this T obj, ICacheClient cache, string session) where T : class, IHasGuidId
         {
             var key = UrnId.Create<T>(obj.Id);
 
             var cached = key.FromCache<T>(cache);
 
-            if (cached == null || cached.Sessions == null) return;
+            if (cached?.Sessions == null) return;
 
             cached.Sessions.Remove(session);
 
             cached.UpdateCache(cache, key);
         }
 
-        public static Wrapper<T> FromCache<T>(this String urn, ICacheClient cache) where T : class, IHasGuidId
+        public static Wrapper<T> FromCache<T>(this string urn, ICacheClient cache) where T : class, IHasGuidId
         {
-            var cached = cache.Get<String>(urn);
-            if (cached == null) return null;
-            return cached.FromJson<Wrapper<T>>();
+            var cached = cache.Get<string>(urn);
+            return cached?.FromJson<Wrapper<T>>();
         }
 
-        public static void AddCache<T>(this Wrapper<T> wrapper, ICacheClient cache, String key) where T : class, IHasGuidId
+        public static void AddCache<T>(this Wrapper<T> wrapper, ICacheClient cache, string key) where T : class, IHasGuidId
         {
             cache.Add(key, wrapper.ToJson());
         }
 
-        public static void UpdateCache<T>(this Wrapper<T> wrapper, ICacheClient cache, String key) where T : class, IHasGuidId
+        public static void UpdateCache<T>(this Wrapper<T> wrapper, ICacheClient cache, string key) where T : class, IHasGuidId
         {
             cache.Set(key, wrapper.ToJson());
         }

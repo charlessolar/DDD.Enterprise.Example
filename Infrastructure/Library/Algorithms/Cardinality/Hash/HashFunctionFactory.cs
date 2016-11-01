@@ -44,7 +44,7 @@ namespace Demo.Library.Algorithms.Cardinality.Hash
                 case HashFunctionId.Fnv1A:
                     return new Fnv1A();
                 default:
-                    throw new NotImplementedException(string.Format("Support not implemented for hash function of type {0}", id));
+                    throw new NotImplementedException($"Support not implemented for hash function of type {id}");
             }
         }
     }

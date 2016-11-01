@@ -1,17 +1,12 @@
 ﻿using ServiceStack;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Presentation.ServiceStack.Authentication.Users.Models
 {
     [Api("Users")]
     [Route("/user/register", "POST")]
-    public class AU_Register : IReturnVoid
+    public class AuRegister  : Infrastructure.Commands.ServiceCommand
     {
-        public String UserAuthId { get; set; }
-        public String Password { get; set; }
+        public string UserAuthId { get; set; }
+        public string Password { get; set; }
     }
 }

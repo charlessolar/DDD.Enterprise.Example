@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms
 {
@@ -19,8 +16,8 @@ namespace Demo.Library.Algorithms
         /// <returns>The optimal BloomFilter size, m.</returns>
         public static uint OptimalM(uint n, double fpRate)
         {
-            var optimalM = Math.Ceiling((double)n / ((Math.Log(Defaults.FILL_RATIO) *
-                Math.Log(1 - Defaults.FILL_RATIO)) / Math.Abs(Math.Log(fpRate))));
+            var optimalM = Math.Ceiling((double)n / ((Math.Log(Defaults.FillRatio) *
+                Math.Log(1 - Defaults.FillRatio)) / Math.Abs(Math.Log(fpRate))));
             return Convert.ToUInt32(optimalM);
         }
 

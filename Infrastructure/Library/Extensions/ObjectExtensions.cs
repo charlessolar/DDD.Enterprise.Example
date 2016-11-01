@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Extensions
 {
@@ -44,12 +41,12 @@ namespace Demo.Library.Extensions
             throw new ArgumentNullException("source", "Unable to convert object to a dictionary. The source object is null.");
         }
 
-        public static Boolean IsDatetime(this object expression)
+        public static bool IsDatetime(this object expression)
         {
             DateTime? temp;
             return expression.ToDatetime(out temp);
         }
-        public static Boolean ToDatetime(this object expression, out DateTime? outer)
+        public static bool ToDatetime(this object expression, out DateTime? outer)
         {
             outer = null;
             if (expression == null)
@@ -60,28 +57,28 @@ namespace Demo.Library.Extensions
                 outer = parsed;
             return outer.HasValue;
         }
-        public static Boolean IsBoolean(this object expression)
+        public static bool IsBoolean(this object expression)
         {
-            Boolean? temp;
+            bool? temp;
             return expression.ToBoolean(out temp);
         }
-        public static Boolean ToBoolean(this object expression, out Boolean? outer)
+        public static bool ToBoolean(this object expression, out bool? outer)
         {
             outer = null;
             if (expression == null)
                 return false;
 
-            Boolean parsed;
-            if (Boolean.TryParse(Convert.ToString(expression, CultureInfo.InvariantCulture), out parsed))
+            bool parsed;
+            if (bool.TryParse(Convert.ToString(expression, CultureInfo.InvariantCulture), out parsed))
                 outer = parsed;
             return outer.HasValue;
         }
-        public static Boolean IsGuid(this object expression)
+        public static bool IsGuid(this object expression)
         {
             Guid? temp;
             return expression.ToGuid(out temp);
         }
-        public static Boolean ToGuid(this object expression, out Guid? outer)
+        public static bool ToGuid(this object expression, out Guid? outer)
         {
             outer = null;
             if (expression == null)
@@ -99,37 +96,37 @@ namespace Demo.Library.Extensions
 
             return Regex.IsMatch(Convert.ToString(expression, CultureInfo.InvariantCulture), @"^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$", RegexOptions.Compiled);
         }
-        public static Boolean IsInteger(this object expression)
+        public static bool IsInteger(this object expression)
         {
-            Int64? temp;
+            long? temp;
             return expression.ToInteger(out temp);
         }
-        public static Boolean ToInteger(this object expression, out Int64? outer)
+        public static bool ToInteger(this object expression, out long? outer)
         {
             outer = null;
             if (expression == null)
                 return false;
 
-            Int64 parsed;
-            if( Int64.TryParse(Convert.ToString(expression, CultureInfo.InvariantCulture), 
+            long parsed;
+            if(long.TryParse(Convert.ToString(expression, CultureInfo.InvariantCulture), 
                 NumberStyles.Integer | NumberStyles.AllowParentheses | NumberStyles.AllowThousands | NumberStyles.AllowTrailingSign, 
                 CultureInfo.InvariantCulture, out parsed))
                 outer = parsed;
             return outer.HasValue;
         }
-        public static Boolean IsDouble(this object expression)
+        public static bool IsDouble(this object expression)
         {
-            Double? temp;
+            double? temp;
             return expression.ToDouble(out temp);
         }
-        public static Boolean ToDouble(this object expression, out Double? outer)
+        public static bool ToDouble(this object expression, out double? outer)
         {
             outer = null;
             if (expression == null)
                 return false;
 
-            Double parsed;
-            if (Double.TryParse(Convert.ToString(expression, CultureInfo.InvariantCulture),
+            double parsed;
+            if (double.TryParse(Convert.ToString(expression, CultureInfo.InvariantCulture),
                 NumberStyles.AllowThousands | NumberStyles.AllowTrailingSign | NumberStyles.Currency | NumberStyles.Float, CultureInfo.InvariantCulture, out parsed))
                 outer = parsed;
             return outer.HasValue;

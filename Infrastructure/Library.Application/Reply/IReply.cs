@@ -1,9 +1,5 @@
 ﻿using NServiceBus;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Reply
 {
@@ -14,7 +10,7 @@ namespace Demo.Library.Reply
     {
         string ETag { get; set; }
 
-        Object Payload { get; set; }
+        object Payload { get; set; }
     }
     public interface IPagedReply : IMessage
     {
@@ -22,6 +18,6 @@ namespace Demo.Library.Reply
 
         long Total { get; set; }
         
-        IEnumerable<Object> Records { get; set; }
+        IEnumerable<object> Records { get; set; }
     }
 }

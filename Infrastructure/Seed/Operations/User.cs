@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aggregates.Extensions;
 using Commands = Demo.Domain.Authentication.Users.Commands;
 using Type = Seed.Types.Authentication;
 
@@ -20,16 +21,16 @@ namespace Seed.Operations
             new Type.User { Id = "IMPORT", Name = "IMPORT" },
         };
 
-        private readonly IBus _bus;
+        public readonly IMessageSession _bus;
 
-        public User(IBus bus)
+        public User(IMessageSession bus)
         {
             _bus = bus;
         }
         public async Task<Boolean> Seed()
         {
-            var commands = Data.Select(x => new Commands.Login { UserId = x.Id, Name = x.Name, Timestamp = DateTime.UtcNow.Ticks });
-            await commands.WhenAllAsync(x => _bus.Send(x).IsCommand<Command>());
+            var commands = Data.Select(x => new Commands.Login {  });
+            await commands.WhenAllAsync(x => _bus.Command(x));
 
             this.Done = true;
             return this.Done;

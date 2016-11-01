@@ -21,7 +21,7 @@ namespace Demo.Library.IoC
         public T Resolve<T>()
         {
             var ret = _container.TryGetInstance<T>();
-            if (ret == null) throw new ArgumentException(String.Format("Unknown resolution type '{0}'", typeof(T)));
+            if (ret == null) throw new ArgumentException($"Unknown resolution type '{typeof(T)}'");
             return ret;
         }
     }

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Demo.Library.Setup
 {
     public interface ISetup
     {
-        Boolean Initialize();
+        Task<bool> Initialize();
 
-        Boolean Done { get; }
+        bool Done { get; }
     }
 }

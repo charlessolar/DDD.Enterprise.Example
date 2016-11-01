@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Application.Elastic.Infrastructure.Exceptions
 {
-    public class StorageException : Aggregates.PersistenceException
+    public class StorageException : Aggregates.Exceptions.PersistenceException
     {
         public StorageException(IBulkResponse response) : base(BuildMessage(response)) {
             

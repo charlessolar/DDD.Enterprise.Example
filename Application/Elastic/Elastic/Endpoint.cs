@@ -1,4 +1,7 @@
 
+using System.Threading.Tasks;
+using RabbitMQ.Client;
+
 namespace Demo.Application.Elastic
 {
     using EventStore.ClientAPI;
@@ -32,18 +35,16 @@ namespace Demo.Application.Elastic
     using NLog;
     using NServiceBus.UnitOfWork;
 
-    
+
 
     internal class Program
     {
-        static ManualResetEvent _quitEvent = new ManualResetEvent(false);
+        static readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
         private static IContainer _container;
-        private static NLog.ILogger Logger = LogManager.GetLogger("Elastic");
-        private static Meter _exceptionsMeter = Metric.Meter("Exceptions Reported", Unit.Items);
+        private static readonly NLog.ILogger Logger = LogManager.GetLogger("Elastic");
+        private static readonly Meter ExceptionsMeter = Metric.Meter("Exceptions Reported", Unit.Items);
         private static IEnumerable<SetupInfo> _operations;
 
-        private static Int32 _buckets;
-        private static Int32 _bucketsHandled;
 
         private static void UnhandledExceptionTrapper(object sender, UnhandledExceptionEventArgs e)
         {
@@ -53,7 +54,7 @@ namespace Demo.Application.Elastic
         }
         private static void ExceptionTrapper(object sender, FirstChanceExceptionEventArgs e)
         {
-            _exceptionsMeter.Mark();
+            ExceptionsMeter.Mark();
             //Logger.Debug(e.Exception, "Thrown exception: {0}");
         }
 
@@ -64,7 +65,7 @@ namespace Demo.Application.Elastic
 
             var conf = NLog.Config.ConfigurationItemFactory.Default;
             conf.LayoutRenderers.RegisterDefinition("logsdir", typeof(LogsDir));
-            conf.LayoutRenderers.RegisterDefinition("Domain", typeof(Library.Logging.Domain));
+            conf.LayoutRenderers.RegisterDefinition("Instance", typeof(Library.Logging.Instance));
             NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration($"{AppDomain.CurrentDomain.BaseDirectory}/logging.config");
 
             AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionTrapper;
@@ -72,56 +73,48 @@ namespace Demo.Application.Elastic
 
             NServiceBus.Logging.LogManager.Use<NLogFactory>();
 
-            var buckets = args.FirstOrDefault(x => x.StartsWith("--buckets"));
-            var handled = args.FirstOrDefault(x => x.StartsWith("--handled"));
-
-            _buckets = 1;
-            _bucketsHandled = 1;
-            try
-            {
-                _buckets = Int32.Parse(buckets.Substring(buckets.IndexOf('=') + 1), System.Globalization.NumberStyles.Integer);
-                _bucketsHandled = Int32.Parse(handled.Substring(handled.IndexOf('=') + 1), System.Globalization.NumberStyles.Integer);
-            }
-            catch { }
-
-            var client = ConfigureStore();
+            //var client = ConfigureStore();
             var elastic = ConfigureElastic();
-            ConfigureMetrics();
+            var rabbit = ConfigureRabbit();
 
             _container = new Container(x =>
             {
                 x.For<IManager>().Use<Manager>();
-                x.For<IEventStoreConnection>().Use(client).Singleton();
+                //x.For<IEventStoreConnection>().Use(client).Singleton();
                 x.For<IFuture>().Use<Future>().Singleton();
                 x.For<IPersistCheckpoints>().Use<Checkpoints.ElasticCheckpoints>();
                 x.For<IManageCompetes>().Use<Checkpoints.ElasticCompetes>();
                 x.For<IUnitOfWork>().Use<UnitOfWork>();
                 x.For<IEventUnitOfWork>().Add(b => (IEventUnitOfWork)b.GetInstance<IUnitOfWork>());
                 x.For<IElasticClient>().Use(elastic).Singleton();
+                x.For<IConnection>().Use(rabbit).Singleton();
 
                 x.Scan(y =>
                 {
-                    AllAssemblies.Matching("Application.Elastic").ToList().ForEach(a => y.Assembly(a));
+                    y.TheCallingAssembly();
+                    y.AssembliesFromApplicationBaseDirectory((assembly) => assembly.FullName.StartsWith("Application.Elastic"));
 
                     y.WithDefaultConventions();
                     y.AddAllTypesOf<ISetup>();
+                    y.AddAllTypesOf<IEventMutator>();
                 });
             });
             // Do this before bus starts
             InitiateSetup();
-            SetupApplication();
+            SetupApplication().Wait();
 
-            var bus = InitBus();
-            _container.Configure(x => x.For<IBus>().Use(bus).Singleton());
-
+            var bus = InitBus().Result;
+            _container.Configure(x => x.For<IMessageSession>().Use(bus).Singleton());
 
             Console.WriteLine("Press CTRL+C to exit...");
             Console.CancelKeyPress += (sender, eArgs) =>
             {
-                _quitEvent.Set();
+                QuitEvent.Set();
                 eArgs.Cancel = true;
             };
-            _quitEvent.WaitOne();
+            QuitEvent.WaitOne();
+
+            bus.Stop().Wait();
         }
         
         public static IElasticClient ConfigureElastic()
@@ -137,30 +130,30 @@ namespace Demo.Application.Elastic
             if (url == null)
                 throw new ArgumentException("No URL parameter in elastic connection string");
             var index = data.FirstOrDefault(x => x.StartsWith("DefaultIndex", StringComparison.CurrentCultureIgnoreCase));
-            if (String.IsNullOrEmpty(index))
+            if (string.IsNullOrEmpty(index))
                 throw new ArgumentException("No DefaultIndex parameter in elastic connection string");
 
             index = index.Substring(13);
 
             var node = new Uri(url.Substring(4));
             var pool = new Elasticsearch.Net.SingleNodeConnectionPool(node);
-            
+
             var regex = new Regex("([+\\-!\\(\\){}\\[\\]^\"~*?:\\\\\\/>< ]|[&\\|]{2}|AND|OR|NOT)", RegexOptions.Compiled);
             var settings = new Nest.ConnectionSettings(pool, (_) => new JsonNetSerializer(_))
                 .DefaultIndex(index)
                 .DefaultTypeNameInferrer(type =>
                         type.FullName
-                        .Replace("Demo.Presentation.ServiceStack.", "")
-                        .Replace("Demo.Application.Elastic.", "")
+                        .Replace("Pulse.Presentation.ServiceStack.", "")
+                        .Replace("Pulse.Application.Elastic.", "")
                         .Replace('.', '_')
                         )
                 .DefaultFieldNameInferrer(field => regex.Replace(field, ""));
 #if DEBUG
-                settings = settings.DisableDirectStreaming();
+            settings = settings.DisableDirectStreaming();
 #endif
 
             var client = new ElasticClient(settings);
-            
+
 
             if (!client.IndexExists(index).Exists)
                 client.CreateIndex(index, i => i
@@ -168,16 +161,43 @@ namespace Demo.Application.Elastic
                         .NumberOfShards(8)
                         .NumberOfReplicas(0)
                         .Analysis(analysis => analysis
-                            .TokenFilters(f => f.NGram("ngram", d => d.MinGram(2).MaxGram(15)))
-                            .Analyzers(a => a
-                                .Custom("default_index", t => t.Tokenizer("keyword").Filters(new[] { "standard", "lowercase", "asciifolding", "kstem", "ngram" }))
-                                .Custom("suffix", t => t.Tokenizer("keyword").Filters(new[] { "standard", "lowercase", "asciifolding", "reverse" }))
-                            )
-                        )));
-            
+                        .TokenFilters(f => f.NGram("ngram", d => d.MinGram(1).MaxGram(15)))
+                        .Analyzers(a => a
+                            .Custom("default_index", t => t.Tokenizer("keyword").Filters(new[] { "standard", "lowercase", "asciifolding", "kstem", "ngram" }))
+                            .Custom("suffix", t => t.Tokenizer("keyword").Filters(new[] { "standard", "lowercase", "asciifolding", "reverse" }))
+                        )
+                    )));
+
             return client;
         }
         
+
+        public static IConnection ConfigureRabbit()
+        {
+
+            var connectionString = ConfigurationManager.ConnectionStrings["RabbitMq"];
+            if (connectionString == null)
+                throw new ArgumentException("No Rabbit connection string");
+
+            var data = connectionString.ConnectionString.Split(';');
+            var host = data.FirstOrDefault(x => x.StartsWith("host", StringComparison.CurrentCultureIgnoreCase));
+            if (host == null)
+                throw new ArgumentException("No HOST parameter in rabbit connection string");
+            var virtualhost = data.FirstOrDefault(x => x.StartsWith("virtualhost=", StringComparison.CurrentCultureIgnoreCase));
+
+            var username = data.FirstOrDefault(x => x.StartsWith("username=", StringComparison.CurrentCultureIgnoreCase));
+            var password = data.FirstOrDefault(x => x.StartsWith("password=", StringComparison.CurrentCultureIgnoreCase));
+
+            host = host.Substring(5);
+            virtualhost = virtualhost?.Substring(12) ?? "/";
+            username = username?.Substring(9) ?? "guest";
+            password = password?.Substring(9) ?? "guest";
+
+            var factory = new ConnectionFactory { Uri = $"amqp://{username}:{password}@{host}:5672/{virtualhost}" };
+
+            return factory.CreateConnection();
+        }
+
         public static IEventStoreConnection ConfigureStore()
         {
             Logger.Info("Setting up Eventstore");
@@ -185,7 +205,7 @@ namespace Demo.Application.Elastic
             var data = connectionString.ConnectionString.Split(';');
 
             var hosts = data.Where(x => x.StartsWith("Host", StringComparison.CurrentCultureIgnoreCase));
-            
+
             if (!hosts.Any())
                 throw new ArgumentException("No Host parameter in eventstore connection string");
 
@@ -193,79 +213,93 @@ namespace Demo.Application.Elastic
             {
                 var addr = x.Substring(5).Split(':');
                 if (addr[0] == "localhost")
-                    return new IPEndPoint(IPAddress.Loopback, Int32.Parse(addr[1]));
-                return new IPEndPoint(IPAddress.Parse(addr[0]), Int32.Parse(addr[1]));
+                    return new IPEndPoint(IPAddress.Loopback, int.Parse(addr[1]));
+                return new IPEndPoint(IPAddress.Parse(addr[0]), int.Parse(addr[1]));
             }).ToArray();
-            
-            
+
             var cred = new UserCredentials("admin", "changeit");
             var settings = EventStore.ClientAPI.ConnectionSettings.Create()
                 .UseCustomLogger(new EventStoreLogger())
                 .KeepReconnecting()
                 .KeepRetrying()
+                .SetClusterGossipPort(endpoints.First().Port - 1)
                 .SetHeartbeatInterval(TimeSpan.FromSeconds(30))
-                .SetGossipTimeout(TimeSpan.FromSeconds(30))
+                .SetGossipTimeout(TimeSpan.FromMinutes(5))
                 .SetHeartbeatTimeout(TimeSpan.FromMinutes(5))
-                .SetTimeoutCheckPeriodTo(TimeSpan.FromMinutes(5))
+                .SetTimeoutCheckPeriodTo(TimeSpan.FromMinutes(1))
                 .SetDefaultUserCredentials(cred);
-            
-            var client = EventStoreConnection.Create(settings, endpoints.First(), "Elastic");
+
+            IEventStoreConnection client;
+            if (hosts.Count() != 1)
+            {
+
+                settings = settings
+                    .SetGossipSeedEndPoints(endpoints);
+
+                var clusterSettings = EventStore.ClientAPI.ClusterSettings.Create()
+                    .DiscoverClusterViaGossipSeeds()
+                    .SetGossipSeedEndPoints(endpoints.Select(x => new IPEndPoint(x.Address, x.Port - 1)).ToArray())
+                    .SetGossipTimeout(TimeSpan.FromMinutes(5))
+                    .Build();
+
+                client = EventStoreConnection.Create(settings, clusterSettings, "Elastic");
+            }
+            else
+                client = EventStoreConnection.Create(settings, endpoints.First(), "Elastic");
 
             client.ConnectAsync().Wait();
 
             return client;
         }
-        private static IBus InitBus()
+        private static async Task<IEndpointInstance> InitBus()
         {
             NServiceBus.Logging.LogManager.Use<NLogFactory>();
-
-            var config = new BusConfiguration();
-
-            Logger.Info("Initializing Service Bus");
-            config.LicensePath(ConfigurationManager.AppSettings["license"]);
 
             var endpoint = ConfigurationManager.AppSettings["endpoint"];
             if (string.IsNullOrEmpty(endpoint))
                 endpoint = "elastic";
 
-            config.EndpointName(endpoint);
+            var config = new EndpointConfiguration(endpoint);
+            config.MakeInstanceUniquelyAddressable(Defaults.Instance.ToString());
+
+            Logger.Info("Initializing Service Bus");
+            config.LicensePath(ConfigurationManager.AppSettings["license"]);
 
             config.EnableInstallers();
+            config.LimitMessageProcessingConcurrencyTo(1);
             config.UseTransport<RabbitMQTransport>()
-                
-                .UseDirectRoutingTopology()
-                .ConnectionStringName("RabbitMq");
+                //.CallbackReceiverMaxConcurrency(4)
+                //.UseDirectRoutingTopology()
+                .ConnectionStringName("RabbitMq")
+                .PrefetchMultiplier(50)
+                .TimeToWaitBeforeTriggeringCircuitBreaker(TimeSpan.FromSeconds(30));
 
-            config.Transactions().DisableDistributedTransactions();
-            //config.DisableDurableMessages();
+
             config.UseSerialization<NewtonsoftSerializer>();
 
             config.UsePersistence<InMemoryPersistence>();
             config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
 
             config.SetReadSize(100);
-            config.MaxProcessingQueueSize(10000);
-            config.SetBucketHeartbeats(5);
-            config.SetBucketExpiration(20);
-            config.ParallelHandlers(false);
-            config.MaxRetries(20);
-            config.SetParallelism(1);
-
-            Logger.Info("Bucket configuration: {0} total {1} handled", _buckets, _bucketsHandled);
-            config.SetBucketCount(_buckets);
-            config.SetBucketsHandled(_bucketsHandled);
-
-            config.EnableFeature<Aggregates.CompetingConsumer>();
-            config.DisableFeature<Sagas>();
-            config.DisableFeature<SecondLevelRetries>();
-            config.DisableFeature<AutoSubscribe>();
-
-            
+            config.SlowAlertThreshold(1000);
 
             if (Logger.IsDebugEnabled)
-                config.Pipeline.Register<LogIncomingRegistration>();
+            {
+                config.EnableSlowAlerts(true);
+                //config.EnableCriticalTimePerformanceCounter();
+                config.Pipeline.Register(
+                    behavior: typeof(LogIncomingMessageBehavior),
+                    description: "Logs incoming messages"
+                    );
+            }
 
-            return Bus.Create(config).Start();
+            config.EnableFeature<Aggregates.ConsumerFeature>();
+            config.Recoverability().ConfigureForAggregates();
+            //config.EnableFeature<RoutedFeature>();
+            config.DisableFeature<Sagas>();
+
+
+            return await Endpoint.Start(config).ConfigureAwait(false);
         }
         private static void InitiateSetup()
         {
@@ -284,7 +318,7 @@ namespace Demo.Application.Elastic
             });
         }
 
-        private static void SetupApplication(SetupInfo info = null)
+        private static async Task SetupApplication(SetupInfo info = null)
         {
             var watch = new Stopwatch();
 
@@ -294,7 +328,7 @@ namespace Demo.Application.Elastic
                 depends = depends.Where(x => info.Depends.Any() && info.Depends.Contains(x.Name));
 
             foreach (var depend in depends)
-                SetupApplication(depend);
+                await SetupApplication(depend).ConfigureAwait(false);
 
             if (info == null || info.Operation.Done)
                 return;
@@ -304,7 +338,7 @@ namespace Demo.Application.Elastic
             Logger.Info("**************************************************************");
 
             watch.Start();
-            if (!info.Operation.Initialize())
+            if (!await info.Operation.Initialize().ConfigureAwait(false))
             {
                 Logger.Info("ERROR - Failed to complete setup operation!");
                 Environment.Exit(1);
@@ -318,11 +352,11 @@ namespace Demo.Application.Elastic
 
     internal class SetupInfo
     {
-        public String Name { get; set; }
+        public string Name { get; set; }
 
-        public String[] Depends { get; set; }
+        public string[] Depends { get; set; }
 
-        public String Category { get; set; }
+        public string Category { get; set; }
 
         public ISetup Operation { get; set; }
     }

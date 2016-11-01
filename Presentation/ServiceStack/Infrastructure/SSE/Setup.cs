@@ -5,10 +5,6 @@ using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.DataAnnotations;
 using ServiceStack.OrmLite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Demo.Presentation.ServiceStack.Infrastructure.SSE
@@ -23,8 +19,9 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.SSE
             _sql = sql;
         }
 
-        public Boolean Initialize()
+        public Task<bool> Initialize()
         {
+
             using (var db = _sql.Open())
             {
                 typeof(Subscription).AddAttributes(new AliasAttribute("SSE.Subscriptions"));
@@ -41,9 +38,9 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.SSE
                 }
             }
             this.Done = true;
-            return true;
+            return Task.FromResult(true);
         }
 
-        public Boolean Done { get; private set; }
+        public bool Done { get; private set; }
     }
 }

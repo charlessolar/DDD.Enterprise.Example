@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Domain.Accounting.Currency
 {
-    public class Currency : Aggregates.Aggregate<Guid>, ICurrency
+    public class Currency : Aggregates.Aggregate<Currency, Guid>, ICurrency
     {
         public Aggregates.SingleValueObject<Boolean> Activated { get; private set; }
 

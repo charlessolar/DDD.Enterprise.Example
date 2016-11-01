@@ -1,13 +1,11 @@
-﻿using Demo.Presentation.ServiceStack.Infrastructure.Responses;
-using ServiceStack;
-using System;
+﻿using ServiceStack;
 
 namespace Demo.Presentation.ServiceStack.Authentication.Users.Models
 {
     [Api("Users")]
     [Route("/user/email", "PUT POST")]
-    public class AU_ChangeEmail : IReturnVoid
+    public class AuChangeEmail  : Infrastructure.Commands.ServiceCommand
     {
-        public String Email { get; set; }
+        public string Email { get; set; }
     }
 }

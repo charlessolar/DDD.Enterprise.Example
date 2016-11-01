@@ -1,49 +1,46 @@
-﻿using Aggregates.Messages;
-using NServiceBus;
-using Demo.Presentation.ServiceStack.Infrastructure.SSE;
-using Demo.Library.Exceptions;
+﻿using NServiceBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Demo.Library.Reply;
-using Aggregates.Extensions;
-using Aggregates;
 using System.Configuration;
+using Demo.Library.SSE;
 
 namespace Demo.Library.Extensions
 {
     public static class BusExtensions
     {
-        private static String ServiceStackEndpoint = ConfigurationManager.AppSettings["destination.servicestack"];
+        private static string _serviceStackEndpoint = ConfigurationManager.AppSettings["destination.servicestack"];
 
-        public static void ResultAsync<TResponse>(this IHandleContext context, TResponse Payload, String ETag = "") where TResponse : class
+        public static void Result<TResponse>(this IMessageHandlerContext context, TResponse payload, string eTag = "") where TResponse : class
         {
-            context.ReplyAsync<IReply>(x =>
+            context.Reply<IReply>(x =>
             {
-                x.ETag = ETag;
-                x.Payload = Payload;
+                x.ETag = eTag;
+                x.Payload = payload;
             });
         }
-        public static void ResultAsync<TResponse>(this IHandleContext context, IEnumerable<TResponse> Records, Int64 Total, Int64 ElapsedMs) where TResponse : class
+        public static void Result<TResponse>(this IMessageHandlerContext context, IEnumerable<TResponse> records, long total, long elapsedMs) where TResponse : class
         {
-            context.ReplyAsync<IPagedReply>(x =>
+            context.Reply<IPagedReply>(x =>
             {
-                x.Records = Records.ToList();
-                x.Total = Total;
-                x.ElapsedMs = ElapsedMs;
+                x.Records = records.ToList();
+                x.Total = total;
+                x.ElapsedMs = elapsedMs;
             });
         }
-        public static void UpdateAsync(this IHandleContext context, Object Payload, ChangeType ChangeType, String ETag = "")
+        public static void Update(this IMessageHandlerContext context, object payload, ChangeType changeType, string eTag = "")
         {
-            context.SendAsync<Updates.Update>(ServiceStackEndpoint, x =>
+            var options = new PublishOptions();
+            //options.SetDestination(ServiceStackEndpoint);
+
+            context.Publish<Updates.IUpdate>(x =>
             {
-                x.Payload = Payload;
-                x.ChangeType = ChangeType;
-                x.ETag = ETag;
+                x.Payload = payload;
+                x.ChangeType = changeType;
+                x.ETag = eTag;
                 x.Timestamp = DateTime.UtcNow;
-            });
+            }, options);
         }
     }
 }

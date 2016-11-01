@@ -15,20 +15,17 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.ServiceStack
         internal const string DefaultMethods = "GET, POST, PUT, DELETE, OPTIONS";
         internal const string DefaultHeaders = "Content-Type";
 
-        private readonly string allowedOrigins;
-        private readonly string allowedMethods;
-        private readonly string allowedHeaders;
-        private readonly string exposeHeaders;
-        private readonly int? maxAge;
+        private readonly string _allowedOrigins;
+        private readonly string _allowedMethods;
+        private readonly string _allowedHeaders;
+        private readonly string _exposeHeaders;
+        private readonly int? _maxAge;
 
-        private readonly bool allowCredentials;
+        private readonly bool _allowCredentials;
 
-        private readonly ICollection<string> allowOriginWhitelist;
+        private readonly ICollection<string> _allowOriginWhitelist;
 
-        public ICollection<string> AllowOriginWhitelist
-        {
-            get { return allowOriginWhitelist; }
-        }
+        public ICollection<string> AllowOriginWhitelist => _allowOriginWhitelist;
 
         public bool AutoHandleOptionsRequests { get; set; }
 
@@ -38,25 +35,25 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.ServiceStack
         public CorsFeature(string allowedOrigins = "*", string allowedMethods = DefaultMethods, string allowedHeaders = DefaultHeaders, bool allowCredentials = false,
             string exposeHeaders = null, int? maxAge = null)
         {
-            this.allowedOrigins = allowedOrigins;
-            this.allowedMethods = allowedMethods;
-            this.allowedHeaders = allowedHeaders;
-            this.allowCredentials = allowCredentials;
+            this._allowedOrigins = allowedOrigins;
+            this._allowedMethods = allowedMethods;
+            this._allowedHeaders = allowedHeaders;
+            this._allowCredentials = allowCredentials;
             this.AutoHandleOptionsRequests = true;
-            this.exposeHeaders = exposeHeaders;
-            this.maxAge = maxAge;
+            this._exposeHeaders = exposeHeaders;
+            this._maxAge = maxAge;
         }
 
         public CorsFeature(ICollection<string> allowOriginWhitelist, string allowedMethods = DefaultMethods, string allowedHeaders = DefaultHeaders, bool allowCredentials = false,
             string exposeHeaders = null, int? maxAge = null)
         {
-            this.allowedMethods = allowedMethods;
-            this.allowedHeaders = allowedHeaders;
-            this.allowCredentials = allowCredentials;
-            this.allowOriginWhitelist = allowOriginWhitelist;
+            this._allowedMethods = allowedMethods;
+            this._allowedHeaders = allowedHeaders;
+            this._allowCredentials = allowCredentials;
+            this._allowOriginWhitelist = allowOriginWhitelist;
             this.AutoHandleOptionsRequests = true;
-            this.exposeHeaders = exposeHeaders;
-            this.maxAge = maxAge;
+            this._exposeHeaders = exposeHeaders;
+            this._maxAge = maxAge;
         }
 
         public void Register(IAppHost appHost)
@@ -64,26 +61,26 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.ServiceStack
             if (appHost.HasMultiplePlugins<CorsFeature>())
                 throw new NotSupportedException("CorsFeature has already been registered");
 
-            if (!string.IsNullOrEmpty(allowedOrigins) && allowOriginWhitelist == null)
-                appHost.Config.GlobalResponseHeaders.Add(HttpHeaders.AllowOrigin, allowedOrigins);
-            if (!string.IsNullOrEmpty(allowedMethods))
-                appHost.Config.GlobalResponseHeaders.Add(HttpHeaders.AllowMethods, allowedMethods);
-            if (!string.IsNullOrEmpty(allowedHeaders))
-                appHost.Config.GlobalResponseHeaders.Add(HttpHeaders.AllowHeaders, allowedHeaders);
-            if (allowCredentials)
+            if (!string.IsNullOrEmpty(_allowedOrigins) && _allowOriginWhitelist == null)
+                appHost.Config.GlobalResponseHeaders.Add(HttpHeaders.AllowOrigin, _allowedOrigins);
+            if (!string.IsNullOrEmpty(_allowedMethods))
+                appHost.Config.GlobalResponseHeaders.Add(HttpHeaders.AllowMethods, _allowedMethods);
+            if (!string.IsNullOrEmpty(_allowedHeaders))
+                appHost.Config.GlobalResponseHeaders.Add(HttpHeaders.AllowHeaders, _allowedHeaders);
+            if (_allowCredentials)
                 appHost.Config.GlobalResponseHeaders.Add(HttpHeaders.AllowCredentials, "true");
-            if (exposeHeaders != null)
-                appHost.Config.GlobalResponseHeaders.Add(HttpHeaders.ExposeHeaders, exposeHeaders);
-            if (maxAge != null)
-                appHost.Config.GlobalResponseHeaders.Add(HttpHeaders.AccessControlMaxAge, maxAge.Value.ToString());
+            if (_exposeHeaders != null)
+                appHost.Config.GlobalResponseHeaders.Add(HttpHeaders.ExposeHeaders, _exposeHeaders);
+            if (_maxAge != null)
+                appHost.Config.GlobalResponseHeaders.Add(HttpHeaders.AccessControlMaxAge, _maxAge.Value.ToString());
 
             Action<IRequest, IResponse> allowOriginFilter = null;
 
-            if (allowOriginWhitelist != null)
+            if (_allowOriginWhitelist != null)
             {
                 allowOriginFilter = (httpReq, httpRes) => {
                     var origin = httpReq.Headers.Get(HttpHeaders.Origin);
-                    if (allowOriginWhitelist.Contains(origin))
+                    if (_allowOriginWhitelist.Contains(origin))
                     {
                         httpRes.AddHeader(HttpHeaders.AllowOrigin, origin);
                     }

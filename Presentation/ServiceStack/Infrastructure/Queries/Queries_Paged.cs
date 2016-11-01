@@ -1,25 +1,20 @@
-﻿
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Demo.Library.Queries;
-using Newtonsoft.Json;
-using System.Linq;
 using Demo.Library.Queries.Grid;
 using ServiceStack;
-using Demo.Presentation.ServiceStack.Infrastructure.SSE;
+using Demo.Library.SSE;
 
 namespace Demo.Presentation.ServiceStack.Infrastructure.Queries
 {
     [DataContract]
-    public class Queries_Paged<TResponse> : IReturn<Responses.Responses_Paged<TResponse>>, IPaged
+    public class QueriesPaged<TResponse> : IReturn<Responses.ResponsesPaged<TResponse>>, IPaged
     {
         [DataMember(Name = "skip", IsRequired = true)]
-        public Int32? Skip { get; set; }
+        public int? Skip { get; set; }
 
         [DataMember(Name = "take", IsRequired = true)]
-        public Int32? Take { get; set; }
+        public int? Take { get; set; }
         
         [DataMember(Name = "sort", IsRequired = true)]
         public IEnumerable<Sort> Sort { get; set; }
@@ -32,17 +27,17 @@ namespace Demo.Presentation.ServiceStack.Infrastructure.Queries
 
 
         [DataMember(Name = "page")]
-        public Int32? Page { get; set; }
+        public int? Page { get; set; }
 
         [DataMember(Name = "pagesize")]
-        public Int32? PageSize { get; set; }
+        public int? PageSize { get; set; }
 
 
         [DataMember(Name = "SubscriptionId")]
-        public String SubscriptionId { get; set; }
+        public string SubscriptionId { get; set; }
 
         [DataMember(Name = "SubscriptionTime")]
-        public Int32? SubscriptionTime { get; set; }
+        public int? SubscriptionTime { get; set; }
 
         [DataMember(Name = "SubscriptionType")]
         public ChangeType? SubscriptionType { get; set; }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.Frugal
 {
@@ -92,8 +88,7 @@ namespace Demo.Library.Algorithms.Frugal
             if (dataFormatMajorVersion > DataFormatMajorVersion)
             {
                 throw new SerializationException(
-                    string.Format("Incompatible data format, can't deserialize data version {0}.{1} (serializer version: {2}.{3})",
-                        dataFormatMajorVersion, dataFormatMinorVersion, DataFormatMajorVersion, DataFormatMinorVersion));
+                    $"Incompatible data format, can't deserialize data version {dataFormatMajorVersion}.{dataFormatMinorVersion} (serializer version: {DataFormatMajorVersion}.{DataFormatMinorVersion})");
             }
         }
     }

@@ -40,11 +40,11 @@ namespace Demo.Library.Algorithms
 	public class FastRandom
 	{
 		// The +1 ensures NextDouble doesn't generate 1.0
-		const double REAL_UNIT_INT = 1.0/((double)int.MaxValue+1.0);
-		const double REAL_UNIT_UINT = 1.0/((double)uint.MaxValue+1.0);
+		const double RealUnitInt = 1.0/((double)int.MaxValue+1.0);
+		const double RealUnitUint = 1.0/((double)uint.MaxValue+1.0);
 		const uint Y=842502087, Z=3579807591, W=273326509;
 
-		uint x, y, z, w;
+		uint _x, _y, _z, _w;
 
 		#region Constructors
 
@@ -80,10 +80,10 @@ namespace Demo.Library.Algorithms
 			// The only stipulation stated for the xorshift RNG is that at least one of
 			// the seeds x,y,z,w is non-zero. We fulfill that requirement by only allowing
 			// resetting of the x seed
-			x = (uint)seed;
-			y = Y;
-			z = Z;
-			w = W;
+			_x = (uint)seed;
+			_y = Y;
+			_z = Z;
+			_w = W;
 		}
 
 		#endregion
@@ -104,13 +104,13 @@ namespace Demo.Library.Algorithms
 		/// <returns></returns>
 		public int Next()
 		{
-			uint t=(x^(x<<11));
-			x=y; y=z; z=w;
-			w=(w^(w>>19))^(t^(t>>8));
+			uint t=(_x^(_x<<11));
+			_x=_y; _y=_z; _z=_w;
+			_w=(_w^(_w>>19))^(t^(t>>8));
 
 			// Handle the special case where the value int.MaxValue is generated. This is outside of 
 			// the range of permitted values, so we therefore call Next() to try again.
-			uint rtn = w&0x7FFFFFFF;
+			uint rtn = _w&0x7FFFFFFF;
 			if(rtn==0x7FFFFFFF)
 				return Next();
 			return (int)rtn;			
@@ -124,14 +124,14 @@ namespace Demo.Library.Algorithms
 		public int Next(int upperBound)
 		{
 			if(upperBound<0)
-				throw new ArgumentOutOfRangeException("upperBound", upperBound, "upperBound must be >=0");
+				throw new ArgumentOutOfRangeException(nameof(upperBound), upperBound, "upperBound must be >=0");
 
-			uint t=(x^(x<<11));
-			x=y; y=z; z=w;
+			uint t=(_x^(_x<<11));
+			_x=_y; _y=_z; _z=_w;
 
 			// The explicit int cast before the first multiplication gives better performance.
 			// See comments in NextDouble.
-			return (int)((REAL_UNIT_INT*(int)(0x7FFFFFFF&(w=(w^(w>>19))^(t^(t>>8)))))*upperBound);
+			return (int)((RealUnitInt*(int)(0x7FFFFFFF&(_w=(_w^(_w>>19))^(t^(t>>8)))))*upperBound);
 		}
 
 		/// <summary>
@@ -144,10 +144,10 @@ namespace Demo.Library.Algorithms
 		public int Next(int lowerBound, int upperBound)
 		{
 			if(lowerBound>upperBound)
-				throw new ArgumentOutOfRangeException("upperBound", upperBound, "upperBound must be >=lowerBound");
+				throw new ArgumentOutOfRangeException(nameof(upperBound), upperBound, "upperBound must be >=lowerBound");
 
-			uint t=(x^(x<<11));
-			x=y; y=z; z=w;
+			uint t=(_x^(_x<<11));
+			_x=_y; _y=_z; _z=_w;
 
 			// The explicit int cast before the first multiplication gives better performance.
 			// See comments in NextDouble.
@@ -155,12 +155,12 @@ namespace Demo.Library.Algorithms
 			if(range<0)
 			{	// If range is <0 then an overflow has occured and must resort to using long integer arithmetic instead (slower).
 				// We also must use all 32 bits of precision, instead of the normal 31, which again is slower.	
-				return lowerBound+(int)((REAL_UNIT_UINT*(double)(w=(w^(w>>19))^(t^(t>>8))))*(double)((long)upperBound-(long)lowerBound));
+				return lowerBound+(int)((RealUnitUint*(double)(_w=(_w^(_w>>19))^(t^(t>>8))))*(double)((long)upperBound-(long)lowerBound));
 			}
 				
 			// 31 bits of precision will suffice if range<=int.MaxValue. This allows us to cast to an int and gain
 			// a little more performance.
-			return lowerBound+(int)((REAL_UNIT_INT*(double)(int)(0x7FFFFFFF&(w=(w^(w>>19))^(t^(t>>8)))))*(double)range);
+			return lowerBound+(int)((RealUnitInt*(double)(int)(0x7FFFFFFF&(_w=(_w^(_w>>19))^(t^(t>>8)))))*(double)range);
 		}
 
 		/// <summary>
@@ -169,8 +169,8 @@ namespace Demo.Library.Algorithms
 		/// <returns></returns>
 		public double NextDouble()
 		{	
-			uint t=(x^(x<<11));
-			x=y; y=z; z=w;
+			uint t=(_x^(_x<<11));
+			_x=_y; _y=_z; _z=_w;
 
 			// Here we can gain a 2x speed improvement by generating a value that can be cast to 
 			// an int instead of the more easily available uint. If we then explicitly cast to an 
@@ -181,7 +181,7 @@ namespace Demo.Library.Algorithms
 			//
 			// Also note that the loss of one bit of precision is equivalent to what occurs within 
 			// System.Random.
-			return (REAL_UNIT_INT*(int)(0x7FFFFFFF&(w=(w^(w>>19))^(t^(t>>8)))));			
+			return (RealUnitInt*(int)(0x7FFFFFFF&(_w=(_w^(_w>>19))^(t^(t>>8)))));			
 		}
 
 
@@ -193,7 +193,7 @@ namespace Demo.Library.Algorithms
 		public void NextBytes(byte[] buffer)
 		{
 			// Fill up the bulk of the buffer in chunks of 4 bytes at a time.
-			uint x=this.x, y=this.y, z=this.z, w=this.w;
+			uint x=this._x, y=this._y, z=this._z, w=this._w;
 			int i=0;
 			uint t;
 			for(int bound=buffer.Length-3; i<bound;)
@@ -234,7 +234,7 @@ namespace Demo.Library.Algorithms
 					}
 				}
 			}
-			this.x=x; this.y=y; this.z=z; this.w=w;
+			this._x=x; this._y=y; this._z=z; this._w=w;
 		}
 
 
@@ -290,9 +290,9 @@ namespace Demo.Library.Algorithms
 		/// <returns></returns>
 		public uint NextUInt()
 		{
-			uint t=(x^(x<<11));
-			x=y; y=z; z=w;
-			return (w=(w^(w>>19))^(t^(t>>8)));
+			uint t=(_x^(_x<<11));
+			_x=_y; _y=_z; _z=_w;
+			return (_w=(_w^(_w>>19))^(t^(t>>8)));
 		}
 
 		/// <summary>
@@ -306,16 +306,16 @@ namespace Demo.Library.Algorithms
 		/// <returns></returns>
 		public int NextInt()
 		{
-			uint t=(x^(x<<11));
-			x=y; y=z; z=w;
-			return (int)(0x7FFFFFFF&(w=(w^(w>>19))^(t^(t>>8))));
+			uint t=(_x^(_x<<11));
+			_x=_y; _y=_z; _z=_w;
+			return (int)(0x7FFFFFFF&(_w=(_w^(_w>>19))^(t^(t>>8))));
 		}
 
 
 		// Buffer 32 bits in bitBuffer, return 1 at a time, keep track of how many have been returned
 		// with bitBufferIdx.
-		uint bitBuffer;
-		uint bitMask=1;
+		uint _bitBuffer;
+		uint _bitMask=1;
 
 		/// <summary>
 		/// Generates a single random bit.
@@ -325,19 +325,19 @@ namespace Demo.Library.Algorithms
 		/// <returns></returns>
 		public bool NextBool()
 		{
-			if(bitMask==1)
+			if(_bitMask==1)
 			{	
 				// Generate 32 more bits.
-				uint t=(x^(x<<11));
-				x=y; y=z; z=w;
-				bitBuffer=w=(w^(w>>19))^(t^(t>>8));
+				uint t=(_x^(_x<<11));
+				_x=_y; _y=_z; _z=_w;
+				_bitBuffer=_w=(_w^(_w>>19))^(t^(t>>8));
 
 				// Reset the bitMask that tells us which bit to read next.
-				bitMask = 0x80000000;
-				return (bitBuffer & bitMask)==0;
+				_bitMask = 0x80000000;
+				return (_bitBuffer & _bitMask)==0;
 			}
 
-			return (bitBuffer & (bitMask>>=1))==0;
+			return (_bitBuffer & (_bitMask>>=1))==0;
 		}
 
 		#endregion

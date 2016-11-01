@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Extensions
 {
     public class KeyEqualityComparer<T> : IEqualityComparer<T>
     {
-        protected readonly Func<T, T, bool> comparer;
-        protected readonly Func<T, object> keyExtractor;
+        protected readonly Func<T, T, bool> Comparer;
+        protected readonly Func<T, object> KeyExtractor;
 
         // Enable to only specify the key to compare with: y => y.CustomerID
         public KeyEqualityComparer(Func<T, object> keyExtractor)
@@ -24,31 +22,31 @@ namespace Demo.Library.Extensions
 
         public KeyEqualityComparer(Func<T, object> keyExtractor, Func<T, T, bool> comparer)
         {
-            this.keyExtractor = keyExtractor;
-            this.comparer = comparer;
+            this.KeyExtractor = keyExtractor;
+            this.Comparer = comparer;
         }
 
         public bool Equals(T x, T y)
         {
-            if (comparer != null)
-                return comparer(x, y);
+            if (Comparer != null)
+                return Comparer(x, y);
             else
             {
-                var valX = keyExtractor(x);
+                var valX = KeyExtractor(x);
                 if (valX is IEnumerable<object>) // The special case where we pass a list of keys
-                    return ((IEnumerable<object>)valX).SequenceEqual((IEnumerable<object>)keyExtractor(y));
+                    return ((IEnumerable<object>)valX).SequenceEqual((IEnumerable<object>)KeyExtractor(y));
 
-                return valX.Equals(keyExtractor(y));
+                return valX.Equals(KeyExtractor(y));
             }
         }
 
         public int GetHashCode(T obj)
         {
-            if (keyExtractor == null)
+            if (KeyExtractor == null)
                 return obj.ToString().ToLower().GetHashCode();
             else
             {
-                var val = keyExtractor(obj);
+                var val = KeyExtractor(obj);
                 if (val is IEnumerable<object>) // The special case where we pass a list of keys
                     return (int)((IEnumerable<object>)val).Aggregate((x, y) => x.GetHashCode() ^ y.GetHashCode());
 
@@ -64,7 +62,7 @@ namespace Demo.Library.Extensions
         public Comparer(Func<T, T, int> comparer)
         {
             if (comparer == null)
-                throw new ArgumentNullException("comparer");
+                throw new ArgumentNullException(nameof(comparer));
             _comparer = comparer;
         }
 
@@ -259,7 +257,7 @@ namespace Demo.Library.Extensions
             T mode = default(T);
 
             // Test for a null reference and an empty list
-            if (list != null && list.Count() > 0)
+            if (list != null && list.Any())
             {
                 // Store the number of occurences for each element
                 Dictionary<T, int> counts = new Dictionary<T, int>();

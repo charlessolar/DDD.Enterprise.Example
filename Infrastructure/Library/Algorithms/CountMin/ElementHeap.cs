@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.CountMin
 {
@@ -138,12 +135,12 @@ namespace Demo.Library.Algorithms.CountMin
         /// </summary>
         /// <param name="data">The data to insert</param>
         /// <param name="freq">The frequency to associate with the data</param>
-        internal void insert(byte[] data, UInt64 freq, uint k)
+        internal void Insert(byte[] data, ulong freq, uint k)
         {
             for (int i = 0; i < this.Len(); i++)
             {
                 var element = this.Heap[i];
-                if (Enumerable.SequenceEqual(data, element.Data))
+                if (data.SequenceEqual(element.Data))
                 {
                     // Element already in top-k.
                     element.Freq = freq;
@@ -170,7 +167,7 @@ namespace Demo.Library.Algorithms.CountMin
         /// </summary>
         /// <param name="freq">The frequency to check</param>
         /// <returns>Whether or not the frequency falls within the top-k heap</returns>
-        internal bool isTop(UInt64 freq, uint k)
+        internal bool IsTop(ulong freq, uint k)
         {
             if (this.Len() < k)
             {

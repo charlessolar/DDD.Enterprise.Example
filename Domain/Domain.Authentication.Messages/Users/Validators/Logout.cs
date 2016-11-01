@@ -6,7 +6,6 @@ namespace Demo.Domain.Authentication.Users.Validators
     {
         public Logout()
         {
-            RuleFor(x => x.UserId).NotEmpty();
         }
     }
 }

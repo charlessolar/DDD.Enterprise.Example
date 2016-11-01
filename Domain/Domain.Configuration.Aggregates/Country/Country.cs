@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Domain.Configuration.Country
 {
-    public class Country : Aggregates.Aggregate<Guid>, ICountry
+    public class Country : Aggregates.Aggregate<Country, Guid>, ICountry
     {
         private Country()
         {

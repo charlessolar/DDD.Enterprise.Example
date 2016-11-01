@@ -9,46 +9,46 @@ using System.Threading.Tasks;
 namespace Demo.Domain.Configuration.AccountType
 {
     public class Handler :
-        IHandleMessagesAsync<Commands.ChangeDeferral>,
-        IHandleMessagesAsync<Commands.ChangeDescription>,
-        IHandleMessagesAsync<Commands.ChangeName>,
-        IHandleMessagesAsync<Commands.Create>,
-        IHandleMessagesAsync<Commands.Destroy>
+        IHandleMessages<Commands.ChangeDeferral>,
+        IHandleMessages<Commands.ChangeDescription>,
+        IHandleMessages<Commands.ChangeName>,
+        IHandleMessages<Commands.Create>,
+        IHandleMessages<Commands.Destroy>
     {
         private readonly IUnitOfWork _uow;
-        private readonly IBus _bus;
+        
 
-        public Handler(IUnitOfWork uow, IBus bus)
+        public Handler(IUnitOfWork uow)
         {
             _uow = uow;
-            _bus = bus;
+           
         }
 
-        public async Task Handle(Commands.ChangeDeferral command, IHandleContext ctx)
+        public async Task Handle(Commands.ChangeDeferral command, IMessageHandlerContext ctx)
         {
             var account = await _uow.For<AccountType>().Get(command.AccountTypeId);
             account.ChangeDeferral(command.DeferralMethod);
         }
 
-        public async Task Handle(Commands.ChangeDescription command, IHandleContext ctx)
+        public async Task Handle(Commands.ChangeDescription command, IMessageHandlerContext ctx)
         {
             var account = await _uow.For<AccountType>().Get(command.AccountTypeId);
             account.ChangeDescription(command.Description);
         }
 
-        public async Task Handle(Commands.ChangeName command, IHandleContext ctx)
+        public async Task Handle(Commands.ChangeName command, IMessageHandlerContext ctx)
         {
             var account = await _uow.For<AccountType>().Get(command.AccountTypeId);
             account.ChangeName(command.Name);
         }
 
-        public async Task Handle(Commands.Create command, IHandleContext ctx)
+        public async Task Handle(Commands.Create command, IMessageHandlerContext ctx)
         {
             var account = await _uow.For<AccountType>().New(command.AccountTypeId);
             account.Create(command.Name, command.DeferralMethod, command.ParentId);
         }
 
-        public async Task Handle(Commands.Destroy command, IHandleContext ctx)
+        public async Task Handle(Commands.Destroy command, IMessageHandlerContext ctx)
         {
             var account = await _uow.For<AccountType>().Get(command.AccountTypeId);
             account.Destroy();

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.Bloom
 {
@@ -65,7 +63,7 @@ namespace Demo.Library.Algorithms.Bloom
         /// </summary>
         private uint[] IndexBuffer { get; set; }
 
-        private FastRandom random = new FastRandom();
+        private readonly FastRandom _random = new FastRandom();
 
         /// <summary>
         /// Empty constructor
@@ -103,7 +101,7 @@ namespace Demo.Library.Algorithms.Bloom
             this.IndexBuffer = new uint[k];
         }
 
-        public Boolean Equals(StableBloomFilter other)
+        public bool Equals(StableBloomFilter other)
         {
             if (this.M != other.M) return false;
             if (this.k != other.k) return false;
@@ -438,7 +436,7 @@ namespace Demo.Library.Algorithms.Bloom
         /// </summary>
         private void Decrement()
         {
-            var r = random.Next((int)this.M);
+            var r = _random.Next((int)this.M);
             for (uint i = 0; i < this.p; i++)
             {
                 var idx = (r + i) % this.M;

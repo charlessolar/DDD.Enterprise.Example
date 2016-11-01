@@ -1,19 +1,14 @@
-﻿using Demo.Presentation.ServiceStack.Infrastructure.SSE;
-using Demo.Library.SSE;
+﻿using Demo.Library.SSE;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Presentation.ServiceStack.Infrastructure.Responses
 {
 
     public class Update
     {
-        public Object Payload { get; set; }
+        public object Payload { get; set; }
 
-        public String SubscriptionId { get; set; }
+        public string SubscriptionId { get; set; }
 
         public ChangeType Type { get; set; }
 

@@ -1,6 +1,4 @@
-﻿using Demo.Presentation.ServiceStack.Infrastructure.Authentication;
-using Demo.Presentation.ServiceStack.Infrastructure.Extensions;
-using ServiceStack;
+﻿using ServiceStack;
 
 namespace Demo.Presentation.ServiceStack.Infrastructure.Services
 {

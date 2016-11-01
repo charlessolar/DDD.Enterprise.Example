@@ -8,12 +8,12 @@ namespace Demo.Library.Exceptions
         {
         }
 
-        public SecurityException(String message)
+        public SecurityException(string message)
             : base(message)
         {
         }
 
-        public SecurityException(String message, Exception innerException)
+        public SecurityException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

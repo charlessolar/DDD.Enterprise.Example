@@ -1,3 +1,6 @@
+using Demo.Library.RabbitMq;
+using RabbitMQ.Client;
+
 namespace Demo.Domain
 {
     using EventStore.ClientAPI;
@@ -41,13 +44,13 @@ namespace Demo.Domain
     using Library.Setup;
     internal class Program
     {
-        static ManualResetEvent _quitEvent = new ManualResetEvent(false);
+        static readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
         private static IContainer _container;
-        private static NLog.ILogger Logger = LogManager.GetLogger("Domain");
-        private static Meter _exceptionsMeter = Metric.Meter("Exceptions Reported", Unit.Items);
+        private static readonly NLog.ILogger Logger = LogManager.GetLogger("Domain");
+        private static readonly Meter ExceptionsMeter = Metric.Meter("Exceptions Reported", Unit.Items);
         private static IEnumerable<SetupInfo> _operations;
 
-        private static Boolean _embedded;
+        private static bool _embedded;
 
         private static void UnhandledExceptionTrapper(object sender, UnhandledExceptionEventArgs e)
         {
@@ -57,7 +60,7 @@ namespace Demo.Domain
         }
         private static void ExceptionTrapper(object sender, FirstChanceExceptionEventArgs e)
         {
-            _exceptionsMeter.Mark();
+            ExceptionsMeter.Mark();
             //Logger.Debug(e.Exception, "Thrown exception: {0}");
         }
 
@@ -66,7 +69,7 @@ namespace Demo.Domain
             ServicePointManager.UseNagleAlgorithm = false;
             var conf = NLog.Config.ConfigurationItemFactory.Default;
             conf.LayoutRenderers.RegisterDefinition("logsdir", typeof(LogsDir));
-            conf.LayoutRenderers.RegisterDefinition("Domain", typeof(Library.Logging.Domain));
+            conf.LayoutRenderers.RegisterDefinition("Instance", typeof(Library.Logging.Instance));
             NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration($"{AppDomain.CurrentDomain.BaseDirectory}/logging.config");
 
             AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionTrapper;
@@ -78,97 +81,111 @@ namespace Demo.Domain
             var embedded = args.FirstOrDefault(x => x.StartsWith("--embedded"));
             try
             {
-                _embedded = Boolean.Parse(embedded.Substring(embedded.IndexOf('=') + 1));
+                _embedded = bool.Parse(embedded.Substring(embedded.IndexOf('=') + 1));
             }
             catch { }
 
             var client = ConfigureStore();
             
             var riak = ConfigureRiak();
-            ConfigureMetrics();
+            var rabbit = ConfigureRabbit();
 
             _container = new Container(x =>
             {
                 x.For<IManager>().Use<Manager>();
                 x.For<IEventStoreConnection>().Use(client).Singleton();
-                x.For<IEventMutator>().Use<EventMutator>();
                 x.For<IFuture>().Use<Future>().Singleton();
                 x.For<Infrastructure.IUnitOfWork>().Use<UnitOfWork>();
                 x.For<ICommandUnitOfWork>().Add(b => (ICommandUnitOfWork)b.GetInstance<Infrastructure.IUnitOfWork>());
                 x.For<IEventUnitOfWork>().Add(b => (IEventUnitOfWork)b.GetInstance<Infrastructure.IUnitOfWork>());
+                x.For<IOobHandler>().Use<Aggregates.Internal.DefaultOobHandler>();
+                x.For<ITimeSeries>().Use<TimeSeries>();
                 x.For<IRiakClient>().Use(riak).Singleton();
+                x.For<IConnection>().Use(rabbit).Singleton();
 
                 x.Scan(y =>
                 {
-                    AllAssemblies.Matching("Domain").ToList().ForEach(a => y.Assembly(a));
+                    y.TheCallingAssembly();
+                    y.AssembliesFromApplicationBaseDirectory((assembly) => assembly.FullName.StartsWith("Domain"));
 
                     y.WithDefaultConventions();
+                    y.AddAllTypesOf<ICommandMutator>();
+                    y.AddAllTypesOf<IEventMutator>();
                 });
             });
             // Do this before bus starts
             InitiateSetup();
-            SetupApplication();
+            SetupApplication().Wait();
 
-            var bus = InitBus();
-            _container.Configure(x => x.For<IBus>().Use(bus).Singleton());
+            var bus = InitBus().Result;
+            _container.Configure(x => x.For<IMessageSession>().Use(bus).Singleton());
 
             Console.WriteLine("Press CTRL+C to exit...");
             Console.CancelKeyPress += (sender, eArgs) =>
             {
-                _quitEvent.Set();
+                QuitEvent.Set();
                 eArgs.Cancel = true;
             };
-            _quitEvent.WaitOne();
+            QuitEvent.WaitOne();
 
+            bus.Stop().Wait();
         }
-        private static IBus InitBus()
+        private static async Task<IEndpointInstance> InitBus()
         {
             NServiceBus.Logging.LogManager.Use<NLogFactory>();
-
-            var config = new BusConfiguration();
-
-            Logger.Info("Initializing Service Bus");
-            config.LicensePath(ConfigurationManager.AppSettings["license"]);
 
             var endpoint = ConfigurationManager.AppSettings["endpoint"];
             if (string.IsNullOrEmpty(endpoint))
                 endpoint = "domain";
 
-            config.EndpointName(endpoint);
+            var config = new EndpointConfiguration(endpoint);
+            config.MakeInstanceUniquelyAddressable(Defaults.Instance.ToString());
+
+            Logger.Info("Initializing Service Bus");
+            config.LicensePath(ConfigurationManager.AppSettings["license"]);
 
             config.EnableInstallers();
+            config.LimitMessageProcessingConcurrencyTo(10);
             config.UseTransport<RabbitMQTransport>()
                 //.CallbackReceiverMaxConcurrency(4)
-                .UseDirectRoutingTopology()
-                .ConnectionStringName("RabbitMq");
+                //.UseDirectRoutingTopology()
+                .ConnectionStringName("RabbitMq")
+                .PrefetchMultiplier(5)
+                .TimeToWaitBeforeTriggeringCircuitBreaker(TimeSpan.FromSeconds(30));
 
-            config.Transactions().DisableDistributedTransactions();
-            //config.DisableDurableMessages();
             config.UseSerialization<NewtonsoftSerializer>();
 
             config.UsePersistence<InMemoryPersistence>();
             config.UseContainer<StructureMapBuilder>(c => c.ExistingContainer(_container));
 
-            config.EnableFeature<Aggregates.Domain>();
-            config.EnableFeature<Aggregates.GetEventStore.Feature>();
-            config.DisableFeature<Sagas>();
-            config.DisableFeature<SecondLevelRetries>();
-            config.DisableFeature<AutoSubscribe>();
-
             config.SetReadSize(100);
-            config.MaxProcessingQueueSize(10000);
-            config.ParallelHandlers(true);
             config.ShouldCacheEntities(true);
-            config.MaxRetries(20);
-            config.SetParallelism(1);
-
-            
-
-
+            config.SlowAlertThreshold(1000);
+            config.SetStreamGenerator((type, bucket, streamid) =>
+            {
+                var t = type.FullName.Replace("Pulse.Domain.", "");
+                return $"{bucket}.[{t}].{streamid}";
+            });
             if (Logger.IsDebugEnabled)
-                config.Pipeline.Register<LogIncomingRegistration>();
+            {
+                config.EnableSlowAlerts(true);
+                ////config.EnableCriticalTimePerformanceCounter();
+                config.Pipeline.Register(
+                    behavior: typeof(LogIncomingMessageBehavior),
+                    description: "Logs incoming messages"
+                    );
+            }
 
-            return Bus.Create(config).Start();
+            config.UseEventStoreDelayedChannel(true);
+            config.MaxConflictResolves(2);
+            config.EnableFeature<Aggregates.Domain>();
+            config.EnableFeature<Aggregates.GetEventStore>();
+            config.Recoverability().ConfigureForAggregates(5, 3);
+            //config.EnableFeature<RoutedFeature>();
+            config.DisableFeature<Sagas>();
+
+
+            return await Endpoint.Start(config).ConfigureAwait(false);
         }
         
         public static IRiakClient ConfigureRiak()
@@ -192,11 +209,37 @@ namespace Demo.Domain
             var regex = new Regex("([+\\-!\\(\\){}\\[\\]^\"~*?:\\\\\\/>< ]|[&\\|]{2}|AND|OR|NOT)", RegexOptions.Compiled);
             Settings.KeyGenerator = (type, key) =>
             {
-                var first = regex.Replace(type.FullName.Replace("Demo.Domain.", ""), "");
+                var first = regex.Replace(type.FullName.Replace("Pulse.Domain.", ""), "");
                 return $"{first}:{key}";
             };
 
             return client;
+        }
+
+        public static IConnection ConfigureRabbit()
+        {
+
+            var connectionString = ConfigurationManager.ConnectionStrings["RabbitMq"];
+            if (connectionString == null)
+                throw new ArgumentException("No Rabbit connection string");
+
+            var data = connectionString.ConnectionString.Split(';');
+            var host = data.FirstOrDefault(x => x.StartsWith("host", StringComparison.CurrentCultureIgnoreCase));
+            if (host == null)
+                throw new ArgumentException("No HOST parameter in rabbit connection string");
+            var virtualhost = data.FirstOrDefault(x => x.StartsWith("virtualhost=", StringComparison.CurrentCultureIgnoreCase));
+
+            var username = data.FirstOrDefault(x => x.StartsWith("username=", StringComparison.CurrentCultureIgnoreCase));
+            var password = data.FirstOrDefault(x => x.StartsWith("password=", StringComparison.CurrentCultureIgnoreCase));
+
+            host = host.Substring(5);
+            virtualhost = virtualhost?.Substring(12) ?? "/";
+            username = username?.Substring(9) ?? "guest";
+            password = password?.Substring(9) ?? "guest";
+
+            var factory = new ConnectionFactory { Uri = $"amqp://{username}:{password}@{host}:5672/{virtualhost}" };
+
+            return factory.CreateConnection();
         }
         
         public static IEventStoreConnection ConfigureStore()
@@ -204,142 +247,56 @@ namespace Demo.Domain
             var connectionString = ConfigurationManager.ConnectionStrings["EventStore"];
             var data = connectionString.ConnectionString.Split(';');
 
-            var host = data.FirstOrDefault(x => x.StartsWith("Host=", StringComparison.CurrentCultureIgnoreCase));
-            if (String.IsNullOrEmpty(host))
+            var hosts = data.Where(x => x.StartsWith("Host", StringComparison.CurrentCultureIgnoreCase));
+
+            if (!hosts.Any())
                 throw new ArgumentException("No Host parameter in eventstore connection string");
-            var port = data.FirstOrDefault(x => x.StartsWith("Port=", StringComparison.CurrentCultureIgnoreCase));
-            var disk = data.FirstOrDefault(x => x.StartsWith("Disk=", StringComparison.CurrentCultureIgnoreCase));
-            var embedded = data.FirstOrDefault(x => x.StartsWith("Embedded=", StringComparison.CurrentCultureIgnoreCase));
-            var path = data.FirstOrDefault(x => x.StartsWith("Path=", StringComparison.CurrentCultureIgnoreCase));
 
-            var gossips = data.Where(x => x.StartsWith("Gossip", StringComparison.CurrentCultureIgnoreCase));
-
-            var gossipEndpoints = gossips.Select(x =>
+            var endpoints = hosts.Select(x =>
             {
-                var addr = x.Substring(7).Split(':');
-                return new IPEndPoint(IPAddress.Parse(addr[0]), Int32.Parse(addr[1]) - 2);
-            }).ToArray();
-            var gossipSeeds = gossips.Select(x =>
-            {
-                var addr = x.Substring(7).Split(':');
-                return new IPEndPoint(IPAddress.Parse(addr[0]), Int32.Parse(addr[1]) - 1);
+                var addr = x.Substring(5).Split(':');
+                if (addr[0] == "localhost")
+                    return new IPEndPoint(IPAddress.Loopback, int.Parse(addr[1]));
+                return new IPEndPoint(IPAddress.Parse(addr[0]), int.Parse(addr[1]));
             }).ToArray();
 
-            host = host.Substring(5);
-            port = port?.Substring(5);
-            disk = disk?.Substring(5) ?? "false";
-            embedded = embedded?.Substring(9) ?? "false";
-            path = path?.Substring(5);
-
-            Int32 tcpExtPort = 2112;
-            if (!String.IsNullOrEmpty(port))
-                if (!Int32.TryParse(port, out tcpExtPort))
-                    throw new ArgumentException("Port parameter invalid");
-
-#if LOCAL
-            var ip = IPAddress.Loopback;
-#else
-                // The dns lookup trick won't work inside containers
-                var ip = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces()
-                        .First(x => x.OperationalStatus == System.Net.NetworkInformation.OperationalStatus.Up)
-                        .GetIPProperties()
-                        .UnicastAddresses
-                        .First(x => x.Address.AddressFamily == AddressFamily.InterNetwork)
-                        .Address.MapToIPv4();
-#endif
-
-            Logger.Info("Detected ip address: {0}", ip);
-            if (gossipEndpoints != null && gossipEndpoints.Any())
-                Logger.Info("Gossip seeds: {0}", gossipEndpoints.Select(x => x.ToString()).Aggregate((cur, next) => $"{cur}, {next}"));
-            if ((embedded == "true" || _embedded) && (!gossipEndpoints.Any() || gossipEndpoints.Any(x => x.Address.ToString() == ip.ToString())))
-            {
-
-                Logger.Info("Starting event store on {0} port {1}", ip, tcpExtPort);
-
-                var builder = EmbeddedVNodeBuilder
-#if LOCAL
-                                    .AsSingleNode()
-#else
-                                    .AsClusterMember(gossipEndpoints.Count())
-                                    .WithGossipSeeds(gossipEndpoints)
-#endif
-                                .WithExternalHeartbeatInterval(TimeSpan.FromSeconds(30))
-                                .WithInternalHeartbeatInterval(TimeSpan.FromSeconds(30))
-                                .WithExternalHeartbeatTimeout(TimeSpan.FromMinutes(5))
-                                .WithInternalHeartbeatTimeout(TimeSpan.FromMinutes(5))
-                                .WithInternalTcpOn(new IPEndPoint(ip, tcpExtPort + 1))
-                                .WithExternalTcpOn(new IPEndPoint(ip, tcpExtPort))
-                                .WithInternalHttpOn(new IPEndPoint(ip, tcpExtPort - 2))
-                                .WithExternalHttpOn(new IPEndPoint(ip, tcpExtPort - 1))
-                                .AddExternalHttpPrefix($"http://*:{tcpExtPort - 1 }/")
-                                .AddInternalHttpPrefix($"http://*:{tcpExtPort - 2 }/");
-
-
-                if (disk == "true")
-                {
-                    System.IO.Directory.CreateDirectory($"{path}/{Aggregates.Defaults.Domain}");
-                    builder = builder.RunOnDisk($"{path}/{Aggregates.Defaults.Domain}");
-                }
-                else
-                {
-                    builder = builder.RunInMemory();
-                }
-
-                var embeddedBuilder = builder.Build();
-                if (embeddedBuilder.InternalHttpService != null)
-                    embeddedBuilder.InternalHttpService.SetupController(new ClusterWebUiController(embeddedBuilder.MainQueue, new[] { NodeSubsystems.Projections }));
-                embeddedBuilder.ExternalHttpService.SetupController(new ClusterWebUiController(embeddedBuilder.MainQueue, new[] { NodeSubsystems.Projections }));
-
-                var tcs = new TaskCompletionSource<Boolean>();
-
-                embeddedBuilder.NodeStatusChanged += (_, e) =>
-                {
-                    Logger.Info("EventStore status changed: {0}", e.NewVNodeState);
-                    if (!tcs.Task.IsCompleted && (e.NewVNodeState == EventStore.Core.Data.VNodeState.Master ||
-                                                    e.NewVNodeState == EventStore.Core.Data.VNodeState.Slave ||
-                                                    e.NewVNodeState == EventStore.Core.Data.VNodeState.Manager))
-                    {
-                        tcs.SetResult(true);
-                    }
-                };
-                embeddedBuilder.Start();
-
-                tcs.Task.Wait();
-
-            }
-
-            IPAddress hostAddress;
-            if (host.Equals("localhost", StringComparison.CurrentCultureIgnoreCase))
-                hostAddress = IPAddress.Loopback;
-            else
-                if (!IPAddress.TryParse(host, out hostAddress))
-                throw new ArgumentException("Host parameter invalid");
-
-            Logger.Info("Starting eventstore connection to {0}", hostAddress);
-            var endpoint = new IPEndPoint(hostAddress, tcpExtPort);
             var cred = new UserCredentials("admin", "changeit");
-            var settings = ConnectionSettings.Create()
+            var settings = EventStore.ClientAPI.ConnectionSettings.Create()
                 .UseCustomLogger(new EventStoreLogger())
                 .KeepReconnecting()
                 .KeepRetrying()
+                .SetClusterGossipPort(endpoints.First().Port - 1)
                 .SetHeartbeatInterval(TimeSpan.FromSeconds(30))
-                .SetGossipTimeout(TimeSpan.FromSeconds(30))
+                .SetGossipTimeout(TimeSpan.FromMinutes(5))
                 .SetHeartbeatTimeout(TimeSpan.FromMinutes(5))
-                .SetTimeoutCheckPeriodTo(TimeSpan.FromMinutes(5))
+                .SetTimeoutCheckPeriodTo(TimeSpan.FromMinutes(1))
                 .SetDefaultUserCredentials(cred);
-            
-            var client = EventStoreConnection.Create(settings, endpoint, "Domain");
+
+            IEventStoreConnection client;
+            if (hosts.Count() != 1)
+            {
+
+                settings = settings
+                    .SetGossipSeedEndPoints(endpoints);
+
+                var clusterSettings = EventStore.ClientAPI.ClusterSettings.Create()
+                    .DiscoverClusterViaGossipSeeds()
+                    .SetGossipSeedEndPoints(endpoints.Select(x => new IPEndPoint(x.Address, x.Port - 1)).ToArray())
+                    .SetGossipTimeout(TimeSpan.FromMinutes(5))
+                    .Build();
+
+                client = EventStoreConnection.Create(settings, clusterSettings, "Domain");
+            }
+            else
+                client = EventStoreConnection.Create(settings, endpoints.First(), "Domain");
+
 
             client.ConnectAsync().Wait();
 
             return client;
         }
-        
 
-        public void SpecifyOrder(Order order)
-        {
-            //order.Specify(First<ValidationMessageHandler>.Then<SecurityMessageHandler>());
-        }
+
         private static void InitiateSetup()
         {
             _operations = _container.GetAllInstances<ISetup>().Select(o =>
@@ -357,7 +314,7 @@ namespace Demo.Domain
             });
         }
 
-        private static void SetupApplication(SetupInfo info = null)
+        private static async Task SetupApplication(SetupInfo info = null)
         {
             var watch = new Stopwatch();
 
@@ -367,7 +324,7 @@ namespace Demo.Domain
                 depends = depends.Where(x => info.Depends.Any() && info.Depends.Contains(x.Name));
 
             foreach (var depend in depends)
-                SetupApplication(depend);
+                await SetupApplication(depend).ConfigureAwait(false);
 
             if (info == null || info.Operation.Done)
                 return;
@@ -377,7 +334,7 @@ namespace Demo.Domain
             Logger.Info("**************************************************************");
 
             watch.Start();
-            if (!info.Operation.Initialize())
+            if (!await info.Operation.Initialize().ConfigureAwait(false))
             {
                 Logger.Info("ERROR - Failed to complete setup operation!");
                 Environment.Exit(1);
@@ -391,11 +348,11 @@ namespace Demo.Domain
 
     internal class SetupInfo
     {
-        public String Name { get; set; }
+        public string Name { get; set; }
 
-        public String[] Depends { get; set; }
+        public string[] Depends { get; set; }
 
-        public String Category { get; set; }
+        public string Category { get; set; }
 
         public ISetup Operation { get; set; }
     }

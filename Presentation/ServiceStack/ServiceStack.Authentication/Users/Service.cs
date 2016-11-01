@@ -1,132 +1,117 @@
-﻿
-using Demo.Library.Extensions;
-using Demo.Library.SSE;
-using NServiceBus;
+﻿using NServiceBus;
 using ServiceStack;
 using System;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
+using Demo.Presentation.ServiceStack.Authentication.Users.Models;
 using Demo.Presentation.ServiceStack.Infrastructure.Services;
-using Demo.Presentation.ServiceStack.Infrastructure.Authentication;
-using Demo.Presentation.ServiceStack.Infrastructure.Responses;
 using Demo.Presentation.ServiceStack.Infrastructure.Extensions;
-using ServiceStack.Auth;
+using IGet = Demo.Presentation.ServiceStack.Authentication.Users.Queries.IGet;
 
 namespace Demo.Presentation.ServiceStack.Authentication.Users
 {
     public class Service : DemoService
     {
-        private readonly IBus _bus;
+        private readonly IMessageSession _bus;
 
-        public Service(IBus bus)
+        public Service(IMessageSession bus)
         {
             _bus = bus;
         }
         
-        public async Task<Object> Any(Models.AU_Get request)
+        public async Task<object> Any(Models.AuGet request)
         {
-            return await _bus.SendToRiak<Queries.Get>(x =>
+            return await _bus.RequestToRiak<IGet, AuUserResponse>(x =>
             {
                 x.UserAuthId = request.UserAuthId;
-            }).AsQueryResult(request);
+            }, request).ConfigureAwait(false);
         }
+        
 
-        public async Task Post(Models.AU_Register request)
-        {
-            var command = request.ConvertTo<Domain.Authentication.Users.Commands.Register>();
-
-            await _bus.CommandToDomain(command);
-        }
-
-        public async Task Post(Models.AU_Update request)
-        {
-            var command = request.ConvertTo<Domain.Authentication.Users.Commands.Update>();
-
-            await _bus.CommandToDomain(command);
-        }
-
-        public async Task Post(Models.AU_Login request)
+        public async Task Post(Models.AuLogin request)
         {
             var command = request.ConvertTo<Domain.Authentication.Users.Commands.Login>();
 
-            await _bus.CommandToDomain(command);
+            await _bus.CommandToDomain(command).ConfigureAwait(false);
         }
 
-        public async Task Post(Models.AU_Logout request)
+        public async Task Post(Models.AuLogout request)
         {
             var command = request.ConvertTo<Domain.Authentication.Users.Commands.Logout>();
             
 
-            await _bus.CommandToDomain(command);
+            await _bus.CommandToDomain(command).ConfigureAwait(false);
         }
         
-        public async Task Post(Models.AU_ChangeEmail request)
+        public async Task Post(Models.AuChangeEmail request)
         {
             var command = request.ConvertTo<Domain.Authentication.Users.Commands.ChangeEmail>();
             
 
-            await _bus.CommandToDomain(command);
+            await _bus.CommandToDomain(command).ConfigureAwait(false);
         }
         
-        public async Task Post(Models.AU_ChangeAvatar request)
+        public async Task Post(Models.AuChangeAvatar request)
         {
             var command = request.ConvertTo<Domain.Authentication.Users.Commands.ChangeAvatar>();
             
 
-            await _bus.CommandToDomain(command);
+            await _bus.CommandToDomain(command).ConfigureAwait(false);
         }
         
-        public async Task Post(Models.AU_ChangeName request)
+        public async Task Post(Models.AuChangeName request)
         {
             var session = Request.GetSessionId();
 
             var command = request.ConvertTo<Domain.Authentication.Users.Commands.ChangeName>();
             
 
-            await _bus.CommandToDomain(command);
+            await _bus.CommandToDomain(command).ConfigureAwait(false);
         }
-        public async Task Post(Models.AU_ChangePassword request)
+        public Task Post(Models.AuChangePassword request)
         {
-            var command = request.ConvertTo<Domain.Authentication.Users.Commands.ChangePassword>();
+            //var command = request.ConvertTo<Domain.Authentication.Users.Commands.ChangePassword>();
 
-            await _bus.CommandToDomain(command);
+            //await _bus.CommandToDomain(command).ConfigureAwait(false);
+            return Task.CompletedTask;
         }
-        public async Task Post(Models.AU_AssignRoles request)
+        public Task Post(Models.AuAssignRoles request)
         {
-            var command = request.ConvertTo<Domain.Authentication.Users.Commands.AssignRoles>();
+            //var command = request.ConvertTo<Domain.Authentication.Users.Commands.AssignRoles>();
 
-            await _bus.CommandToDomain(command);
+            //await _bus.CommandToDomain(command).ConfigureAwait(false);
+            return Task.CompletedTask;
         }
-        public async Task Post(Models.AU_UnassignRoles request)
+        public Task Post(Models.AuUnassignRoles request)
         {
-            var command = request.ConvertTo<Domain.Authentication.Users.Commands.UnassignRoles>();
+            //var command = request.ConvertTo<Domain.Authentication.Users.Commands.UnassignRoles>();
 
-            await _bus.CommandToDomain(command);
+            //await _bus.CommandToDomain(command).ConfigureAwait(false);
+            return Task.CompletedTask;
         }
 
 
-        public async Task Post(Models.AU_ChangeTimezone request)
+        public async Task Post(Models.AuChangeTimezone request)
         {
             var command = request.ConvertTo<Domain.Authentication.Users.Commands.ChangeTimezone>();
             
 
-            await _bus.CommandToDomain(command);
+            await _bus.CommandToDomain(command).ConfigureAwait(false);
         }
 
         private class Image
         {
-            public String Type { get; set; }
+            public string Type { get; set; }
 
-            public String Data { get; set; }
+            public string Data { get; set; }
         }
 
-        private async Task<Image> GetImageFromUrl(String Url)
+        private async Task<Image> GetImageFromUrl(string url)
         {
             try
             {
-                var request = WebRequest.Create(Url);
-                var response = await request.GetResponseAsync();
+                var request = WebRequest.Create(url);
+                var response = await request.GetResponseAsync().ConfigureAwait(false);
 
                 var buffer = response.GetResponseStream().ReadFully();
                 response.Close();

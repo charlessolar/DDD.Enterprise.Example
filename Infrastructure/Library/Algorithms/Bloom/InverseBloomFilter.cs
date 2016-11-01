@@ -31,11 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Algorithms.Bloom
 {
@@ -75,7 +73,7 @@ namespace Demo.Library.Algorithms.Bloom
         }
 
 
-        public Boolean Equals(InverseBloomFilter other)
+        public bool Equals(InverseBloomFilter other)
         {
             if (this.Hash != other.Hash) return false;
             if (this.capacity != other.capacity) return false;
@@ -225,7 +223,7 @@ namespace Demo.Library.Algorithms.Bloom
             {
                 return false;
             }
-            return Enumerable.SequenceEqual(val, data);
+            return val.SequenceEqual(data);
         }
 
         /// <summary>
@@ -254,7 +252,7 @@ namespace Demo.Library.Algorithms.Bloom
             {
                 return false;
             }
-            return Enumerable.SequenceEqual(oldId, data);
+            return oldId.SequenceEqual(data);
         }
 
         /// <summary>

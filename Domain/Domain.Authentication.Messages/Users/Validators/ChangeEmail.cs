@@ -6,7 +6,6 @@ namespace Demo.Domain.Authentication.Users.Validators
     {
         public ChangeEmail()
         {
-            RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
         }
     }

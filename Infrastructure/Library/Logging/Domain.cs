@@ -1,19 +1,15 @@
 ﻿using NLog;
 using NLog.LayoutRenderers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Logging
 {
-    [LayoutRenderer("Domain")]
-    public class Domain : LayoutRenderer
+    [LayoutRenderer("Instance")]
+    public class Instance : LayoutRenderer
     {
         protected override void Append(StringBuilder builder, LogEventInfo logEvent)
         {
-            builder.Append(Aggregates.Defaults.Domain);
+            builder.Append(Aggregates.Defaults.Instance);
         }
     }
 }

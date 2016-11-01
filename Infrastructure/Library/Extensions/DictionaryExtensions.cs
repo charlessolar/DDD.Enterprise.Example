@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Demo.Library.Extensions
 {
@@ -33,24 +31,24 @@ namespace Demo.Library.Extensions
             // Shift and wrap the discarded bits. 
             return BitConverter.ToInt32(BitConverter.GetBytes((number << positions) | wrapped), 0);
         }
-        public static T MergeLeft<T, K, V>(this T me, params IDictionary<K, V>[] others)
-            where T : IDictionary<K, V>, new()
+        public static T MergeLeft<T, TK, TV>(this T me, params IDictionary<TK, TV>[] others)
+            where T : IDictionary<TK, TV>, new()
         {
             T newMap = new T();
-            foreach (IDictionary<K, V> src in
-                (new List<IDictionary<K, V>> { me }).Concat(others))
+            foreach (IDictionary<TK, TV> src in
+                (new List<IDictionary<TK, TV>> { me }).Concat(others))
             {
                 // ^-- echk. Not quite there type-system.
-                foreach (KeyValuePair<K, V> p in src)
+                foreach (KeyValuePair<TK, TV> p in src)
                 {
                     newMap[p.Key] = p.Value;
                 }
             }
             return newMap;
         }
-        public static IDictionary<T, U> Merge<T, U>(this IDictionary<T, U> first, IDictionary<T, U> second, Boolean deep) where U : struct
+        public static IDictionary<T, TU> Merge<T, TU>(this IDictionary<T, TU> first, IDictionary<T, TU> second, bool deep) where TU : struct
         {
-            var results = new Dictionary<T, U>();
+            var results = new Dictionary<T, TU>();
 
             foreach (var item in first)
                 results[item.Key] = item.Value;
