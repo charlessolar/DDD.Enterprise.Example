@@ -1,5 +1,10 @@
 # DDD.Enterprise.Example
 
+**2018 Update**
+
+I've made a much slimmer example of CQRS and EventSourcing here: [volak/TodoMVC-DDD-CQRS-EventSourcing](https://github.com/volak/TodoMVC-DDD-CQRS-EventSourcing)
+It's about 1/4 of the complexity of this project **AND** it actually runs and does something trivial.
+
 **2016 Update**
 
 The foundation of this solution is currently being used in my work - I am publishing an updated version almost a year after the initial Example repo because the foundation has changed a fair bit.
